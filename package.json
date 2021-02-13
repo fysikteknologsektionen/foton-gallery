@@ -1,0 +1,25 @@
+{
+  "name": "ftek-foton-gallery",
+  "version": "1.0.0",
+  "description": "Photo gallery application for Foton at Fysikteknologsektionen",
+  "private": true,
+  "author": "Eric Carlsson",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "postinstall": "^0.7.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm start\"",
+    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
+    "postinstall": "concurrently \"cd server && npm install\" \"cd client && npm install\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ECarlsson/ftek-foton-gallery.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ECarlsson/ftek-foton-gallery/issues"
+  },
+  "homepage": "https://github.com/ECarlsson/ftek-foton-gallery#readme"
+}
