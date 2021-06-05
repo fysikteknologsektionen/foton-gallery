@@ -8,6 +8,9 @@ The project has post-install hooks to install nested dependencies. Simply instal
 
 in the root directory.
 
+## Configuration
+Before building or starting a dev server the project has to be configured. This is done by supplying a `.env` file in the root directory. There is an example configuration file, `.env.example`, which can be used as a template (simple copy this and rename to `.env`, the default configuration will most likely be sufficient to run the project in development).
+
 ## Building for production
 To build the project for a production environment, run
 
@@ -20,7 +23,7 @@ The project has a built in webpack dev-server (with create-react-app) and uses `
 
     npm run dev
  
- in the root directory.
+ in the root directory. The webpack server runs on port `3000` by default and is set to proxy requests to port `3001` (see [the previous section on how to configure the project](#Configuration)).
 
 ## Acknowledgements
 This project is based on the original Foton Webgallery application, found [here](https://github.com/ECarlsson/foton).
