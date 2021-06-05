@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import AlbumModel from '../models/albumModel';
+import { AlbumModel } from '../models';
 import { Album } from '../types';
 
 export async function createAlbum (req: Request, res: Response, next: NextFunction) {

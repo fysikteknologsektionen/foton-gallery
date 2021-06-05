@@ -2,7 +2,7 @@ import { model, Model, Schema } from 'mongoose';
 import { Album } from '../types';
 import slug from 'slug';
 
-const albumSchema: Schema = new Schema({
+const AlbumSchema: Schema<Album> = new Schema<Album>({
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   description: String,
@@ -12,23 +12,23 @@ const albumSchema: Schema = new Schema({
   thumbnail: { type: Schema.Types.ObjectId, ref: 'Album.images' }
 });
 
-albumSchema.pre<Album>('save', function(next) {
-  const album: Album = this;
-  const nameSlug: string = slug(album.name);
-  album.slug = nameSlug;
+/**
+ * Generates a name slug and saves it alongside the name
+ */
+AlbumSchema.pre('save', function(next) {
+  const nameSlug: string = slug(this.name);
+  this.slug = nameSlug;
   next();
 });
 
-albumSchema.post<Album>('updateOne', function(doc: Album, next) {
+AlbumSchema.post('updateOne', function(doc: Album, next) {
   /** TODO: remove image files when updating album to delete images */
   next();
 });
 
-albumSchema.post<Album>('remove', function(doc: Album, next) {
+AlbumSchema.post('remove', function(doc: Album, next) {
   /** TODO: remove image files when deleting album */
   next();
 });
 
-const AlbumModel: Model<Album> = model('Album', albumSchema);
-
-export default AlbumModel;
+export const AlbumModel: Model<Album> = model('Album', AlbumSchema);
