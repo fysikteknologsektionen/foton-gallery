@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { AlbumController } from '../controllers';
+import { albumController } from '../controllers';
 
-export const AlbumRouter: Router = Router();
+export const albumRouter: Router = Router();
 
-AlbumRouter.post('/', AlbumController.createAlbum);
-AlbumRouter.get('/', AlbumController.getAlbums);
-AlbumRouter.put('', AlbumController.updateAlbum);
-AlbumRouter.delete('/', AlbumController.deleteAlbum);
+albumRouter.post('/', albumController.createAlbum);
+albumRouter.get('/', albumController.getAlbums);
+albumRouter.put('', albumController.updateAlbum);
+albumRouter.delete('/', albumController.deleteAlbum);

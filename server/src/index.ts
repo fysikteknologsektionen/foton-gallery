@@ -1,11 +1,12 @@
-import './env'
+import { config } from './env';
 import express, { Application, Request, Response } from 'express';
 import path from 'path';
-import { AlbumRouter } from './routers';
+import { albumRouter, authRouter, userRouter } from './routers';
+import cookieParser from 'cookie-parser';
 
 // Host & port configuration from .env file
-const host: string = process.env.APP_HOST ?? 'localhost';
-const port: number = Number(process.env.APP_PORT ?? 3000);
+const host: string = config.APP_HOST;
+const port: number = Number(config.APP_PORT);
 
 // Path to the frontend client
 const clientDirectory: string = path.join(__dirname, '..', '..', 'client', 'build');
@@ -14,9 +15,12 @@ const clientDirectory: string = path.join(__dirname, '..', '..', 'client', 'buil
 const app: Application = express();
 
 // Global middleware
+app.use(cookieParser());
 
 // API routers
-app.use('/album', AlbumRouter);
+app.use('/album', albumRouter);
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 // Serve files in production
 app.use(express.static(clientDirectory));
