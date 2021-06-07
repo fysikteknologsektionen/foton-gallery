@@ -9,7 +9,7 @@ The project has post-install hooks to install nested dependencies. Simply instal
 in the root directory.
 
 ## Configuration
-Before building or starting a dev server the project has to be configured. This is done by supplying a `.env` file in the root directory. There is an example configuration file, `.env.example`, which can be used as a template (simple copy this and rename to `.env`, the default configuration will most likely be sufficient to run the project in development).
+Before building or starting a dev server the project has to be configured. This is done by supplying a `.env` file in the root directory. There is an example configuration file, `.env.example`, which can be used as a template. The default configuration will most likely be sufficient to run the project in development.
 
 ## Building for production
 To build the project for a production environment, run
