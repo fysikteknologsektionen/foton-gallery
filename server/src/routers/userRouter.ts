@@ -16,9 +16,9 @@ export const userRouter: Router = Router();
  */
 userRouter.post(
   '/',
-  check('email').isEmail().normalizeEmail().escape(),
+  check('email').isEmail().normalizeEmail(),
   check('password').notEmpty().escape(),
-  check('isAdmin').notEmpty().isBoolean(),
+  check('isAdmin').notEmpty().isBoolean().toBoolean(),
   userController.createUser
 );
 
@@ -29,6 +29,6 @@ userRouter.get(
 
 userRouter.delete(
   '/',
-  check('id').notEmpty().isString().escape(),
+  check('id').notEmpty().isAlphanumeric(),
   userController.deleteUser
 );

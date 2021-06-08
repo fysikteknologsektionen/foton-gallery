@@ -10,7 +10,7 @@ export const authRouter: Router = Router();
  */
 authRouter.post(
   '/login',
-  check('email').isEmail().normalizeEmail().escape(),
+  check('email').isEmail().normalizeEmail(),
   check('password').notEmpty().escape(),
   checkValidationResult,
   authController.loginUser

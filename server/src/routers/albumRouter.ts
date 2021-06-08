@@ -4,48 +4,47 @@ import { albumController, authController } from '../controllers';
 import { checkValidationResult } from '../utils';
 
 export const albumRouter: Router = Router();
-
-/**
- * Middleware
- */
-albumRouter.use(authController.populateUserField);
-albumRouter.use(authController.authenticateUser);
-
 /**
  * Endpoints
  */
 albumRouter.post(
   '/',
-  check('name').notEmpty().isString().escape(),
-  check('description').optional({ checkFalsy: true }).isString().escape(),
+  authController.populateUserField,
+  authController.authenticateUser,
+  check('name').notEmpty().escape(),
+  check('description').optional({ checkFalsy: true }).escape(),
   check('authors').optional({ checkFalsy: true }).isArray(),
-  check('authors.*').isString().escape(),
-  check('date').notEmpty().isDate().toDate(),
+  check('authors.*').escape(),
+  check('date').isDate().toDate(),
   checkValidationResult,
   albumController.createAlbum
 );
 
 albumRouter.get(
   '/',
-  check('limit').isInt({ min: 1, max: 24}),
-  check('offset').isInt({ min: 0 }),
+  check('limit').isInt({ min: 1, max: 24}).toInt(),
+  check('offset').isInt({ min: 0 }).toInt(),
   checkValidationResult,
   albumController.getAlbums
 );
 
 albumRouter.put(
   '/',
-  check('id').notEmpty().isString().escape(),
-  check('name').optional({ checkFalsy: true }).isString().escape(),
-  check('description').optional().isString().escape(),
+  authController.populateUserField,
+  authController.authenticateUser,
+  check('id').notEmpty().isAlphanumeric(),
+  check('name').optional({ checkFalsy: true }).escape(),
+  check('description').optional().escape(),
   check('authors').optional().isArray(),
-  check('authors.*').isString().escape(),
+  check('authors.*').escape(),
   check('date').optional({ checkFalsy: true }).isDate().toDate(),
   albumController.updateAlbum
 );
 
 albumRouter.delete(
   '/',
-  check('id').notEmpty().escape(),
+  authController.populateUserField,
+  authController.authenticateUser,
+  check('id').notEmpty().isAlphanumeric(),
   albumController.deleteAlbum
 );
