@@ -17,6 +17,18 @@ export async function createUser (req: Request, res: Response, next: NextFunctio
 }
 
 /**
+ * Gets all users
+ */
+export async function getUsers (req: Request, res: Response, next: NextFunction) {
+  try {
+    const users: Array<User> = await UserModel.find().exec();
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
  * Deletes a user by id
  * @param {string} req.query.id - Id of the user
  */
