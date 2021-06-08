@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
+import { matchedData } from 'express-validator';
 import { UserModel } from '../models';
 import { User } from '../types';
 
 /**
  * Create a new user from email/password 
- * @param {Object} req.body - Object containing email/password 
+ * @param {Request} req - Request containing email, password and admin status
  */
 export async function createUser (req: Request, res: Response, next: NextFunction) {
+  const data = matchedData(req) as Partial<User>;
   try {
-    const user: User = new UserModel({ ...req.body });
+    const user: User = new UserModel({ ...data });
     await user.save();
     res.status(201).send();
   } catch (error) {
@@ -30,11 +32,12 @@ export async function getUsers (req: Request, res: Response, next: NextFunction)
 
 /**
  * Deletes a user by id
- * @param {string} req.query.id - Id of the user
+ * @param {Request} req - Request containing the id of the user
  */
 export async function deleteUser (req: Request, res: Response, next: NextFunction) {
+  const { id } = matchedData(req) as { id: string };
   try {
-    await UserModel.findByIdAndDelete(req.query.id).exec();
+    await UserModel.findByIdAndDelete(id).exec();
     res.status(204).send();
   } catch (error) {
     next(error);

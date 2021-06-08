@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
+import { matchedData } from 'express-validator';
 import { AlbumModel } from '../models';
 import { Album } from '../types';
 
 /**
  * Creates a new album
- * @param {Object} req.body - Album information
+ * @param {Request} req - Request containing album key-value data
  */
 export async function createAlbum (req: Request, res: Response, next: NextFunction) {
+  const data = matchedData(req) as Partial<Album>;
   try {
-    const album: Album = new AlbumModel({ ...req.body });
+    const album: Album = new AlbumModel({ ...data });
     await album.save();
     res.status(201).send();
   } catch (error) {
@@ -18,13 +20,11 @@ export async function createAlbum (req: Request, res: Response, next: NextFuncti
 
 /**
  * Gets a subset of albums
- * @param {string} [req.query.limit=12] - Document limit when fetching from db
- * @param {string} [res.query.offset=0] - Document offset when fetching from db 
+ * @param {Request} req - Request containing limit and offset for fetching data
  */
 export async function getAlbums (req: Request, res: Response, next: NextFunction) {
+  const { offset, limit } = matchedData(req) as { limit: number, offset: number };
   try {
-    const limit: number = Number(req.query.limit) || 12;
-    const offset: number = Number(req.query.offset) || 0;
     const albums: Array<Album> = await AlbumModel.find().sort('-dates').skip(offset).limit(limit).exec();
     res.json(albums);
   } catch (error) {
@@ -34,12 +34,12 @@ export async function getAlbums (req: Request, res: Response, next: NextFunction
 
 /**
  * (Partially) updates an album 
- * @param {string} req.query.id - Id of the album
- * @param {Object} req.body - Key-value pairs of properties to change
+ * @param {Reqest} req - Request containing id of album and key-values to update
  */
 export async function updateAlbum (req: Request, res: Response, next: NextFunction) {
+  const { id, ...data } = matchedData(req) as { id: string, data: Partial<Album> };
   try {
-    await AlbumModel.findByIdAndUpdate(req.query.id, { ...req.body }).exec();
+    await AlbumModel.findByIdAndUpdate(id, { ...data }).exec();
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -48,11 +48,12 @@ export async function updateAlbum (req: Request, res: Response, next: NextFuncti
 
 /**
  * Deletes an album
- * @param {string} req.query.id - Id of the album
+ * @param {Request} req - Request containing id of the album
  */
 export async function deleteAlbum (req: Request, res: Response, next: NextFunction) {
+  const { id } = matchedData(req) as { id: string };
   try {
-    await AlbumModel.findByIdAndDelete(req.query.id).exec();
+    await AlbumModel.findByIdAndDelete(id).exec();
     res.status(204).send();
   } catch (error) {
     next(error);

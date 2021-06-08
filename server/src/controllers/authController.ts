@@ -3,14 +3,14 @@ import { NextFunction, Request, Response } from 'express';
 import { UserModel } from '../models';
 import { User, UserInfo } from '../types';
 import jwt from 'jsonwebtoken';
+import { matchedData } from 'express-validator';
 
 /**
  * Logs in a user by checking request, creating a secure token and settings cookies with credentials
- * @param {string} req.body.email - Email for attempted login
- * @param {string} req.body.password - Password for attempted login
+ * @param {Request} req - Request containing email and password
  */
 export async function loginUser (req: Request, res: Response, next: NextFunction) {
-  const { email, password }: { email: string, password: string} = req.body;
+  const { email, password } = matchedData(req) as { email: string, password: string};
   try {
     const user: User | null = await UserModel.findOne({ email: email }).exec();
     if (!user || await user.comparePassword(password)) {
@@ -42,7 +42,7 @@ export function logoutUser (req: Request, res: Response, next: NextFunction) {
 
 /**
  * Tries to populates the user field in the request if an auth cookie is passed
- * @param {string} req.cookies.auth - The auth cookie containing a stringified @type {UserInfo} instance
+ * @param {Request} req - Request object with potential cookie containing a stringified @type {UserInfo} instance
  */
 export function populateUserField (req: Request, res: Response, next: NextFunction) {
   if (req.cookies.auth) {
@@ -61,7 +61,7 @@ export function populateUserField (req: Request, res: Response, next: NextFuncti
 
 /**
  * Authenticates a user by checking if the req.user.id property is set
- * @param {string} req.user.id - Id that is set if the user is authenticated
+ * @param {string} req.user.id - Id of authenticated user
  */
 export function authenticateUser (req: Request, res: Response, next: NextFunction) {
   if (!req.user?.id) {
