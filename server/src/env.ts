@@ -2,7 +2,14 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' })
 
 // Required env vars
-const requiredVars = ['APP_HOST', 'APP_PORT', 'APP_SECRET'];
+const requiredVars = [
+  'APP_HOST',
+  'APP_PORT',
+  'APP_SECRET',
+  'DB_HOST',
+  'DB_PORT',
+  'DB_DATABASE'
+];
 
 // Dict with verified env vars
 export const config: { [index: string]: string } = {};

@@ -1,4 +1,5 @@
 import { config } from './env';
+import './db';
 import express, { Application, Request, Response } from 'express';
 import path from 'path';
 import { albumRouter, authRouter, userRouter } from './routers';
