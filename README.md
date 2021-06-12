@@ -1,6 +1,10 @@
 # ftek-foton-gallery
 A photo gallery web-application for Foton (Photon) at Fysikteknologsektionen (The Physics Division) at Chalmers University of Technology.
 
+## Requirements
+* Node.js (release 16 or later)
+* MongoDB
+
 ## Installation
 The project has post-install hooks to install nested dependencies. Simply install all dependencies by running
 
