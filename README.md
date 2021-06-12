@@ -2,8 +2,8 @@
 A photo gallery web-application for Foton (Photon) at Fysikteknologsektionen (The Physics Division) at Chalmers University of Technology.
 
 ## Requirements
-* Node.js (release 16 or later)
-* MongoDB
+* Node.js (16.x.x or later)
+* MongoDB (4.4.x or later)
 
 ## Installation
 The project has post-install hooks to install nested dependencies. Simply install all dependencies by running
