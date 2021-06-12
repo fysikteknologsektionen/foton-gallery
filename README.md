@@ -2,7 +2,7 @@
 A photo gallery web-application for Foton (Photon) at Fysikteknologsektionen (The Physics Division) at Chalmers University of Technology.
 
 ## Requirements
-* Node.js (16.x.x or later)
+* Node.js (14.x.x or later)
 * MongoDB (4.4.x or later)
 
 ## Installation
