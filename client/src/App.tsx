@@ -1,21 +1,23 @@
-function App() {
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Gallery } from './views/Gallery';
+import { Header } from './components/Header';
+import { Login } from './views/Login';
+import { NotFound } from './views/NotFound';
+
+export function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <main className='container'>
+        
+          <Switch>
+            <Route path='/login' component={Login} />
+            <Route exact path='/' component={Gallery} />
+            <Route path='/' component={NotFound} />
+          </Switch>
+        
+      </main>
+      <footer>footer</footer>
+    </Router>
   );
 }
-
-export default App;
