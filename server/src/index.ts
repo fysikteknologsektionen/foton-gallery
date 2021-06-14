@@ -19,9 +19,9 @@ const app: Application = express();
 app.use(cookieParser());
 
 // API routers
-app.use('/album', albumRouter);
-app.use('/auth', authRouter);
-app.use('/user', userRouter);
+app.use('/api/albums', albumRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', userRouter);
 
 // Serve files in production
 app.use(express.static(clientDirectory));
