@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { authController } from '../controllers';
-import { checkValidationResult } from '../utils';
+import { checkValidationResult } from '../utils/checkValidationResult';
 
 export const authRouter: Router = Router();
 

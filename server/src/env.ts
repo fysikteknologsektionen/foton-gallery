@@ -6,6 +6,8 @@ const requiredVars = [
   'APP_HOST',
   'APP_PORT',
   'APP_SECRET',
+  'APP_MAX_FILE_SIZE',
+  'APP_MAX_FILE_UPLOADS',
   'DB_HOST',
   'DB_PORT',
   'DB_DATABASE'
@@ -15,7 +17,7 @@ const requiredVars = [
 export const config: { [index: string]: string } = {};
 
 // Check if required env vars are set, else throw error
-requiredVars.map(variable => {
+requiredVars.forEach(variable => {
   if (!process.env[variable])
     throw new Error(`${variable} is not defined, add it to the .env file`);
   else

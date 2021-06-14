@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { albumController, authController } from '../controllers';
-import { checkValidationResult } from '../utils';
+import { config } from '../env';
+import { checkValidationResult } from '../utils/checkValidationResult';
+import { upload } from '../utils/upload';
 
 export const albumRouter: Router = Router();
 /**
@@ -17,6 +19,7 @@ albumRouter.post(
   check('authors.*').escape(),
   check('date').isDate().toDate(),
   checkValidationResult,
+  upload.array('images', Number(config.APP_MAX_FILE_UPLOADS)),
   albumController.createAlbum
 );
 
