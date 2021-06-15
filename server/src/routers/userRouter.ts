@@ -18,7 +18,7 @@ export const userRouter: Router = Router();
 userRouter.post(
   '/',
   check('email').isEmail().normalizeEmail(),
-  check('password').notEmpty().escape(),
+  check('password').notEmpty().escape().trim(),
   check('isAdmin').notEmpty().isBoolean().toBoolean(),
   checkValidationResult,
   userController.createUser
