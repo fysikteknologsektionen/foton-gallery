@@ -1,6 +1,6 @@
 import { config } from './env';
 import './db';
-import express, { Application, Request, Response } from 'express';
+import express, { Application, json, Request, Response } from 'express';
 import path from 'path';
 import { albumRouter, authRouter, userRouter } from './routers';
 import cookieParser from 'cookie-parser';
@@ -17,11 +17,12 @@ const app: Application = express();
 
 // Global middleware
 app.use(cookieParser());
+app.use(json());
 
 // API routers
-app.use('/api/albums', albumRouter);
+app.use('/api/album', albumRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/users', userRouter);
+app.use('/api/user', userRouter);
 
 // Serve files in production
 app.use(express.static(clientDirectory));
