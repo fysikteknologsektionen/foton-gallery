@@ -6,7 +6,7 @@ import { config } from '../env';
 
 const storage: StorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'images'));
+    cb(null, path.join(__dirname, '..', '..', 'images'));
   },
   filename: (req, file, cb) => {
     // Generate a "unique" file name

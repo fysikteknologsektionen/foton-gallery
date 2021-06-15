@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { matchedData } from 'express-validator';
 import { AlbumModel } from '../models';
 import { Album } from '../types';
+import { processImages } from '../utils/processImages';
 
 /**
  * Creates a new album
@@ -9,9 +10,16 @@ import { Album } from '../types';
  */
 export async function createAlbum (req: Request, res: Response, next: NextFunction) {
   const data = matchedData(req) as Partial<Album>;
+
+  // Since we use Multer.array() we can guarantee req.files is an array
+  const files = req.files as Express.Multer.File[];
+  const fileNames: string[] = files.map((file: Express.Multer.File) => file.filename);
+  data.images = fileNames;
+
   try {
     const album: Album = new AlbumModel({ ...data });
     await album.save();
+    processImages(files);
     res.status(201).send();
   } catch (error) {
     next(error);
