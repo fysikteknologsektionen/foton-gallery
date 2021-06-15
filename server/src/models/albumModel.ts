@@ -4,7 +4,7 @@ import slug from 'slug';
 
 const albumSchema: Schema<Album> = new Schema<Album>({
   name: { type: String, required: true },
-  slug: { type: String, required: true },
+  slug: { type: String },
   description: String,
   images: [String],
   authors: [String],
