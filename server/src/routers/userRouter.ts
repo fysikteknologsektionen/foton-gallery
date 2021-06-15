@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { authController, userController } from '../controllers';
+import { checkValidationResult } from '../utils/checkValidationResult';
 
 export const userRouter: Router = Router();
 
@@ -19,6 +20,7 @@ userRouter.post(
   check('email').isEmail().normalizeEmail(),
   check('password').notEmpty().escape(),
   check('isAdmin').notEmpty().isBoolean().toBoolean(),
+  checkValidationResult,
   userController.createUser
 );
 
@@ -30,5 +32,6 @@ userRouter.get(
 userRouter.delete(
   '/',
   check('id').notEmpty().isAlphanumeric(),
+  checkValidationResult,
   userController.deleteUser
 );

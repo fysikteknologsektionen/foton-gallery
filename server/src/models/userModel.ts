@@ -8,7 +8,7 @@ const userSchema: Schema<User> = new Schema<User>({
   isAdmin: { type: Boolean, required: true }
 });
 
-userSchema.index({ email: 1 });
+userSchema.index({ email: 1 }, { unique: true });
 
 /**
  * Hashes the password before saving it
@@ -20,7 +20,7 @@ userSchema.index({ email: 1 });
 });
 
 userSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
-  return await bcrypt.compare(password, this.password);
+  return bcrypt.compare(password, this.password);
 };
 
 export const UserModel: Model<User> = model('User', userSchema);
