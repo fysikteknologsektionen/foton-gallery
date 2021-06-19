@@ -38,6 +38,6 @@ export interface Album extends Document {
   description?: string,
   images?: Array<string>,
   authors?: Array<string>,
-  dates?: Array<Date>,
+  date?: Date,
   thumbnail?: string
 }
