@@ -29,6 +29,12 @@ The project has a built in webpack dev-server (with create-react-app) and uses `
  
  in the root directory. The webpack server runs on port `3000` by default and is set to proxy requests to port `3001` (see [the previous section on how to configure the project](#Configuration)).
 
+### Generating dummy content
+The project includes scripts to generate a dummy admin user and dummy albums. These can be run with `ts-node-dev` from the server directory using:
+
+    npx ts-node-dev ./src/example/createExampleUser.ts
+    npx ts-node-dev ./src/example/createExampleAlbums.ts
+
 ## Acknowledgements
 This project is based on the original Foton Webgallery application, found [here](https://github.com/ECarlsson/foton).
   
