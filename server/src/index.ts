@@ -12,6 +12,9 @@ const port: number = Number(config.APP_PORT);
 // Path to the frontend client
 const clientDirectory: string = path.join(__dirname, '..', '..', 'client', 'build');
 
+// Path to image directory 
+const imageDirectory: string = path.join(__dirname, '..', 'images');
+
 // Initialize express
 const app: Application = express();
 
@@ -24,8 +27,9 @@ app.use('/api/album', albumRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
-// Serve files in production
+// Serve static files
 app.use(express.static(clientDirectory));
+app.use('/images', express.static(imageDirectory))
 
 // Send unmatched requests to client
 app.get('*', (req: Request, res: Response) => {
