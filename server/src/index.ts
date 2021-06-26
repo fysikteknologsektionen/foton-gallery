@@ -1,22 +1,22 @@
-import { config } from './env';
+import {config} from './env';
 import './db';
-import express, { Application, json, Request, Response } from 'express';
+import express, {json, Request, Response} from 'express';
 import path from 'path';
-import { albumRouter, authRouter, userRouter } from './routers';
+import {albumRouter, authRouter, userRouter} from './routers';
 import cookieParser from 'cookie-parser';
 
 // Host & port configuration from .env file
-const host: string = config.APP_HOST;
-const port: number = Number(config.APP_PORT);
+const host = config.APP_HOST;
+const port = Number(config.APP_PORT);
 
 // Path to the frontend client
-const clientDirectory: string = path.join(__dirname, '..', '..', 'client', 'build');
+const clientDirectory = path.join(__dirname, '..', '..', 'client', 'build');
 
-// Path to image directory 
-const imageDirectory: string = path.join(__dirname, '..', 'images');
+// Path to image directory
+const imageDirectory = path.join(__dirname, '..', 'images');
 
 // Initialize express
-const app: Application = express();
+const app = express();
 
 // Global middleware
 app.use(cookieParser());
@@ -29,7 +29,7 @@ app.use('/api/user', userRouter);
 
 // Serve static files
 app.use(express.static(clientDirectory));
-app.use('/images', express.static(imageDirectory))
+app.use('/images', express.static(imageDirectory));
 
 // Send unmatched requests to client
 app.get('*', (req: Request, res: Response) => {

@@ -1,4 +1,5 @@
-import { Document } from 'mongoose';
+/* eslint-disable no-unused-vars */
+import {Document} from 'mongoose';
 
 /**
  * Interfaced used by express backend to represent an authenticated user

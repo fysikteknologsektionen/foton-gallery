@@ -1,2 +1,2 @@
-export { AlbumModel } from './albumModel';
-export { UserModel } from './userModel';
+export {AlbumModel} from './albumModel';
+export {UserModel} from './userModel';

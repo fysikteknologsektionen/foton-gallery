@@ -1,29 +1,32 @@
-import { config } from '../env';
-import { NextFunction, Request, Response } from 'express';
-import { UserModel } from '../models';
-import { User, UserInfo } from '../types';
+import {config} from '../env';
+import {NextFunction, Request, Response} from 'express';
+import {UserModel} from '../models';
+import {User, UserInfo} from '../types';
 import jwt from 'jsonwebtoken';
-import { matchedData } from 'express-validator';
+import {matchedData} from 'express-validator';
 
 /**
  * Logs in a user by checking request, creating a secure token and settings cookies with credentials
- * @param {Request} req - Request containing email and password
+ * @param {Request} req - Express request object containing email and password
+ * @param {Response} res - Express reponse object
+ * @param {NextFunction} next - Express next function
  */
-export async function loginUser (req: Request, res: Response, next: NextFunction) {
-  const { email, password } = matchedData(req) as { email: string, password: string};
+export async function loginUser(req: Request, res: Response, next: NextFunction) {
+  const {email, password} = matchedData(req) as { email: string, password: string};
   try {
-    const user: User | null = await UserModel.findOne({ email: email }).exec();
+    const user: User | null = await UserModel.findOne({email: email}).exec();
     if (!user || await user.comparePassword(password)) {
       res.status(401).send();
       return;
     }
-    const userInfo: UserInfo = { id: user._id, isAdmin: user.isAdmin };
+    const userInfo: UserInfo = {id: user._id, isAdmin: user.isAdmin};
     // jwt does not return promise so have to do with callback
-    jwt.sign(userInfo, config.APP_SECRET, { expiresIn: '3h' }, (error, token) => {
-      if (error)
+    jwt.sign(userInfo, config.APP_SECRET, {expiresIn: '3h'}, (error, token) => {
+      if (error) {
         throw error;
-      res.cookie('auth', token, { httpOnly: true, sameSite: 'strict', secure: true }); // Cookie used for authentication (secure)
-      res.cookie('user', JSON.stringify(userInfo), { sameSite: 'strict', secure: true }); // Cookie used by front end (not secure)
+      }
+      res.cookie('auth', token, {httpOnly: true, sameSite: 'strict', secure: true}); // Cookie used for authentication (secure)
+      res.cookie('user', JSON.stringify(userInfo), {sameSite: 'strict', secure: true}); // Cookie used by front end (not secure)
       res.send();
     });
   } catch (error) {
@@ -33,18 +36,24 @@ export async function loginUser (req: Request, res: Response, next: NextFunction
 
 /**
  * Logs out a user by clearing the credential cookies
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express reponse object
+ * @param {NextFunction} next - Express next function
  */
-export function logoutUser (req: Request, res: Response, next: NextFunction) {
-  res.clearCookie('auth', { httpOnly: true, sameSite: 'strict', secure: true });
-  res.clearCookie('user', { sameSite: 'strict', secure: true });
+export function logoutUser(req: Request, res: Response, next: NextFunction) {
+  res.clearCookie('auth', {httpOnly: true, sameSite: 'strict', secure: true});
+  res.clearCookie('user', {sameSite: 'strict', secure: true});
   res.status(205).send();
 }
 
 /**
  * Tries to populates the user field in the request if an auth cookie is passed
- * @param {Request} req - Request object with potential cookie containing a stringified @type {UserInfo} instance
+ * @param {Request} req - Express request object
+ * @param {string | undefined} req.cookies.auth - Authentication cookie containing a stringified @type {UserInfo}
+ * @param {Response} res - Express reponse object
+ * @param {NextFunction} next - Express next function
  */
-export function populateUserField (req: Request, res: Response, next: NextFunction) {
+export function populateUserField(req: Request, res: Response, next: NextFunction) {
   if (req.cookies.auth) {
     // jwt does not return promise so have to do with callback
     jwt.verify(req.cookies.auth, config.APP_SECRET, {}, (error, decoded) => {
@@ -61,9 +70,12 @@ export function populateUserField (req: Request, res: Response, next: NextFuncti
 
 /**
  * Authenticates a user by checking if the req.user.id property is set
- * @param {string} req.user.id - Id of authenticated user
+ * @param {Request} req - Express request object
+ * @param {string | undefined} req.user.id - ID of the user
+ * @param {Response} res - Express reponse object
+ * @param {NextFunction} next - Express next function
  */
-export function authenticateUser (req: Request, res: Response, next: NextFunction) {
+export function authenticateUser(req: Request, res: Response, next: NextFunction) {
   if (!req.user?.id) {
     res.status(403).send();
     return;
@@ -72,10 +84,13 @@ export function authenticateUser (req: Request, res: Response, next: NextFunctio
 }
 
 /**
- * Authenticates a user by checking if the req.user.isAdmin property is set and is true
- * @param {boolean} req.user.isAdmin - Boolean value if the user is an admin or not
+ * Authenticates an admin user by checking if the req.user.isAdmin property is set and is true
+ * @param {Request} req - Express request object
+ * @param {boolean} req.user.isAdmin - Whether the user is an admin or not
+ * @param {Response} res - Express reponse object
+ * @param {NextFunction} next - Express next function
  */
-export function authenticateAdmin (req: Request, res: Response, next: NextFunction) {
+export function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
   if (!req.user?.isAdmin) {
     res.status(403).send();
     return;

@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config({ path: '../.env' })
+dotenv.config({path: '../.env'});
 
 // Required env vars
 const requiredVars = [
@@ -10,16 +10,17 @@ const requiredVars = [
   'APP_MAX_FILE_UPLOADS',
   'DB_HOST',
   'DB_PORT',
-  'DB_DATABASE'
+  'DB_DATABASE',
 ];
 
 // Dict with verified env vars
 export const config: { [index: string]: string } = {};
 
 // Check if required env vars are set, else throw error
-requiredVars.forEach(variable => {
-  if (!process.env[variable])
+requiredVars.forEach((variable) => {
+  if (!process.env[variable]) {
     throw new Error(`${variable} is not defined, add it to the .env file`);
-  else
+  } else {
     config[variable] = process.env[variable]!;
+  }
 });
