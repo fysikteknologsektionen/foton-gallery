@@ -1,8 +1,13 @@
+import React from 'react';
 import ftekLogo from '../img/ftek.svg';
 import fotonLogo from '../img/foton.svg';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-export function Header () {
+/**
+ * Header component containing navigation
+ * @return {JSX.Element}
+ */
+export function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -12,13 +17,13 @@ export function Header () {
         <Link className="navbar-brand" to="/">
           <img className="py-2" src={fotonLogo} height="50" alt="Foton" />
         </Link>
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#navbarCollapse" 
-          aria-controls="navbarCollapse" 
-          aria-expanded="false" 
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>

@@ -1,5 +1,10 @@
+import React from 'react';
 
-export function NotFoundView () {
+/**
+ * View component for displaying a general not found-message
+ * @return {JSX.Element}
+ */
+export function NotFoundView() {
   return (
     <>
       404 Not Found
