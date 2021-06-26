@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {check} from 'express-validator';
 import {albumController, authController} from '../controllers';
+import {getAlbum, getAlbums} from '../controllers/albumController';
 import {config} from '../env';
 import {checkValidationResult} from '../utils/checkValidationResult';
 import {upload} from '../utils/upload';
@@ -39,12 +40,30 @@ albumRouter.post(
     albumController.createAlbum,
 );
 
+/**
+ * Selects which endpoint to use based on query parameters
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express reponse object
+ * @param {NextFunction} next - Express next function
+ */
+function selectGetAlbumEndpoint(req: Request, res: Response, next: NextFunction) {
+  if (typeof req.query.limit != 'undefined' && typeof req.query.offset != 'undefined') {
+    getAlbums(req, res, next);
+  } else if (typeof req.query.date != 'undefined' && typeof req.query.slug != 'undefined') {
+    getAlbum(req, res, next);
+  } else {
+    next(new Error('Missing query parameter(s).'));
+  }
+}
+
 albumRouter.get(
     '/',
-    check('limit').isInt({min: 1, max: 24}).toInt(),
-    check('offset').isInt({min: 0}).toInt(),
+    check('limit').optional().isInt({min: 1, max: 24}).toInt(),
+    check('offset').optional().isInt({min: 0}).toInt(),
+    check('date').optional().isDate().toDate(),
+    check('slug').optional().notEmpty().escape().trim(),
     checkValidationResult,
-    albumController.getAlbums,
+    selectGetAlbumEndpoint,
 );
 
 albumRouter.put(

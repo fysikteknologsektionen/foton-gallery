@@ -15,11 +15,11 @@ export async function createAlbum(req: Request, res: Response, next: NextFunctio
 
   // Since we use Multer.array() we can guarantee req.files is an array
   const files = req.files as Express.Multer.File[];
-  const fileNames: string[] = files.map((file: Express.Multer.File) => file.filename);
+  const fileNames = files.map((file: Express.Multer.File) => file.filename);
   data.images = fileNames;
 
   try {
-    const album: Album = new AlbumModel({...data});
+    const album = new AlbumModel({...data});
     await album.save();
     processImages(files);
     res.status(201).send();
@@ -29,16 +29,35 @@ export async function createAlbum(req: Request, res: Response, next: NextFunctio
 }
 
 /**
- * Gets a subset of albums (optionally based on some search parameters)
- * @param {Request} req - Express request object potentially containing search parameters
+ * Gets a subset of albums based on some offset and limit
+ * @param {Request} req - Express request object containing offset (skip) and limit
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next function
  */
 export async function getAlbums(req: Request, res: Response, next: NextFunction) {
-  const {offset, limit} = matchedData(req) as { limit: number, offset: number };
+  const {offset, limit} = matchedData(req) as {limit: number, offset: number};
   try {
-    const albums: Array<Album> = await AlbumModel.find().sort('-dates').skip(offset).limit(limit).exec();
+    const albums = await AlbumModel.find().sort('-dates').skip(offset).limit(limit).exec();
     res.json(albums);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Gets a specific album
+ * @param {Request} req - Express request object containing date and album slug
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next function
+ */
+export async function getAlbum(req: Request, res: Response, next: NextFunction) {
+  const {date, slug} = matchedData(req) as {date: Date, slug: string};
+  try {
+    const album = await AlbumModel.findOne({date: date, slug: slug}).exec();
+    if (!album) {
+      throw new Error('Album does not exist.');
+    }
+    res.json(album);
   } catch (error) {
     next(error);
   }
