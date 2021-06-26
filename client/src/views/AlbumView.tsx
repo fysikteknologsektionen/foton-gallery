@@ -17,13 +17,12 @@ interface AlbumIdentifier {
 export function AlbumView() {
   const [album, setAlbum] = useState<Album>();
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
-  const albumDate = new Date(Number(year), Number(month), Number(day));
 
   useEffect(() => {
     (async function fetchAlbumData() {
       const res = await axios.get<Album>('/api/album', {
         params: {
-          date: albumDate,
+          date: `${year}-${month}-${day}`,
           slug: slug,
         },
       });

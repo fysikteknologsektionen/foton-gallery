@@ -2,8 +2,8 @@ export interface Album {
   name: string,
   slug: string,
   description?: string,
-  images?: Array<string>,
-  authors?: Array<string>,
-  date?: Date,
+  images?: string[],
+  authors?: string[],
+  date: string,
   thumbnail?: string
 }
