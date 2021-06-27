@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
+import {GoBack, Loading} from '../components';
 import {Album} from '../types';
 
 interface AlbumIdentifier {
@@ -28,11 +29,19 @@ export function AlbumView() {
       });
       setAlbum(res.data);
     })();
-  });
+  }, []);
 
   return (
-    <>
-      {JSON.stringify(album)}
-    </>
+    <Loading loading={album ? false : true}>
+      <h1>{album?.name}</h1>
+      <p>{`${album?.date?.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
+      <p>{album?.description}</p>
+      <div className="d-grid gap-3" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(300px, max-content))'}}>
+        {album?.images?.map((image) => (
+          <img key={image} className="w-100 rounded" src={`/images/thumbnail/${image}`} />
+        ))}
+      </div>
+      <GoBack className="mt-3" />
+    </Loading>
   );
 }
