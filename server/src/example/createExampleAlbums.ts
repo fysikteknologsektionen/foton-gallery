@@ -52,7 +52,7 @@ function createExampleAlbums() {
         filename: image,
       } as Express.Multer.File)));
     });
-    Promise.all(promises).then(() => process.exit());
+    Promise.all(promises);
   } catch (error) {
     console.error(error);
   }
