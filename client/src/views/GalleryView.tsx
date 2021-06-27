@@ -44,7 +44,7 @@ export function GalleryView() {
 
   return (
     <Loading loading={albums ? false : true}>
-      <div className="d-grid gap-3" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(400px, max-content))'}}>
+      <div className="d-grid gap-3 justify-content-sm-center" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(400px, max-content))'}}>
         {albumThumbnails}
       </div>
     </Loading>

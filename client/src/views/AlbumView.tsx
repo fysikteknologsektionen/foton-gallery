@@ -36,7 +36,7 @@ export function AlbumView() {
       <h1>{album?.name}</h1>
       <p>{`${album?.date?.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
       <p>{album?.description}</p>
-      <div className="d-grid gap-3" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(300px, max-content))'}}>
+      <div className="d-grid gap-3 justify-content-sm-center" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(300px, max-content))'}}>
         {album?.images?.map((image) => (
           <img key={image} className="w-100 rounded" src={`/images/thumbnail/${image}`} />
         ))}
