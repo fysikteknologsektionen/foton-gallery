@@ -11,7 +11,7 @@ export function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
-        <a className="navbar-brand" href="https://ftek.se/">
+        <a className="navbar-brand" href="https://ftek.se/" target="_blank" rel="noreferrer">
           <img src={ftekLogo} height="50" alt="Fysikteknologsektionen" />
         </a>
         <Link className="navbar-brand" to="/">
@@ -31,7 +31,7 @@ export function Header() {
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link" href="https://ftek.se/foton/">Om Foton</a>
+              <a className="nav-link" href="https://ftek.se/foton/" target="_blank" rel="noreferrer">Om Foton</a>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/login">Logga in</Link>
