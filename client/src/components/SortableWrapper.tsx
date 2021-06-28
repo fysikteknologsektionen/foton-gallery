@@ -13,7 +13,10 @@ export function SortableWrapper({children, callback, className, style}: {childre
 
   // Invoke callback whenever sortedChildren changes
   useEffect(() => {
-    callback(sortedChildren.map((child) => child.key));
+    // Only call if there has actually been an update
+    if (sortedChildren !== children) {
+      callback(sortedChildren.map((child) => child.key));
+    }
   }, [sortedChildren]);
 
   /**

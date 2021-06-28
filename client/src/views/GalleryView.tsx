@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Loading} from '../components';
-import {Album} from '../types';
+import {Album} from '../interfaces';
 
 /**
  *  View component for displaying album gallery
@@ -12,6 +12,7 @@ export function GalleryView() {
   const [albums, setAlbums] = useState<Album[]>();
   const [offset] = useState<number>(0);
 
+  // Fetch albums
   useEffect(() => {
     (async function() {
       const res = await axios.get<Album[]>('/api/album', {

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {GoBack, Loading} from '../components';
-import {Album} from '../types';
+import {Album} from '../interfaces';
 
 interface AlbumIdentifier {
   year: string,
@@ -19,15 +19,16 @@ export function AlbumView() {
   const [album, setAlbum] = useState<Album>();
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
 
+  // Fetch album
   useEffect(() => {
-    (async function fetchAlbumData() {
-      const res = await axios.get<Album>('/api/album', {
+    (async function() {
+      const res = await axios.get<Album[]>('/api/album', {
         params: {
           date: `${year}-${month}-${day}`,
           slug: slug,
         },
       });
-      setAlbum(res.data);
+      setAlbum(res.data[0]);
     })();
   }, []);
 

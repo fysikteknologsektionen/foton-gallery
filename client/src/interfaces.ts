@@ -1,4 +1,4 @@
-export interface Album {
+export interface Album extends Record<string, string | string[] | undefined> {
   _id: string,
   name: string,
   slug: string,

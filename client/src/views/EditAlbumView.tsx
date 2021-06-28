@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {Loading, SortableWrapper} from '../components';
-import {Album} from '../types';
+import {Album} from '../interfaces';
 
 interface AlbumIdentifier {
   year: string,
@@ -17,37 +17,53 @@ interface AlbumIdentifier {
  */
 export function EditAlbumView() {
   const [album, setAlbum] = useState<Album>();
-  const [imageOrder, setImageOrder] = useState<string[]>([]);
+  const [formState, setFormState] = useState<Partial<Album>>({});
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
   const history = useHistory();
 
   // Fetch album
   useEffect(() => {
-    (async function fetchAlbumData() {
-      const res = await axios.get<Album>('/api/album', {
+    (async function() {
+      const res = await axios.get<Album[]>('/api/album', {
         params: {
           date: `${year}-${month}-${day}`,
           slug: slug,
         },
       });
-      setAlbum(res.data);
+      setAlbum(res.data[0]);
     })();
   }, []);
+
+  /**
+   * Handles changes to the order and inclusion of images
+   * @param {string[]} images - New array of images
+   */
+  function handleImagesChange(images: string[]) {
+    const newState = {...formState};
+    newState.images = images;
+    setFormState(newState);
+  }
+
+  /**
+   * Handles changes to form inputs
+   * @param {ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} event - Event issued by origin
+   */
+  function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const newState = {...formState};
+    newState[event.currentTarget.name] = event.currentTarget.value;
+    setFormState(newState);
+  };
 
   /**
    * Handles submitting of the form
    * @param {React.FormEvent<HTMLFormElement>} event - FormEvent for onSubmit
    */
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const jsonData = Object.fromEntries(formData.entries()) as {[key: string]: string | string[]};
-    jsonData.images = imageOrder;
-    await axios.put('/api/album', jsonData, {
-      params: {
-        id: album?._id,
-      },
-    });
+    // Submit if there has been any changes
+    if (Object.keys(formState).length) {
+      await axios.put<Album>(`/api/album/${album?._id}`, formState);
+    }
   }
 
   return (
@@ -63,6 +79,7 @@ export function EditAlbumView() {
                 name="name"
                 placeholder="Name"
                 defaultValue={album?.name}
+                onChange={handleChange}
               />
               <label className="form-label" htmlFor="input-name">Namn</label>
             </div>
@@ -74,6 +91,7 @@ export function EditAlbumView() {
                 name="date"
                 placeholder="Date"
                 defaultValue={album?.date.substring(0, 10)}
+                onChange={handleChange}
               />
               <label className="form-label" htmlFor="input-date">Datum</label>
             </div>
@@ -85,6 +103,7 @@ export function EditAlbumView() {
                 name="authors"
                 placeholder="Authors"
                 defaultValue={album?.authors?.join(', ')}
+                onChange={handleChange}
               />
               <label className="form-label" htmlFor="input-authors">Fotograferare</label>
             </div>
@@ -96,6 +115,7 @@ export function EditAlbumView() {
                 name="description"
                 placeholder="Description"
                 defaultValue={album?.description}
+                onChange={handleChange}
               />
               <label className="form-label" htmlFor="input-description">Beskrivning</label>
             </div>
@@ -127,7 +147,7 @@ export function EditAlbumView() {
         <SortableWrapper
           className="d-grid gap-3 justify-content-sm-center"
           style={{gridTemplateColumns: 'repeat(auto-fit, minmax(200px, max-content))'}}
-          callback={setImageOrder}
+          callback={handleImagesChange}
         >
           {album?.images?.map((image) => (
             <img key={image} className="w-100 rounded" src={`/images/thumbnail/${image}`} />
