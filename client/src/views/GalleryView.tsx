@@ -26,8 +26,7 @@ export function GalleryView() {
   }, []);
 
   const albumThumbnails = albums?.map((album) => {
-    const albumDate = new Date(album.date);
-    const dateURIString = albumDate.toISOString().substring(0, 10).replaceAll('-', '/');
+    const dateURIString = album.date.substring(0, 10).replaceAll('-', '/');
     const thumbnail = album.thumbnail ? album.thumbnail : album.images ? album.images[0] : undefined;
 
     return (
@@ -35,7 +34,7 @@ export function GalleryView() {
         <img className="card-img-top w-100" src={`/images/thumbnail/${thumbnail}`} alt={album.name} />
         <div className="card-body">
           <p className="h5">{album.name}</p>
-          <p className="card-text mb-1">{`${albumDate.toISOString().substring(0, 10)} | ${album.authors?.join(', ')}`}</p>
+          <p className="card-text mb-1">{`${album.date.substring(0, 10)} | ${album.authors?.join(', ')}`}</p>
           <p className="card-text">{album.description}</p>
           <Link className="btn btn-primary" to={`/album/${dateURIString}/${album.slug}`}>Visa album</Link>
         </div>
