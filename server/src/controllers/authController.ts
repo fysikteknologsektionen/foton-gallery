@@ -1,7 +1,7 @@
 import {config} from '../env';
 import {NextFunction, Request, Response} from 'express';
 import {UserModel} from '../models';
-import {User, UserInfo} from '../types';
+import {User, UserSession} from '../interfaces';
 import jwt from 'jsonwebtoken';
 import {matchedData} from 'express-validator';
 
@@ -12,21 +12,21 @@ import {matchedData} from 'express-validator';
  * @param {NextFunction} next - Express next function
  */
 export async function loginUser(req: Request, res: Response, next: NextFunction) {
-  const {email, password} = matchedData(req) as { email: string, password: string};
+  const {email, password} = matchedData(req) as {email: string, password: string};
   try {
     const user: User | null = await UserModel.findOne({email: email}).exec();
     if (!user || await user.comparePassword(password)) {
       res.status(401).send();
       return;
     }
-    const userInfo: UserInfo = {id: user._id, isAdmin: user.isAdmin};
+    const session: UserSession = {id: user._id, isAdmin: user.isAdmin};
     // jwt does not return promise so have to do with callback
-    jwt.sign(userInfo, config.APP_SECRET, {expiresIn: '3h'}, (error, token) => {
+    jwt.sign(session, config.APP_SECRET, {expiresIn: '3h'}, (error, token) => {
       if (error) {
         throw error;
       }
       res.cookie('auth', token, {httpOnly: true, sameSite: 'strict', secure: true}); // Cookie used for authentication (secure)
-      res.cookie('user', JSON.stringify(userInfo), {sameSite: 'strict', secure: true}); // Cookie used by front end (not secure)
+      res.cookie('user', JSON.stringify(session), {sameSite: 'strict', secure: true}); // Cookie used by front end (not secure)
       res.send();
     });
   } catch (error) {
@@ -49,7 +49,7 @@ export function logoutUser(req: Request, res: Response, next: NextFunction) {
 /**
  * Tries to populates the user field in the request if an auth cookie is passed
  * @param {Request} req - Express request object
- * @param {string | undefined} req.cookies.auth - Authentication cookie containing a stringified @type {UserInfo}
+ * @param {string | undefined} req.cookies.auth - Authentication cookie containing a stringified user object
  * @param {Response} res - Express reponse object
  * @param {NextFunction} next - Express next function
  */
@@ -62,7 +62,7 @@ export function populateUserField(req: Request, res: Response, next: NextFunctio
         return;
       }
       // Attach UserInfo object to request to allow future middleware to access it
-      req.user = decoded as UserInfo;
+      req.user = decoded as UserSession;
     });
   }
   next();

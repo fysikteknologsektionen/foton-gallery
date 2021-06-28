@@ -1,5 +1,5 @@
 import '../db';
-import {Album} from '../types';
+import {Album} from '../interfaces';
 import fs from 'fs';
 import path from 'path';
 import {AlbumModel} from '../models';

@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 import {model, Schema} from 'mongoose';
-import {User} from '../types';
+import {User} from '../interfaces';
 import bcrypt from 'bcrypt';
 
 const userSchema = new Schema<User>({

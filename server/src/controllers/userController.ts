@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import {matchedData} from 'express-validator';
 import {UserModel} from '../models';
-import {User} from '../types';
+import {User} from '../interfaces';
 
 /**
  * Creates a new user from email/password

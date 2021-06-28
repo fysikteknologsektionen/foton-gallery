@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 import {model, Schema} from 'mongoose';
-import {Album} from '../types';
+import {Album} from '../interfaces';
 import slug from 'slug';
 
 const albumSchema = new Schema<Album>({

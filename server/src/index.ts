@@ -2,8 +2,9 @@ import {config} from './env';
 import './db';
 import express, {json, Request, Response} from 'express';
 import path from 'path';
-import {albumRouter, authRouter, userRouter} from './routers';
 import cookieParser from 'cookie-parser';
+import {authRouter, privateAlbumRouter, publicAlbumRouter, userRouter} from './routers';
+import {authController} from './controllers';
 
 // Host & port configuration from .env file
 const host = config.APP_HOST;
@@ -21,9 +22,11 @@ const app = express();
 // Global middleware
 app.use(cookieParser());
 app.use(json());
+app.use(authController.populateUserField);
 
 // API routers
-app.use('/api/album', albumRouter);
+app.use('/api/album', publicAlbumRouter);
+app.use('/api/album', privateAlbumRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 

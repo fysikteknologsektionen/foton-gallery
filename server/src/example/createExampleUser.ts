@@ -1,6 +1,6 @@
 import '../db';
 import {UserModel} from '../models';
-import {User} from '../types';
+import {User} from '../interfaces';
 
 const userData: Partial<User> = {
   email: 'foo@bar.com',

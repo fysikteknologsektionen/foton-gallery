@@ -2,11 +2,11 @@
 import {Document} from 'mongoose';
 
 /**
- * Interfaced used by express backend to represent an authenticated user
+ * User session interface
  */
-export interface UserInfo {
+export interface UserSession {
   id: string,
-  isAdmin: boolean
+  isAdmin: boolean,
 }
 
 /**
@@ -15,7 +15,7 @@ export interface UserInfo {
 declare global {
   namespace Express {
     interface Request {
-      user?: UserInfo
+      user?: UserSession
     }
   }
 }
@@ -30,6 +30,7 @@ export interface User extends Document {
   comparePassword(password: string): Promise<boolean>
 }
 
+
 /**
  * Album model interface
  */
@@ -37,8 +38,8 @@ export interface Album extends Document {
   name: string,
   slug: string,
   description?: string,
-  images?: Array<string>,
-  authors?: Array<string>,
-  date?: Date,
+  images?: string[],
+  authors?: string[],
+  date: Date,
   thumbnail?: string
 }
