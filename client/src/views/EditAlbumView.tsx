@@ -17,7 +17,7 @@ interface AlbumIdentifier {
  */
 export function EditAlbumView() {
   const [album, setAlbum] = useState<Album>();
-  const [formState, setFormState] = useState<Partial<Album>>({});
+  const [formState, setFormState] = useState<Partial<Album> & {authorsString?: string}>({});
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
   const history = useHistory();
 
@@ -62,6 +62,7 @@ export function EditAlbumView() {
     event.preventDefault();
     // Submit if there has been any changes
     if (Object.keys(formState).length) {
+      formState.authors = formState.authorsString?.split(',');
       await axios.put<Album>(`/api/album/${album?._id}`, formState);
     }
   }
@@ -100,7 +101,7 @@ export function EditAlbumView() {
                 className="form-control"
                 type="text"
                 id="input-authors"
-                name="authors"
+                name="authorsString"
                 placeholder="Authors"
                 defaultValue={album?.authors?.join(', ')}
                 onChange={handleChange}
