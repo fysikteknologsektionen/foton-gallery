@@ -1,4 +1,4 @@
 export {Header} from './Header';
 export {Loading} from './Loading';
-export {GoBack} from './GoBack';
+export {GoBackButton} from './GoBackButton';
 export {SortableWrapper} from './SortableWrapper';
