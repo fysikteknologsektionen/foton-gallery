@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {GoBack, Loading} from '../components';
+import {GoBackButton, Loading} from '../components';
 import {Album} from '../interfaces';
 
 interface AlbumIdentifier {
@@ -17,6 +17,7 @@ interface AlbumIdentifier {
  */
 export function AlbumView() {
   const [album, setAlbum] = useState<Album>();
+  const [error, setError] = useState<Error>();
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
 
   // Fetch album
@@ -28,12 +29,15 @@ export function AlbumView() {
           slug: slug,
         },
       });
+      if (!res.data.length) {
+        setError(new Error('Albumet gick inte att hitta. Det kan bero på att sökvägen är felaktig eller att albumet har flyttats.'));
+      }
       setAlbum(res.data[0]);
     })();
   }, []);
 
   return (
-    <Loading loading={album ? false : true}>
+    <Loading loading={album ? false : true} error={error}>
       <h1>{album?.name}</h1>
       <p>{`${album?.date.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
       <p>{album?.description}</p>
@@ -42,7 +46,7 @@ export function AlbumView() {
           <img key={image} className="w-100 rounded" src={`/images/thumbnail/${image}`} />
         ))}
       </div>
-      <GoBack className="mt-3" />
+      <GoBackButton className="mt-3" />
     </Loading>
   );
 }

@@ -63,7 +63,8 @@ export function EditAlbumView() {
     // Submit if there has been any changes
     if (Object.keys(formState).length) {
       formState.authors = formState.authorsString?.split(',');
-      await axios.put<Album>(`/api/album/${album?._id}`, formState);
+      const res = await axios.put<Album>(`/api/album/${album?._id}`, formState);
+      setAlbum(res.data);
     }
   }
 

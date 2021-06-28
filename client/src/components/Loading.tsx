@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {GoBackButton} from '.';
 
 /**
  * Component for displaying a delayed loading spinner
@@ -6,7 +7,7 @@ import React, {useEffect, useState} from 'react';
  * @param {JSX.Element | JSX.Element[]} children - Child elements to render when not loading
  * @return {JSX.Element}
  */
-export function Loading({loading, children}: {loading: boolean, children: JSX.Element | JSX.Element[]}) {
+export function Loading({loading, error, children}: {loading: boolean, error?: Error, children: JSX.Element | JSX.Element[]}) {
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
   // To prevent flickering for fast connections, we wait a moment to display the spinner
@@ -20,9 +21,22 @@ export function Loading({loading, children}: {loading: boolean, children: JSX.El
     </div>
   );
 
+  const errorMessage = (
+    <div>
+      <h1>
+        Något gick fel!
+        &nbsp;<i className="bi-emoji-frown"></i>
+      </h1>
+      <p>{error?.message}</p>
+      <GoBackButton />
+    </div>
+  );
+
   return (
     <>
-      {loading ? spinner : children}
+      {error ? errorMessage :
+          loading ? spinner :
+          children}
     </>
   );
 }
