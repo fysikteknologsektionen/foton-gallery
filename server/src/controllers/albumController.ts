@@ -113,11 +113,12 @@ export async function updateAlbum(req: Request, res: Response, next: NextFunctio
       album.date = date;
     }
     if (images) {
-      const newImages = album.images?.filter((x) => !images.includes(x));
-      if (newImages) {
+      const newImages = images?.filter((x) => !album.images?.includes(x));
+      if (newImages.length) {
         throw new Error('Cannot add new images.');
       }
-      // const removedImages = images.filter((x) => !album.images?.includes(x));
+      const removedImages = album.images?.filter((x) => !images.includes(x));
+      console.log(removedImages);
       /* TODO: remove image files */
     }
     if (thumbnail) {
