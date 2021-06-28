@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
-import {Loading, SortableWrapper} from '../components';
+import {useParams} from 'react-router-dom';
+import {GoBackButton, Loading, SortableWrapper} from '../components';
 import {Album} from '../interfaces';
 
 interface AlbumIdentifier {
@@ -17,9 +17,10 @@ interface AlbumIdentifier {
  */
 export function EditAlbumView() {
   const [album, setAlbum] = useState<Album>();
+  const [loadingError, setLoadingError] = useState<Error>();
   const [formState, setFormState] = useState<Partial<Album> & {authorsString?: string}>({});
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>();
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
-  const history = useHistory();
 
   // Fetch album
   useEffect(() => {
@@ -30,6 +31,9 @@ export function EditAlbumView() {
           slug: slug,
         },
       });
+      if (!res.data.length) {
+        setLoadingError(new Error('Albumet gick inte att hitta. Det kan bero på att sökvägen är felaktig eller att albumet har flyttats.'));
+      }
       setAlbum(res.data[0]);
     })();
   }, []);
@@ -60,16 +64,33 @@ export function EditAlbumView() {
    */
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSubmitSuccess(undefined);
     // Submit if there has been any changes
     if (Object.keys(formState).length) {
       formState.authors = formState.authorsString?.split(',');
-      const res = await axios.put<Album>(`/api/album/${album?._id}`, formState);
-      setAlbum(res.data);
+      try {
+        const res = await axios.put<Album>(`/api/album/${album?._id}`, formState);
+        setAlbum(res.data);
+        setSubmitSuccess(true);
+      } catch (error) {
+        console.error(error);
+        setSubmitSuccess(false);
+      }
     }
   }
 
+  // Alert to display after submitting form
+  const responseAlert = (
+    <div className={`alert ${submitSuccess ? 'alert-success' : 'alert-danger'}`}>
+      {submitSuccess ? 'Ändringarna har sparats.' : 'Det gick inte att spara ändringarna, försök igen.'}
+    </div>
+  );
+
   return (
-    <Loading loading={album ? false : true}>
+    <Loading loading={album ? false : true} error={loadingError}>
+      <GoBackButton className="mb-3"/>
+      <h1>Redigera album</h1>
+      {typeof submitSuccess !== 'undefined' ? responseAlert : <></>}
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-12 col-lg-6 mb-3">
@@ -81,6 +102,7 @@ export function EditAlbumView() {
                 name="name"
                 placeholder="Name"
                 defaultValue={album?.name}
+                required
                 onChange={handleChange}
               />
               <label className="form-label" htmlFor="input-name">Namn</label>
@@ -93,6 +115,7 @@ export function EditAlbumView() {
                 name="date"
                 placeholder="Date"
                 defaultValue={album?.date.substring(0, 10)}
+                required
                 onChange={handleChange}
               />
               <label className="form-label" htmlFor="input-date">Datum</label>
@@ -124,23 +147,10 @@ export function EditAlbumView() {
           </div>
           <div className="col-md-12 col-lg-6 mb-3">
             <div className="d-flex justify-content-lg-end">
-              <button
-                className="btn btn-primary me-2"
-                type="submit"
-              >
+              <button className="btn btn-primary me-2" type="submit">
                 Spara
               </button>
-              <button
-                className="btn btn-danger me-2"
-                type="button"
-                onClick={() => history.push(`/album/${year}/${month}/${day}/${slug}`)}
-              >
-                Avbryt
-              </button>
-              <button
-                className="btn btn-secondary"
-                type="button"
-              >
+              <button className="btn btn-secondary" type="button">
                 Ladda upp bilder
               </button>
             </div>
@@ -156,6 +166,7 @@ export function EditAlbumView() {
           )) as JSX.Element[]}
         </SortableWrapper>
       </form>
+      <GoBackButton className="mt-3"/>
     </Loading>
   );
 }
