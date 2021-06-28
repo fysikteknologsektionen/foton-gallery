@@ -17,7 +17,7 @@ interface AlbumIdentifier {
  */
 export function AlbumView() {
   const [album, setAlbum] = useState<Album>();
-  const [error, setError] = useState<Error>();
+  const [loadingError, setLoadingError] = useState<Error>();
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
 
   // Fetch album
@@ -30,14 +30,14 @@ export function AlbumView() {
         },
       });
       if (!res.data.length) {
-        setError(new Error('Albumet gick inte att hitta. Det kan bero på att sökvägen är felaktig eller att albumet har flyttats.'));
+        setLoadingError(new Error('Albumet gick inte att hitta. Det kan bero på att sökvägen är felaktig eller att albumet har flyttats.'));
       }
       setAlbum(res.data[0]);
     })();
   }, []);
 
   return (
-    <Loading loading={album ? false : true} error={error}>
+    <Loading loading={album ? false : true} error={loadingError}>
       <h1>{album?.name}</h1>
       <p>{`${album?.date.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
       <p>{album?.description}</p>
