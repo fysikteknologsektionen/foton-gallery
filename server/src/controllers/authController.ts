@@ -1,7 +1,7 @@
 import {config} from '../env';
 import {NextFunction, Request, Response} from 'express';
 import {UserModel} from '../models';
-import {User, UserSession} from '../interfaces';
+import {UserSession} from '../interfaces';
 import jwt from 'jsonwebtoken';
 import {matchedData} from 'express-validator';
 
@@ -14,7 +14,7 @@ import {matchedData} from 'express-validator';
 export async function loginUser(req: Request, res: Response, next: NextFunction) {
   const {email, password} = matchedData(req) as {email: string, password: string};
   try {
-    const user: User | null = await UserModel.findOne({email: email}).exec();
+    const user = await UserModel.findOne({email: email}).exec();
     if (!user || await user.comparePassword(password)) {
       res.status(401).send();
       return;

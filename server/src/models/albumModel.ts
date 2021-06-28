@@ -1,9 +1,9 @@
 /* eslint-disable no-invalid-this */
 import {model, Schema} from 'mongoose';
-import {Album} from '../interfaces';
+import {AlbumDocument} from '../interfaces';
 import slug from 'slug';
 
-const albumSchema = new Schema<Album>({
+const albumSchema = new Schema<AlbumDocument>({
   name: {type: String, required: true},
   slug: {type: String},
   description: String,
@@ -24,14 +24,14 @@ albumSchema.pre('save', function(next) {
   next();
 });
 
-albumSchema.post('updateOne', function(doc: Album, next) {
+albumSchema.post('updateOne', function(doc: AlbumDocument, next) {
   /** TODO: remove image files when updating album to delete images */
   next();
 });
 
-albumSchema.post('remove', function(doc: Album, next) {
+albumSchema.post('remove', function(doc: AlbumDocument, next) {
   /** TODO: remove image files when deleting album */
   next();
 });
 
-export const AlbumModel = model<Album>('Album', albumSchema);
+export const AlbumModel = model<AlbumDocument>('Album', albumSchema);

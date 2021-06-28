@@ -1,9 +1,9 @@
 /* eslint-disable no-invalid-this */
 import {model, Schema} from 'mongoose';
-import {User} from '../interfaces';
+import {UserDocument} from '../interfaces';
 import bcrypt from 'bcrypt';
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<UserDocument>({
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   isAdmin: {type: Boolean, required: true},
@@ -24,4 +24,4 @@ userSchema.methods.comparePassword = async function(password: string): Promise<b
   return bcrypt.compare(password, this.password);
 };
 
-export const UserModel = model<User>('User', userSchema);
+export const UserModel = model<UserDocument>('User', userSchema);

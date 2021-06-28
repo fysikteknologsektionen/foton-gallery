@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {matchedData} from 'express-validator';
+import {Album} from '../interfaces';
 import {AlbumModel} from '../models';
 import {processImages} from '../utils/processImages';
 
@@ -10,7 +11,7 @@ import {processImages} from '../utils/processImages';
  * @param {NextFunction} next - Express next function
  */
 export async function createAlbum(req: Request, res: Response, next: NextFunction) {
-  const data = matchedData(req);
+  const data = matchedData(req) as Album;
   try {
     const album = new AlbumModel({...data});
     const result = await album.save();
@@ -86,31 +87,11 @@ export async function getAlbums(req: Request, res: Response, next: NextFunction)
  * @param {NextFunction} next - Express next function
  */
 export async function updateAlbum(req: Request, res: Response, next: NextFunction) {
-  const {id, name, description, authors, date, images, thumbnail} = matchedData(req) as {
-    id: string,
-    name?: string,
-    description?: string,
-    authors?: string[],
-    date?: Date,
-    images?: string[],
-    thumbnail?: string
-  };
+  const {id, images, thumbnail, ...rest} = matchedData(req) as {id: string} & Partial<Album>;
   try {
     const album = await AlbumModel.findById(id);
     if (!album) {
       throw new Error('Album does not exist.');
-    }
-    if (name) {
-      album.name = name;
-    }
-    if (description) {
-      album.description = description;
-    }
-    if (authors) {
-      album.authors = authors;
-    }
-    if (date) {
-      album.date = date;
     }
     if (images) {
       const newImages = images?.filter((x) => !album.images?.includes(x));
@@ -118,6 +99,7 @@ export async function updateAlbum(req: Request, res: Response, next: NextFunctio
         throw new Error('Cannot add new images.');
       }
       const removedImages = album.images?.filter((x) => !images.includes(x));
+      album.images = images;
       console.log(removedImages);
       /* TODO: remove image files */
     }
@@ -127,6 +109,10 @@ export async function updateAlbum(req: Request, res: Response, next: NextFunctio
         throw new Error('Album must contain image selected as thumbnail.');
       }
       album.thumbnail = thumbnail;
+    }
+    // Update remaining properties
+    for (const [key, value] of Object.entries(rest)) {
+      album[key] = value;
     }
     const result = await album.save();
     res.json(result);

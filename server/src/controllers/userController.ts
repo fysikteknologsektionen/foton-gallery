@@ -12,7 +12,7 @@ import {User} from '../interfaces';
 export async function createUser(req: Request, res: Response, next: NextFunction) {
   const data = matchedData(req) as Partial<User>;
   try {
-    const user: User = new UserModel({...data});
+    const user = new UserModel({...data});
     await user.save();
     res.status(201).send();
   } catch (error) {
@@ -28,7 +28,7 @@ export async function createUser(req: Request, res: Response, next: NextFunction
  */
 export async function getUsers(req: Request, res: Response, next: NextFunction) {
   try {
-    const users: Array<User> = await UserModel.find().exec();
+    const users = await UserModel.find().exec();
     res.json(users);
   } catch (error) {
     next(error);

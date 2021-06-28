@@ -23,18 +23,21 @@ declare global {
 /**
  * User model interface
  */
-export interface User extends Document {
+export interface User extends Record<string, any> {
   email: string,
   password: string,
   isAdmin: boolean,
-  comparePassword(password: string): Promise<boolean>
+}
+
+export interface UserDocument extends User, Document {
+  comparePassword(password: string): Promise<boolean>,
 }
 
 
 /**
  * Album model interface
  */
-export interface Album extends Document {
+export interface Album extends Record<string, any> {
   name: string,
   slug: string,
   description?: string,
@@ -43,3 +46,5 @@ export interface Album extends Document {
   date: Date,
   thumbnail?: string
 }
+
+export interface AlbumDocument extends Album, Document {};
