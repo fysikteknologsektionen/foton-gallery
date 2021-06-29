@@ -17,7 +17,6 @@ export function SortableWrapper({children, callback, className, style}: {childre
     // The reference to 'children' can change on rerenders even if the values are same,
     // so instead we check if there are any changes to the values of 'children'
     if (children.length !== unsortedChildren.length || children.every((value, index) => (unsortedChildren[index] === value))) {
-      console.log('updating');
       setSortedChildren(children);
       setUnsortedChildren(children);
     }
