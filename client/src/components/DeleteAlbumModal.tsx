@@ -3,7 +3,7 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 
 /**
- * Component for displaying modal that confirms decision to delete an album
+ * Component for displaying a confirmation modal when deleting an album
  * @param albumId ID of the album
  * @param albumName Name of the album
  * @return React component
@@ -15,7 +15,7 @@ export function DeleteAlbumModal({albumId, albumName}: {albumId?: string, albumN
 
   /**
    * Handles submitting of the form
-   * @param {React.FormEvent<HTMLFormElement>} event - FormEvent for onSubmit
+   * @param event FormEvent for onSubmit
    */
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
