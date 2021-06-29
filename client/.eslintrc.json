@@ -20,6 +20,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "max-len": "off"
+        "max-len": "off",
+        "valid-jsdoc": ["error", {"requireParamType": false, "requireReturnType": false, "requireReturn": false}]
     }
 }

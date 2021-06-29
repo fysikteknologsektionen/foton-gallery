@@ -3,8 +3,8 @@ import sharp from 'sharp';
 import fs from 'fs/promises';
 
 /**
- * Processes raw images into scaled down versions
- * @param {Express.Multer.File[]} images - Multer image instances to process
+ * Processes full sized images into scaled down versions
+ * @param images Multer image instances to process
  * @throws Throws an error if sharp or file system operations fail
  */
 export function processImages(images: Express.Multer.File[]) {

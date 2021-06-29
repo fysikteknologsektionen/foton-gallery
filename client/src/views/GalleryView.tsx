@@ -5,8 +5,8 @@ import {Loading} from '../components';
 import {Album} from '../interfaces';
 
 /**
- *  View component for displaying album gallery
- * @return {JSX.Element}
+ * View component for displaying album gallery
+ * @return React component
  */
 export function GalleryView() {
   const [albums, setAlbums] = useState<Album[]>();

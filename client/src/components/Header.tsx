@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 
 /**
  * Header component containing navigation
- * @return {JSX.Element}
+ * @return React component
  */
 export function Header() {
   return (

@@ -5,9 +5,9 @@ import {User} from '../interfaces';
 
 /**
  * Creates a new user from email/password
- * @param {Request} req - Express request object containing email, password and admin status
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object containing email, password and admin status
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function createUser(req: Request, res: Response, next: NextFunction) {
   const data = matchedData(req) as Partial<User>;
@@ -22,9 +22,9 @@ export async function createUser(req: Request, res: Response, next: NextFunction
 
 /**
  * Gets all users
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function getUsers(req: Request, res: Response, next: NextFunction) {
   try {
@@ -37,9 +37,9 @@ export async function getUsers(req: Request, res: Response, next: NextFunction) 
 
 /**
  * Deletes a user by id
- * @param {Request} req - Express request object containing the id of the user
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object containing the id of the user
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function deleteUser(req: Request, res: Response, next: NextFunction) {
   const {id} = matchedData(req) as { id: string };

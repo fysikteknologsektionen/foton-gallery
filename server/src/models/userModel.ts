@@ -11,9 +11,7 @@ const userSchema = new Schema<UserDocument>({
 
 userSchema.index({email: 1}, {unique: true});
 
-/**
- * Hashes the password before saving it
- */
+// Hashes the password before saving it
 userSchema.pre('save', async function(next) {
   const hash = await bcrypt.hash(this.password, 12);
   this.password = hash;

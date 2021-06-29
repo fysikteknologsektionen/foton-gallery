@@ -13,7 +13,7 @@ interface AlbumIdentifier {
 
 /**
  * View component for displaying edit page of a specific album
- * @return {JSX.Element}
+ * @return React component
  */
 export function EditAlbumView() {
   const [album, setAlbum] = useState<Album>();
@@ -40,7 +40,7 @@ export function EditAlbumView() {
 
   /**
    * Updates album if new images are uploaded
-   * @param {string[]} images - Array of new images
+   * @param images Array of new images
    */
   function updateImages(images: string[]) {
     if (album) {
@@ -52,7 +52,7 @@ export function EditAlbumView() {
 
   /**
    * Handles changes to the order of images
-   * @param {string[]} images - New array of images
+   * @param images New array of images
    */
   function handleImageReorder(images: string[]) {
     const newState = {...formState};
@@ -62,7 +62,7 @@ export function EditAlbumView() {
 
   /**
    * Handles changes to form inputs
-   * @param {ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} event - Event issued by origin
+   * @param event Event issued by origin
    */
   function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const newState = {...formState};
@@ -72,7 +72,7 @@ export function EditAlbumView() {
 
   /**
    * Handles submitting of the form
-   * @param {React.FormEvent<HTMLFormElement>} event - FormEvent for onSubmit
+   * @param event FormEvent for onSubmit
    */
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

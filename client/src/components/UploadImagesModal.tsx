@@ -3,15 +3,15 @@ import React, {FormEvent, useState} from 'react';
 
 /**
  * Component for displaying modal that allows uploading images
- * @param {string | undefined} albumId - ID of the album to add images to
- * @return {JSX.Element}
+ * @param albumId ID of the album to add images to
+ * @return React component
  */
 export function UploadImagesModal({albumId, callback}: {albumId?: string, callback: Function}) {
   const [submitError, setSubmitError] = useState<boolean>(false);
 
   /**
    * Handles submitting of the form
-   * @param {React.FormEvent<HTMLFormElement>} event - FormEvent for onSubmit
+   * @param event FormEvent for onSubmit
    */
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

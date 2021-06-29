@@ -3,7 +3,7 @@ import {useHistory} from 'react-router';
 
 /**
  * Component for displaying a go back button operating on browser history
- * @return {JSX.Element}
+ * @return React component
  */
 export function GoBackButton({className}: {className?: string}) {
   const history = useHistory();

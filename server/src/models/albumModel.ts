@@ -15,9 +15,7 @@ const albumSchema = new Schema<AlbumDocument>({
 
 albumSchema.index({date: -1, slug: 1}, {unique: true});
 
-/**
- * Generates a name slug and saves it alongside the name
- */
+// Generates a name slug and saves it alongside the name
 albumSchema.pre('save', function(next) {
   const nameSlug = slug(this.name);
   this.slug = nameSlug;

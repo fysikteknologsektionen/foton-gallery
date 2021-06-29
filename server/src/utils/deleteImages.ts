@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 
 /**
  * Deletes images from disk
- * @param {string[]} images - File names of images to delete
+ * @param images File names of images to delete
  * @throws Throws an error if file system operations fail
  */
 export function deleteImages(images: string[]) {

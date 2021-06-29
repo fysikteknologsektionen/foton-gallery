@@ -3,9 +3,9 @@ import {GoBackButton} from '.';
 
 /**
  * Component for displaying a delayed loading spinner
- * @param {boolean} loading - Boolean whether the child element is loading or not
- * @param {JSX.Element | JSX.Element[]} children - Child elements to render when not loading
- * @return {JSX.Element}
+ * @param loading Boolean whether the child element is loading or not
+ * @param children Child elements to render when not loading
+ * @return React component
  */
 export function Loading({loading, error, children}: {loading: boolean, error?: Error, children: JSX.Element | JSX.Element[]}) {
   const [showSpinner, setShowSpinner] = useState<boolean>(false);

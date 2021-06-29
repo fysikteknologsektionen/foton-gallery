@@ -4,8 +4,8 @@ import {useHistory} from 'react-router-dom';
 
 /**
  * Component for displaying modal that confirms decision to delete an album
- * @param {string | undefined} albumId - ID of the album to add images to
- * @return {JSX.Element}
+ * @param albumId ID of the album to add images to
+ * @return React component
  */
 export function DeleteAlbumModal({albumId, albumName}: {albumId?: string, albumName?: string}) {
   const [submitError, setSubmitError] = useState<boolean>(false);

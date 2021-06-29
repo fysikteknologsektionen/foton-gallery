@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 
 /**
  * Wrapper component that enables child components to be reordered (and removed)
- * @param {JSX.Element[]} children - Child components to render
- * @param {Function} callback - Callback function to be called with children keys on order change
- * @param {string} [className] - className property to give to wrapper div
- * @param {any} [style] - Style property to give to wrapper div
- * @return {JSX.Element}
+ * @param children Child components to render
+ * @param callback Callback function to be called with children keys on order change
+ * @param className className property to give to wrapper div
+ * @param style Style property to give to wrapper div
+ * @return React component
  */
 export function SortableWrapper({children, callback, className, style}: {children: JSX.Element[], callback: Function, className?: string, style?: any}) {
   const [unsortedChildren, setUnsortedChildren] = useState<JSX.Element[]>(children);
@@ -33,7 +33,7 @@ export function SortableWrapper({children, callback, className, style}: {childre
 
   /**
    * Removes a child
-   * @param {number} index - Index of element to remove
+   * @param index Index of element to remove
    */
   function removeChild(index: number) {
     const newSortedChildren = sortedChildren.slice();
@@ -43,8 +43,8 @@ export function SortableWrapper({children, callback, className, style}: {childre
 
   /**
    * Moves a child to a new index
-   * @param {number} fromIndex - Index of child to move
-   * @param {number} toIndex - New index for child
+   * @param fromIndex Index of child to move
+   * @param toIndex New index for child
    */
   function moveChild(fromIndex: number, toIndex: number) {
     // Do nothing if we are trying to move to an invalid index

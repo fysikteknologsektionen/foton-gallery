@@ -7,9 +7,9 @@ import {matchedData} from 'express-validator';
 
 /**
  * Logs in a user by checking request, creating a secure token and settings cookies with credentials
- * @param {Request} req - Express request object containing email and password
- * @param {Response} res - Express reponse object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object containing email and password
+ * @param res Express reponse object
+ * @param next Express next function
  */
 export async function loginUser(req: Request, res: Response, next: NextFunction) {
   const {email, password} = matchedData(req) as {email: string, password: string};
@@ -36,9 +36,9 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
 
 /**
  * Logs out a user by clearing the credential cookies
- * @param {Request} req - Express request object
- * @param {Response} res - Express reponse object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object
+ * @param res Express reponse object
+ * @param next Express next function
  */
 export function logoutUser(req: Request, res: Response, next: NextFunction) {
   res.clearCookie('auth', {httpOnly: true, sameSite: 'strict', secure: true});
@@ -48,10 +48,9 @@ export function logoutUser(req: Request, res: Response, next: NextFunction) {
 
 /**
  * Tries to populates the user field in the request if an auth cookie is passed
- * @param {Request} req - Express request object
- * @param {string | undefined} req.cookies.auth - Authentication cookie containing a stringified user object
- * @param {Response} res - Express reponse object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object
+ * @param res Express reponse object
+ * @param next Express next function
  */
 export function populateUserField(req: Request, res: Response, next: NextFunction) {
   if (req.cookies.auth) {
@@ -70,10 +69,9 @@ export function populateUserField(req: Request, res: Response, next: NextFunctio
 
 /**
  * Authenticates a user by checking if the req.user.id property is set
- * @param {Request} req - Express request object
- * @param {string | undefined} req.user.id - ID of the user
- * @param {Response} res - Express reponse object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object
+ * @param res Express reponse object
+ * @param next Express next function
  */
 export function authenticateUser(req: Request, res: Response, next: NextFunction) {
   if (!req.user?.id) {
@@ -85,10 +83,9 @@ export function authenticateUser(req: Request, res: Response, next: NextFunction
 
 /**
  * Authenticates an admin user by checking if the req.user.isAdmin property is set and is true
- * @param {Request} req - Express request object
- * @param {boolean} req.user.isAdmin - Whether the user is an admin or not
- * @param {Response} res - Express reponse object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object
+ * @param res Express reponse object
+ * @param next Express next function
  */
 export function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
   if (!req.user?.isAdmin) {

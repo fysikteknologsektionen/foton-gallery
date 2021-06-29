@@ -5,7 +5,7 @@ import {AlbumView, CreateAlbumView, CreateUserView, EditAlbumView, GalleryView, 
 
 /**
  * Top-level App component
- * @return {JSX.Element}
+ * @return React component
  */
 export function App() {
   return (

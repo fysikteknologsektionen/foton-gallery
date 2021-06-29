@@ -3,12 +3,12 @@ import React from 'react';
 
 /**
  * View component for creating a new user
- * @return {JSX.Element}
+ * @return React component
  */
 export function CreateUserView() {
   /**
    * Handles submitting of the form
-   * @param {React.FormEvent<HTMLFormElement>} event - FormEvent for onSubmit
+   * @param event FormEvent for onSubmit
    */
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

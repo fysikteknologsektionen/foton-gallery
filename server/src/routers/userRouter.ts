@@ -6,16 +6,9 @@ import {checkValidationResult} from '../utils/checkValidationResult';
 // eslint-disable-next-line new-cap
 export const userRouter = Router();
 
-/**
- * Middleware
- */
-userRouter.use(authController.populateUserField);
 userRouter.use(authController.authenticateUser);
 userRouter.use(authController.authenticateAdmin);
 
-/**
- * Endpoints
- */
 userRouter.post(
     '/',
     check('email').isEmail().normalizeEmail(),

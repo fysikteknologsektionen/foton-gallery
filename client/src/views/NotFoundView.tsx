@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * View component for displaying a general not found-message
- * @return {JSX.Element}
+ * @return React component
  */
 export function NotFoundView() {
   return (

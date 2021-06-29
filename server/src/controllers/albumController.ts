@@ -7,9 +7,9 @@ import {processImages} from '../utils/processImages';
 
 /**
  * Creates a new album
- * @param {Request} req - Express request object containing album key-value data
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object containing album key-value data
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function createAlbum(req: Request, res: Response, next: NextFunction) {
   const data = matchedData(req) as Album;
@@ -24,9 +24,9 @@ export async function createAlbum(req: Request, res: Response, next: NextFunctio
 
 /**
  * Adds images to an existing album
- * @param {Request} req - Express request object containing album id and images to add
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object containing album id and images to add
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function addImages(req: Request, res: Response, next: NextFunction) {
   const {id} = matchedData(req) as {id: string};
@@ -54,9 +54,9 @@ export async function addImages(req: Request, res: Response, next: NextFunction)
 
 /**
  * Gets a subset of albums based on some search parameters
- * @param {Request} req - Express request object containing (optional) search parameters
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object containing (optional) search parameters
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function getAlbums(req: Request, res: Response, next: NextFunction) {
   const {limit, offset, slug, date} = matchedData(req) as {
@@ -92,9 +92,9 @@ export async function getAlbums(req: Request, res: Response, next: NextFunction)
 
 /**
  * (Partially) updates an album
- * @param {Reqest} req - Expres request object containing ID of the album and key-values to update
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Expres request object containing ID of the album and key-values to update
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function updateAlbum(req: Request, res: Response, next: NextFunction) {
   const {id, images, thumbnail, ...rest} = matchedData(req) as {id: string} & Partial<Album>;
@@ -141,9 +141,9 @@ export async function updateAlbum(req: Request, res: Response, next: NextFunctio
 
 /**
  * Deletes an album
- * @param {Request} req - Express request object containing ID of the album
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
+ * @param req Express request object containing ID of the album
+ * @param res Express response object
+ * @param next Express next function
  */
 export async function deleteAlbum(req: Request, res: Response, next: NextFunction) {
   const {id} = matchedData(req) as {id: string};

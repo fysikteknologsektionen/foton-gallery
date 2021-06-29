@@ -13,7 +13,7 @@ interface AlbumIdentifier {
 
 /**
  * View component for displaying a specific album
- * @return {JSX.Element}
+ * @return React component
  */
 export function AlbumView() {
   const [album, setAlbum] = useState<Album>();

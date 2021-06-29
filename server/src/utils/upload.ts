@@ -16,9 +16,9 @@ const storage = multer.diskStorage({
 
 /**
  * Filters file types to only allow image types
- * @param {Request} req - Express request object
- * @param {Express.Multer.File} file - Files to filter
- * @param {FileFilterCallback} cb - Callback
+ * @param req Express request object
+ * @param file Files to filter
+ * @param cb Callback
  */
 function fileFilter(req: Request, file: Express.Multer.File, cb: FileFilterCallback) {
   // Check if the mimetype is any image/*-type
