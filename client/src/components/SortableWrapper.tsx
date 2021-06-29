@@ -9,9 +9,23 @@ import React, {useEffect, useState} from 'react';
  * @return {JSX.Element}
  */
 export function SortableWrapper({children, callback, className, style}: {children: JSX.Element[], callback: Function, className?: string, style?: any}) {
+  const [unsortedChildren, setUnsortedChildren] = useState<JSX.Element[]>(children);
   const [sortedChildren, setSortedChildren] = useState<JSX.Element[]>(children);
+  console.log(children);
+  console.log(unsortedChildren);
 
-  // Invoke callback whenever sortedChildren changes
+  // If children changes (i.e. elements are added or removed), rerender accordingly
+  useEffect(() => {
+    // The reference to 'children' can change on rerenders even if the values are same,
+    // so instead we check if there are any changes to the values of 'children'
+    if (children.length !== unsortedChildren.length || children.every((value, index) => (unsortedChildren[index] === value))) {
+      console.log('updating');
+      setSortedChildren(children);
+      setUnsortedChildren(children);
+    }
+  }, [children]);
+
+  // Invoke callback when sortedChildren changes
   useEffect(() => {
     // Only call if there has actually been an update
     if (sortedChildren !== children) {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {GoBackButton, Loading, SortableWrapper} from '../components';
+import {GoBackButton, Loading, SortableWrapper, UploadImagesModal} from '../components';
 import {Album} from '../interfaces';
 
 interface AlbumIdentifier {
@@ -39,10 +39,22 @@ export function EditAlbumView() {
   }, []);
 
   /**
-   * Handles changes to the order and inclusion of images
+   * Updates album if new images are uploaded
+   * @param {string[]} images - Array of new images
+   */
+  function updateImages(images: string[]) {
+    if (album) {
+      const newAlbum = {...album};
+      newAlbum.images = images;
+      setAlbum(newAlbum);
+    }
+  }
+
+  /**
+   * Handles changes to the order of images
    * @param {string[]} images - New array of images
    */
-  function handleImagesChange(images: string[]) {
+  function handleImageReorder(images: string[]) {
     const newState = {...formState};
     newState.images = images;
     setFormState(newState);
@@ -65,7 +77,7 @@ export function EditAlbumView() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitSuccess(undefined);
-    // Submit if there has been any changes
+    // Submit only if there has been any changes to the state
     if (Object.keys(formState).length) {
       formState.authors = formState.authorsString?.split(',');
       try {
@@ -150,7 +162,7 @@ export function EditAlbumView() {
               <button className="btn btn-primary me-2" type="submit">
                 Spara
               </button>
-              <button className="btn btn-secondary" type="button">
+              <button className="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#modal-upload">
                 Ladda upp bilder
               </button>
             </div>
@@ -159,13 +171,14 @@ export function EditAlbumView() {
         <SortableWrapper
           className="d-grid gap-3 justify-content-sm-center"
           style={{gridTemplateColumns: 'repeat(auto-fit, minmax(200px, max-content))'}}
-          callback={handleImagesChange}
+          callback={handleImageReorder}
         >
           {album?.images?.map((image) => (
             <img key={image} className="w-100 rounded" src={`/images/thumbnail/${image}`} />
           )) as JSX.Element[]}
         </SortableWrapper>
       </form>
+      <UploadImagesModal albumId={album?._id} callback={updateImages} />
       <GoBackButton className="mt-3"/>
     </Loading>
   );
