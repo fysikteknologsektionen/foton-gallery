@@ -26,8 +26,8 @@ export function UploadImagesModal({albumId, callback}: {albumId?: string, callba
       callback(res.data);
       // This is a hacky way to solve the issue of closing the modal after successful upload,
       // should probably be fixed by using bootstrap as esm module instead and invoking .hide()
-      const modalElement = document.getElementById('modal-button-close');
-      modalElement?.click();
+      const closeModalButton = document.getElementById('upload-modal-close-button');
+      closeModalButton?.click();
     } catch (error) {
       console.error(error);
       setSubmitError(true);
@@ -42,23 +42,22 @@ export function UploadImagesModal({albumId, callback}: {albumId?: string, callba
   );
 
   return (
-    <div className="modal fade" id="modal-upload" aria-labelledby="modal-label-upload" aria-hidden="true">
+    <div className="modal fade" id="upload-modal" aria-labelledby="upload-modal-label" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h2 className="modal-title" id="modal-label-upload">Ladda upp bilder</h2>
+            <h2 className="modal-title" id="upload-modal-label">Ladda upp bilder</h2>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="modal-body">
               {submitError ? responseAlert : <></>}
               <div>
-                <label className="form-label" htmlFor="form-control">Välj bilder</label>
+                <label className="form-label" htmlFor="upload-modal-file-input">Välj bilder</label>
                 <input
                   className="form-control"
                   type="file"
-                  id="input-file"
+                  id="upload-modal-file-input"
                   name="images"
-                  placeholder="Images"
                   accept="image/*"
                   multiple
                   required
@@ -67,7 +66,7 @@ export function UploadImagesModal({albumId, callback}: {albumId?: string, callba
             </div>
             <div className="modal-footer">
               <button className="btn btn-primary" type="submit">Ladda upp</button>
-              <button className="btn btn-secondary" id="modal-button-close" type="button" data-bs-dismiss="modal">Stäng</button>
+              <button className="btn btn-secondary" id="upload-modal-close-button" type="button" data-bs-dismiss="modal">Stäng</button>
             </div>
           </form>
         </div>

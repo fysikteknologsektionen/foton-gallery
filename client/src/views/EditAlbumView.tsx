@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {GoBackButton, Loading, SortableWrapper, UploadImagesModal} from '../components';
+import {DeleteAlbumModal, GoBackButton, Loading, SortableWrapper, UploadImagesModal} from '../components';
 import {Album} from '../interfaces';
 
 interface AlbumIdentifier {
@@ -110,51 +110,51 @@ export function EditAlbumView() {
               <input
                 className="form-control"
                 type="text"
-                id="input-name"
+                id="name-input"
                 name="name"
                 placeholder="Name"
                 defaultValue={album?.name}
                 required
                 onChange={handleChange}
               />
-              <label className="form-label" htmlFor="input-name">Namn</label>
+              <label className="form-label" htmlFor="name-input">Namn</label>
             </div>
             <div className="form-floating mb-3">
               <input
                 className="form-control"
                 type="date"
-                id="input-date"
+                id="date-input"
                 name="date"
                 placeholder="Date"
                 defaultValue={album?.date.substring(0, 10)}
                 required
                 onChange={handleChange}
               />
-              <label className="form-label" htmlFor="input-date">Datum</label>
+              <label className="form-label" htmlFor="date-input">Datum</label>
             </div>
             <div className="form-floating mb-3">
               <input
                 className="form-control"
                 type="text"
-                id="input-authors"
+                id="authors-input"
                 name="authorsString"
                 placeholder="Authors"
                 defaultValue={album?.authors?.join(', ')}
                 onChange={handleChange}
               />
-              <label className="form-label" htmlFor="input-authors">Fotograferare</label>
+              <label className="form-label" htmlFor="authors-input">Fotograferare</label>
             </div>
             <div className="form-floating">
               <textarea
                 className="form-control"
                 style={{height: '100px'}}
-                id="input-description"
+                id="description-input"
                 name="description"
                 placeholder="Description"
                 defaultValue={album?.description}
                 onChange={handleChange}
               />
-              <label className="form-label" htmlFor="input-description">Beskrivning</label>
+              <label className="form-label" htmlFor="description-input">Beskrivning</label>
             </div>
           </div>
           <div className="col-md-12 col-lg-6 mb-3">
@@ -162,8 +162,11 @@ export function EditAlbumView() {
               <button className="btn btn-primary me-2" type="submit">
                 Spara
               </button>
-              <button className="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#modal-upload">
+              <button className="btn btn-secondary me-2" type="button" data-bs-toggle="modal" data-bs-target="#upload-modal">
                 Ladda upp bilder
+              </button>
+              <button className="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal">
+                Radera album
               </button>
             </div>
           </div>
@@ -179,6 +182,7 @@ export function EditAlbumView() {
         </SortableWrapper>
       </form>
       <UploadImagesModal albumId={album?._id} callback={updateImages} />
+      <DeleteAlbumModal albumId={album?._id} albumName={album?.name} />
       <GoBackButton className="mt-3"/>
     </Loading>
   );
