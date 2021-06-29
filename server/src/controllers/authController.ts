@@ -15,18 +15,22 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
   const {email, password} = matchedData(req) as {email: string, password: string};
   try {
     const user = await UserModel.findOne({email: email}).exec();
-    if (!user || await user.comparePassword(password)) {
+    if (!user || !await user.comparePassword(password)) {
       res.status(401).send();
       return;
     }
-    const session: UserSession = {id: user._id, isAdmin: user.isAdmin};
+    const session: UserSession = {_id: user._id, isAdmin: user.isAdmin};
+    // Max session length in seconds
+    const expires = 0.5*60*60;
     // jwt does not return promise so have to do with callback
-    jwt.sign(session, config.APP_SECRET, {expiresIn: '3h'}, (error, token) => {
+    jwt.sign(session, config.APP_SECRET, {expiresIn: expires}, (error, token) => {
       if (error) {
         throw error;
       }
-      res.cookie('auth', token, {httpOnly: true, sameSite: 'strict', secure: true}); // Cookie used for authentication (secure)
-      res.cookie('user', JSON.stringify(session), {sameSite: 'strict', secure: true}); // Cookie used by front end (not secure)
+      // Cookie used for authentication
+      res.cookie('auth', token, {httpOnly: true, sameSite: 'strict', secure: true, maxAge: expires});
+      // Cookie used by front end (not secure)
+      res.cookie('session', JSON.stringify(session), {sameSite: 'strict', secure: true, maxAge: expires});
       res.send();
     });
   } catch (error) {
@@ -74,7 +78,7 @@ export function populateUserField(req: Request, res: Response, next: NextFunctio
  * @param next Express next function
  */
 export function authenticateUser(req: Request, res: Response, next: NextFunction) {
-  if (!req.user?.id) {
+  if (!req.user?._id) {
     res.status(403).send();
     return;
   }
