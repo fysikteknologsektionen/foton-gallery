@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 import {matchedData} from 'express-validator';
 import {Album} from '../interfaces';
 import {AlbumModel} from '../models';
+import {deleteImages} from '../utils/deleteImages';
 import {processImages} from '../utils/processImages';
 
 /**
@@ -103,16 +104,24 @@ export async function updateAlbum(req: Request, res: Response, next: NextFunctio
       throw new Error('Album does not exist.');
     }
     if (images) {
+      // Do not allow adding new images via this endpoint
       const newImages = images?.filter((x) => !album.images?.includes(x));
       if (newImages.length) {
         throw new Error('Cannot add new images.');
       }
+      // Check for removed images
       const removedImages = album.images?.filter((x) => !images.includes(x));
-      album.images = images;
-      console.log(removedImages);
-      /* TODO: remove image files */
+      if (removedImages?.length) {
+        album.images = images;
+        try {
+          deleteImages(removedImages);
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
     if (thumbnail) {
+      // Make sure the selected thumbnail is an image of the album
       const validImages = images ? images : album.images;
       if (!validImages?.includes(thumbnail)) {
         throw new Error('Album must contain image selected as thumbnail.');
@@ -139,7 +148,10 @@ export async function updateAlbum(req: Request, res: Response, next: NextFunctio
 export async function deleteAlbum(req: Request, res: Response, next: NextFunction) {
   const {id} = matchedData(req) as {id: string};
   try {
-    await AlbumModel.findByIdAndDelete(id).exec();
+    const album = await AlbumModel.findByIdAndDelete(id).exec();
+    if (album?.images?.length) {
+      deleteImages(album.images);
+    }
     res.status(204).send();
   } catch (error) {
     next(error);

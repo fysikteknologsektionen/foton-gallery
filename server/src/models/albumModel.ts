@@ -24,14 +24,4 @@ albumSchema.pre('save', function(next) {
   next();
 });
 
-albumSchema.post('updateOne', function(doc: AlbumDocument, next) {
-  /** TODO: remove image files when updating album to delete images */
-  next();
-});
-
-albumSchema.post('remove', function(doc: AlbumDocument, next) {
-  /** TODO: remove image files when deleting album */
-  next();
-});
-
 export const AlbumModel = model<AlbumDocument>('Album', albumSchema);
