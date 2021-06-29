@@ -28,9 +28,9 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
         throw error;
       }
       // Cookie used for authentication
-      res.cookie('auth', token, {httpOnly: true, sameSite: 'strict', secure: true, maxAge: expires});
+      res.cookie('auth', token, {httpOnly: true, sameSite: 'strict', secure: true, maxAge: expires*1000});
       // Cookie used by front end (not secure)
-      res.cookie('session', JSON.stringify(session), {sameSite: 'strict', secure: true, maxAge: expires});
+      res.cookie('session', JSON.stringify(session), {sameSite: 'strict', secure: true, maxAge: expires*1000});
       res.send();
     });
   } catch (error) {
@@ -46,7 +46,7 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
  */
 export function logoutUser(req: Request, res: Response, next: NextFunction) {
   res.clearCookie('auth', {httpOnly: true, sameSite: 'strict', secure: true});
-  res.clearCookie('user', {sameSite: 'strict', secure: true});
+  res.clearCookie('session', {sameSite: 'strict', secure: true});
   res.status(205).send();
 }
 
