@@ -14,7 +14,7 @@ declare global {
  * User session interface
  */
 export interface UserSession {
-  id: string,
+  _id: string,
   isAdmin: boolean,
 }
 

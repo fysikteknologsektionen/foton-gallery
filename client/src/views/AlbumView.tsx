@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import {GoBackButton, Loading} from '../components';
+import {userSessionContext} from '../contexts';
 import {Album} from '../interfaces';
 
 interface AlbumIdentifier {
@@ -19,6 +20,8 @@ export function AlbumView() {
   const [album, setAlbum] = useState<Album>();
   const [loadingError, setLoadingError] = useState<Error>();
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
+  const {userSession} = useContext(userSessionContext);
+  const history = useHistory();
 
   // Fetch album
   useEffect(() => {
@@ -38,9 +41,24 @@ export function AlbumView() {
 
   return (
     <Loading loading={album ? false : true} error={loadingError}>
-      <h1>{album?.name}</h1>
-      <p>{`${album?.date.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
-      <p>{album?.description}</p>
+      <div className="row">
+        <div className="col">
+          <h1>{album?.name}</h1>
+          <p>{`${album?.date.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
+          <p>{album?.description}</p>
+        </div>
+        <div className="col-auto">
+          {userSession ? (
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => history.push(`/album/${year}/${month}/${day}/${slug}/edit`)}
+            >
+              Redigera
+            </button>
+            ) : <></>}
+        </div>
+      </div>
       <div className="d-grid gap-3 justify-content-sm-center" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(300px, max-content))'}}>
         {album?.images?.map((image) => (
           <img key={image} className="w-100 rounded" src={`/images/thumbnail/${image}`} />
