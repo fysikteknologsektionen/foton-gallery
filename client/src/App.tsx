@@ -16,8 +16,8 @@ export function App() {
           <Route path="/album/new" component={CreateAlbumView} />
           <Route path="/user/new" component={CreateUserView} />
           <Route exact path="/" component={GalleryView} />
-          <Route path="/album/:year/:month/:day/:slug/edit" component={EditAlbumView} />
-          <Route path="/album/:year/:month/:day/:slug" component={AlbumView} />
+          <Route exact path="/album/:year/:month/:day/:slug/edit" component={EditAlbumView} />
+          <Route exact path="/album/:year/:month/:day/:slug" component={AlbumView} />
           <Route path="/" component={NotFoundView} />
         </Switch>
       </main>
