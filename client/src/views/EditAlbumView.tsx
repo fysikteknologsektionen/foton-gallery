@@ -105,7 +105,7 @@ export function EditAlbumView() {
       {typeof submitSuccess !== 'undefined' ? responseAlert : <></>}
       <form onSubmit={handleSubmit}>
         <div className="row">
-          <div className="col-md-12 col-lg-6 mb-3">
+          <div className="col-12 col-lg-6 mb-3">
             <div className="form-floating mb-3">
               <input
                 className="form-control"
@@ -157,7 +157,7 @@ export function EditAlbumView() {
               <label className="form-label" htmlFor="description-input">Beskrivning</label>
             </div>
           </div>
-          <div className="col-md-12 col-lg-6 mb-3">
+          <div className="col-12 col-lg-6 mb-3">
             <div className="d-flex justify-content-lg-end">
               <button className="btn btn-primary me-2" type="submit">
                 Spara
