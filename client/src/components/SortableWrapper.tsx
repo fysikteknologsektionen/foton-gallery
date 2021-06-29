@@ -11,8 +11,6 @@ import React, {useEffect, useState} from 'react';
 export function SortableWrapper({children, callback, className, style}: {children: JSX.Element[], callback: Function, className?: string, style?: any}) {
   const [unsortedChildren, setUnsortedChildren] = useState<JSX.Element[]>(children);
   const [sortedChildren, setSortedChildren] = useState<JSX.Element[]>(children);
-  console.log(children);
-  console.log(unsortedChildren);
 
   // If children changes (i.e. elements are added or removed), rerender accordingly
   useEffect(() => {
