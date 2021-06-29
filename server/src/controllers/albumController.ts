@@ -33,9 +33,18 @@ export async function addImages(req: Request, res: Response, next: NextFunction)
   const files = req.files as Express.Multer.File[];
   const fileNames = files.map((file) => file.filename);
   try {
-    await AlbumModel.updateOne({_id: id}, {images: fileNames}).exec();
-    await processImages(files);
-    res.status(201).json(fileNames);
+    const album = await AlbumModel.findById(id).exec();
+    if (!album) {
+      throw new Error('Album does not exist.');
+    }
+    if (album.images) {
+      album.images = album.images.concat(fileNames);
+    } else {
+      album.images = fileNames;
+    }
+    const result = await album.save();
+    processImages(files);
+    res.status(201).json(result.images);
   } catch (error) {
     /* TODO: Remove image files if error is thrown */
     next(error);
