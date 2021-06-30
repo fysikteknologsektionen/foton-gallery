@@ -84,6 +84,9 @@ export async function getAlbums(req: Request, res: Response, next: NextFunction)
       query.where('date').equals(date);
     }
     const albums = await query.exec();
+    if (!albums.length) {
+      throw new Error('No albums found.');
+    }
     res.json(albums);
   } catch (error) {
     next(error);
