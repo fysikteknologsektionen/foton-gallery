@@ -30,20 +30,23 @@ export function GalleryView() {
     const thumbnail = album.thumbnail ? album.thumbnail : album.images ? album.images[0] : undefined;
 
     return (
-      <div key={`${album.date}-${album.slug}`} className="card">
-        <img className="card-img-top w-100" src={`/images/thumbnail/${thumbnail}`} alt={album.name} />
-        <div className="card-body">
-          <p className="h5">{album.name}</p>
-          <p className="card-text mb-1">{`${album.date.substring(0, 10)} | ${album.authors?.join(', ')}`}</p>
-          <p className="card-text">{album.description}</p>
-          <Link className="btn btn-primary" to={`/album/${dateURIString}/${album.slug}`}>Visa album</Link>
+      <Link key={`${album.date}-${album.slug}`} to={`/album/${dateURIString}/${album.slug}`}>
+        <div className="card">
+          <img className="card-img w-100" src={`/images/thumbnail/${thumbnail}`} alt={album.name} />
+          <div className="card-img-overlay d-inline-flex flex-column justify-content-end p-0">
+            <div className="bg-dark text-white rounded-bottom p-3" style={{opacity: 0.75}}>
+              <h2 className="card-title h5">{album.name}</h2>
+              <p className="card-text mb-1">{`${album.date.substring(0, 10)} | ${album.authors?.join(', ')}`}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </Link>
     );
   });
 
   return (
     <Loading loading={albums ? false : true}>
+      <h1 className="visually-hidden">Galleri</h1>
       <div className="d-grid gap-3 justify-content-sm-center" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(400px, max-content))'}}>
         {albumThumbnails}
       </div>
