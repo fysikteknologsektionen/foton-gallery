@@ -1,0 +1,21 @@
+/* Import bootstrap styles */
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+
+/* Additional styles */
+
+// Take up full page height
+html body #root {
+  height: 100vh;
+}
+
+// Vertical page layout
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+// Make <main> take up remaining height
+main {
+  flex-grow: 1;
+}
