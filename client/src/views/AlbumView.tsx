@@ -43,14 +43,14 @@ export function AlbumView() {
     <Loading loading={album ? false : true} error={loadingError}>
       <div className="row">
         <div className="col">
-          <h1>{album?.name}</h1>
-          <p>{`${album?.date.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
-          <p>{album?.description}</p>
+          <h1 className="text-break">{album?.name}</h1>
+          <p className="text-break">{`${album?.date.substring(0, 10)} | ${album?.authors?.join(', ')}`}</p>
+          <p className="text-break">{album?.description}</p>
         </div>
-        <div className="col-auto">
+        <div className="col-12 col-lg-auto">
           {userSession ? (
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-outline-secondary mb-3"
               type="button"
               onClick={() => history.push(`/album/${year}/${month}/${day}/${slug}/edit`)}
             >
