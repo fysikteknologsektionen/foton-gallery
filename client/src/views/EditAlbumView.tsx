@@ -1,8 +1,9 @@
-import axios from 'axios';
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
-import {DeleteAlbumModal, GoBackButton, Loading, SortableWrapper, UploadImagesModal} from '../components';
+import {DeleteAlbumModal, GoBackButton, LoadData, SortableWrapper, UploadImagesModal} from '../components';
+import React, {ChangeEvent, FormEvent, useState} from 'react';
+
 import {Album} from '../interfaces';
+import axios from 'axios';
+import {useParams} from 'react-router-dom';
 
 interface AlbumIdentifier {
   year: string,
@@ -17,26 +18,9 @@ interface AlbumIdentifier {
  */
 export function EditAlbumView() {
   const [album, setAlbum] = useState<Album>();
-  const [loadingError, setLoadingError] = useState<Error>();
   const [formState, setFormState] = useState<Partial<Album> & {authorsString?: string}>({});
   const [submitSuccess, setSubmitSuccess] = useState<boolean>();
   const {year, month, day, slug} = useParams<AlbumIdentifier>();
-
-  // Fetch album
-  useEffect(() => {
-    (async function() {
-      const res = await axios.get<Album[]>('/api/album', {
-        params: {
-          date: `${year}-${month}-${day}`,
-          slug: slug,
-        },
-      });
-      if (!res.data.length) {
-        setLoadingError(new Error('Albumet gick inte att hitta. Det kan bero på att sökvägen är felaktig eller att albumet har flyttats.'));
-      }
-      setAlbum(res.data[0]);
-    })();
-  }, []);
 
   /**
    * Updates album if new images are uploaded
@@ -99,7 +83,15 @@ export function EditAlbumView() {
   );
 
   return (
-    <Loading loading={album ? false : true} error={loadingError}>
+    <LoadData<Album>
+      query="/api/album"
+      params={{
+        date: `${year}-${month}-${day}`,
+        slug: slug,
+      }}
+      errorMessage="Albumet gick inte att hitta."
+      callback={(data) => setAlbum(data[0])}
+    >
       <GoBackButton className="mb-3"/>
       <h1>Redigera album</h1>
       {typeof submitSuccess !== 'undefined' ? responseAlert : <></>}
@@ -184,6 +176,6 @@ export function EditAlbumView() {
       <UploadImagesModal albumId={album?._id} callback={updateImages} />
       <DeleteAlbumModal albumId={album?._id} albumName={album?.name} />
       <GoBackButton className="mt-3"/>
-    </Loading>
+    </LoadData>
   );
 }
