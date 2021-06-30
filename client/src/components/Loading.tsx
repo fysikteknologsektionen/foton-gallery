@@ -16,8 +16,10 @@ export function Loading({loading, error, children}: {loading: boolean, error?: E
   }, []);
 
   const spinner = (
-    <div className={`spinner-grow ${!showSpinner && 'd-none'}`} role="status">
-      <span className="visually-hidden">Laddar...</span>
+    <div className={`d-flex justify-content-center mt-5 ${!showSpinner && 'd-none'}`}>
+      <div className="spinner-grow" style={{width: '2.5rem', height: '2.5rem'}} role="status">
+        <span className="visually-hidden">Laddar...</span>
+      </div>
     </div>
   );
 
