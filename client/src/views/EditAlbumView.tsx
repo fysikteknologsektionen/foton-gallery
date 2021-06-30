@@ -94,8 +94,8 @@ export function EditAlbumView() {
     >
       <GoBackButton className="mb-3"/>
       <h1>Redigera album</h1>
-      {typeof submitSuccess !== 'undefined' ? responseAlert : <></>}
       <form onSubmit={handleSubmit}>
+        {typeof submitSuccess !== 'undefined' && responseAlert}
         <div className="row">
           <div className="col-12 col-lg-6 mb-3">
             <div className="form-floating mb-3">

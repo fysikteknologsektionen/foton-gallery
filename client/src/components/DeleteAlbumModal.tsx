@@ -54,7 +54,7 @@ export function DeleteAlbumModal({albumId, albumName}: {albumId?: string, albumN
           </div>
           <form onSubmit={handleSubmit}>
             <div className="modal-body">
-              {submitError ? responseAlert : <></>}
+              {submitError && responseAlert}
               <div>
                 <p className="text-danger fw-bolder">OBS: Du håller på att permanent radera ett album (inklusive alla dess bilder). Skriv in namnet på albumet nedan för att bekräfta att du vill ta bort det.</p>
                 <label className="form-label" htmlFor="delete-modal-name-input">Namn</label>

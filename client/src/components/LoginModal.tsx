@@ -61,7 +61,7 @@ export function LoginModal() {
           </div>
           <form onSubmit={handleSubmit}>
             <div className="modal-body">
-              {submitError ? responseAlert : <></>}
+              {submitError && responseAlert}
               <div className="form-floating mb-3">
                 <input
                   className="form-control"

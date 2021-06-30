@@ -50,7 +50,7 @@ export function UploadImagesModal({albumId, callback}: {albumId?: string, callba
           </div>
           <form onSubmit={handleSubmit}>
             <div className="modal-body">
-              {submitError ? responseAlert : <></>}
+              {submitError && responseAlert}
               <div>
                 <label className="form-label" htmlFor="upload-modal-file-input">Välj bilder</label>
                 <input
