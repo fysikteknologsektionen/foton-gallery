@@ -31,7 +31,9 @@ export function LoadData<T>({query, params, errorMessage, callback, children}: {
     // GET data
     (async () => {
       try {
-        const res = await axios.get<T>(query, params);
+        const res = await axios.get<T>(query, {
+          params: params,
+        });
         callback(res.data);
         setFetchSuccess(true);
       } catch (error) {
