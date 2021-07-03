@@ -1,0 +1,1 @@
+export {EditAlbum} from './EditAlbum';
