@@ -10,11 +10,8 @@ import {Thumbnail} from '../common';
  */
 export function GalleryThumbnail({album}: {album: Album}) {
   const albumDate = album.date.substring(0, 10);
-  const thumbnailImage = (
-      album.thumbnail ? album.thumbnail :
-      album.images ? album.images[0] :
-      ''
-  );
+  const thumbnailImage = album.thumbnail ??
+    (album.images?.length ? album.images[0] : '');
 
   return (
     <Link

@@ -1,5 +1,7 @@
 import React, {SyntheticEvent} from 'react';
 
+import placeholderImage from './placeholder.jpg';
+
 /**
  * Component for rendering an image thumbnail.
  * Falls back to scaled and fullsize version if thumbnail does not exist
@@ -28,7 +30,7 @@ export function Thumbnail({fileName, alt, className}: {
         case scaledImage:
           return fullsizeImage;
         default:
-          return '';
+          return placeholderImage;
       }
     })();
   }
@@ -36,7 +38,7 @@ export function Thumbnail({fileName, alt, className}: {
   return (
     <img
       className={className}
-      src={thumbnailImage}
+      src={fileName ? thumbnailImage : placeholderImage}
       alt={alt}
       onError={handleError}
     />
