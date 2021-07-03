@@ -1,7 +1,8 @@
-import {config} from '../env';
 import {NextFunction, Request, Response} from 'express';
+
 import {UserModel} from '../models';
 import {UserSession} from '../interfaces';
+import {config} from '../env';
 import jwt from 'jsonwebtoken';
 import {matchedData} from 'express-validator';
 

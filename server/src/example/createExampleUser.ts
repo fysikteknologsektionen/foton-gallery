@@ -1,10 +1,11 @@
 import '../db';
-import {UserModel} from '../models';
+
 import {User} from '../interfaces';
+import {UserModel} from '../models';
 
 const userData: Partial<User> = {
-  email: 'foo@bar.com',
-  password: 'admin',
+  username: 'foo',
+  password: 'bar',
   isAdmin: true,
 };
 
@@ -23,7 +24,7 @@ async function createExampleUser() {
 
 if (require.main == module) {
   console.log('Attempting to creating an example user...');
-  console.log(`Email: ${userData.email}, Password: ${userData.password}`);
+  console.log(`Username: ${userData.username}, Password: ${userData.password}`);
   createExampleUser();
 } else {
   console.error('For security reasons this script can only be run directly.');

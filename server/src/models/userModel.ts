@@ -1,10 +1,11 @@
 /* eslint-disable no-invalid-this */
-import {model, Schema} from 'mongoose';
+import {Schema, model} from 'mongoose';
+
 import {UserDocument} from '../interfaces';
 import bcrypt from 'bcrypt';
 
 const userSchema = new Schema<UserDocument>({
-  email: {type: String, required: true, unique: true},
+  username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   isAdmin: {type: Boolean, required: true},
 });

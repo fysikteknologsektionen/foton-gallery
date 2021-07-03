@@ -1,6 +1,7 @@
+import {authController, userController} from '../controllers';
+
 import {Router} from 'express';
 import {check} from 'express-validator';
-import {authController, userController} from '../controllers';
 import {checkValidationResult} from '../utils/checkValidationResult';
 
 // eslint-disable-next-line new-cap
@@ -11,7 +12,7 @@ userRouter.use(authController.authenticateAdmin);
 
 userRouter.post(
     '/',
-    check('email').isEmail().normalizeEmail(),
+    check('username').notEmpty().escape().trim(),
     check('password').notEmpty().escape().trim(),
     check('isAdmin').notEmpty().isBoolean().toBoolean(),
     checkValidationResult,

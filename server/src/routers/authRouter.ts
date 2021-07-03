@@ -1,6 +1,6 @@
 import {Router} from 'express';
-import {check} from 'express-validator';
 import {authController} from '../controllers';
+import {check} from 'express-validator';
 import {checkValidationResult} from '../utils/checkValidationResult';
 
 // Public endpoints
@@ -9,7 +9,7 @@ export const authRouter = Router();
 
 authRouter.post(
     '/',
-    check('email').isEmail().normalizeEmail(),
+    check('username').notEmpty().escape().trim(),
     check('password').notEmpty().escape().trim(),
     checkValidationResult,
     authController.loginUser,

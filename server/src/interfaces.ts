@@ -22,7 +22,7 @@ export interface UserSession {
  * User interface
  */
 export interface User extends Record<string, any> {
-  email: string,
+  username: string,
   password: string,
   isAdmin: boolean,
 }
