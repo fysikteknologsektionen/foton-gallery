@@ -6,6 +6,7 @@ import {Footer} from './footer';
 import {Gallery} from '../gallery';
 import {Header} from './header';
 import {NotFound} from './NotFound';
+import {ProtectedRoute} from './ProtectedRoute';
 import React from 'react';
 import {UserSessionContextProvider} from '../../contexts';
 
@@ -25,7 +26,7 @@ export function App() {
               path={['/', '/page/:page']}
               component={Gallery}
             />
-            <Route
+            <ProtectedRoute
               exact
               path="/album/:year/:month/:day/:slug/edit"
               component={EditAlbum}
