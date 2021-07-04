@@ -1,11 +1,12 @@
 import {NextFunction, Request, Response} from 'express';
-import {matchedData} from 'express-validator';
-import {UserModel} from '../models';
+
 import {User} from '../interfaces';
+import {UserModel} from '../models';
+import {matchedData} from 'express-validator';
 
 /**
- * Creates a new user from email/password
- * @param req Express request object containing email, password and admin status
+ * Creates a new user from username/password
+ * @param req Express request object containing username, password and admin status
  * @param res Express response object
  * @param next Express next function
  */
@@ -28,7 +29,7 @@ export async function createUser(req: Request, res: Response, next: NextFunction
  */
 export async function getUsers(req: Request, res: Response, next: NextFunction) {
   try {
-    const users = await UserModel.find().exec();
+    const users = await UserModel.find({}, {password: 0}).exec();
     res.json(users);
   } catch (error) {
     next(error);
