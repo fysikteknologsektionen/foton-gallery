@@ -19,6 +19,15 @@ userRouter.post(
     userController.createUser,
 );
 
+userRouter.put(
+    '/',
+    check('username').optional({checkFalsy: true}).notEmpty().escape().trim(),
+    check('password').optional({checkFalsy: true}).notEmpty().escape().trim(),
+    check('isAdmin').optional().notEmpty().isBoolean().toBoolean(),
+    checkValidationResult,
+    userController.updateUser,
+);
+
 userRouter.get(
     '/',
     userController.getUsers,

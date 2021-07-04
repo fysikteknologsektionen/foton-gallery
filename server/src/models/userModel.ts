@@ -10,7 +10,7 @@ const userSchema = new Schema<UserDocument>({
   isAdmin: {type: Boolean, required: true},
 });
 
-userSchema.index({email: 1}, {unique: true});
+userSchema.index({username: 1}, {unique: true});
 
 // Hashes the password before saving it
 userSchema.pre('save', async function(next) {

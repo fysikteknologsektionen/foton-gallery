@@ -37,6 +37,29 @@ export async function getUsers(req: Request, res: Response, next: NextFunction) 
 }
 
 /**
+ * Updates a user
+ * @param req Express request object containing id and update data
+ * @param res Express response object
+ * @param next Express next function
+ */
+export async function updateUser(req: Request, res: Response, next: NextFunction) {
+  const {id, ...rest} = matchedData(req);
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw new Error('User does not exist.');
+    }
+    for (const [key, value] of Object.entries(rest)) {
+      user[key] = value;
+    }
+    await user.save();
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
  * Deletes a user by id
  * @param req Express request object containing the id of the user
  * @param res Express response object
