@@ -14,8 +14,10 @@ userSchema.index({username: 1}, {unique: true});
 
 // Hashes the password before saving it
 userSchema.pre('save', async function(next) {
-  const hash = await bcrypt.hash(this.password, 12);
-  this.password = hash;
+  if (this.modifiedPaths().includes('password')) {
+    const hash = await bcrypt.hash(this.password, 12);
+    this.password = hash;
+  }
   next();
 });
 

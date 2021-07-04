@@ -20,7 +20,8 @@ userRouter.post(
 );
 
 userRouter.put(
-    '/',
+    '/:id',
+    check('id').notEmpty().isAlphanumeric(),
     check('username').optional({checkFalsy: true}).notEmpty().escape().trim(),
     check('password').optional({checkFalsy: true}).notEmpty().escape().trim(),
     check('isAdmin').optional().notEmpty().isBoolean().toBoolean(),
