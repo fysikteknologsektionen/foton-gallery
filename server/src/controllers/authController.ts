@@ -8,14 +8,14 @@ import {matchedData} from 'express-validator';
 
 /**
  * Logs in a user by checking request, creating a secure token and settings cookies with credentials
- * @param req Express request object containing email and password
+ * @param req Express request object containing username and password
  * @param res Express reponse object
  * @param next Express next function
  */
 export async function loginUser(req: Request, res: Response, next: NextFunction) {
-  const {email, password} = matchedData(req) as {email: string, password: string};
+  const {username, password} = matchedData(req) as {username: string, password: string};
   try {
-    const user = await UserModel.findOne({email: email}).exec();
+    const user = await UserModel.findOne({username: username}).exec();
     if (!user || !await user.comparePassword(password)) {
       res.status(401).send();
       return;
