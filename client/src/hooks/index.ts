@@ -1,2 +1,2 @@
-export {useFetch} from './useFetch';
+export {useGetData} from './useGetData';
 export {useFormState} from './useFormState';

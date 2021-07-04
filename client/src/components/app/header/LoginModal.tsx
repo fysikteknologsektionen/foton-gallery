@@ -1,9 +1,10 @@
-import React, {FormEvent, useContext} from 'react';
-import {useFetch, useFormState} from '../../../hooks';
+import React, {FormEvent, useContext, useState} from 'react';
 
 import {Alert} from '../../common';
 import Cookies from 'js-cookie';
 import {UserSession} from '../../../interfaces';
+import axios from 'axios';
+import {useFormState} from '../../../hooks';
 import {userSessionContext} from '../../../contexts';
 
 /**
@@ -11,16 +12,8 @@ import {userSessionContext} from '../../../contexts';
  * @return React component
  */
 export function LoginModal() {
-  const {formState, setFormValue, reset} = useFormState();
-  const {error, fetchData} = useFetch({
-    method: 'POST',
-    url: '/api/auth',
-    data: formState,
-  }, false, () => {
-    setUserSession(Cookies.getJSON('session') as UserSession);
-    document.getElementById('login-modal-close-button')?.click();
-    reset();
-  });
+  const {formState, handleFormChange, clear} = useFormState();
+  const [error, setError] = useState<Error>();
   const {setUserSession} = useContext(userSessionContext);
 
   /**
@@ -29,7 +22,15 @@ export function LoginModal() {
    */
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await fetchData();
+    try {
+      await axios.post('/api/auth', formState);
+      setUserSession(Cookies.getJSON('session') as UserSession);
+      document.getElementById('login-modal-close-button')?.click();
+      clear();
+    } catch (error) {
+      console.error(error);
+      setError(error);
+    }
   }
 
   return (
@@ -59,19 +60,19 @@ export function LoginModal() {
               <div className="form-floating mb-3">
                 <input
                   className="form-control"
-                  id="login-modal-email-input"
-                  type="email"
-                  name="email"
-                  placeholder="Skriv in din e-postadress"
+                  id="login-modal-username-input"
+                  type="text"
+                  name="username"
+                  placeholder="Skriv in ditt användarnamn"
                   required
-                  value={formState.email}
-                  onChange={setFormValue}
+                  value={formState.username}
+                  onChange={handleFormChange}
                 />
                 <label
                   className="form-label"
-                  htmlFor="login-modal-email-input"
+                  htmlFor="login-modal-username-input"
                 >
-                  E-postadress
+                  Användarnamn
                 </label>
               </div>
               <div className="form-floating">
@@ -83,7 +84,7 @@ export function LoginModal() {
                   placeholder="Skriv in ditt lösenord"
                   required
                   value={formState.password}
-                  onChange={setFormValue}
+                  onChange={handleFormChange}
                 />
                 <label
                   className="form-label"

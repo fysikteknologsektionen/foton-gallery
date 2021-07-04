@@ -1,9 +1,10 @@
 import {Alert, BackButton, Thumbnail} from '../../common';
 import React, {FormEvent, useState} from 'react';
-import {useFetch, useFormState} from '../../../hooks';
 
 import {Album} from '../../../interfaces';
 import {SortableWrapper} from './SortableWrapper';
+import axios from 'axios';
+import {useFormState} from '../../../hooks';
 
 /**
  * Component for rending a form for editing an album
@@ -11,31 +12,33 @@ import {SortableWrapper} from './SortableWrapper';
  * @return React component
  */
 export function EditAlbumForm({album}: {album: Album}) {
-  const {formState, setFormValue} = useFormState({
+  const {formState, handleFormChange} = useFormState({
     name: album.name,
     date: album.date.substring(0, 10),
     authors: album.authors?.join(', ') ?? '',
     description: album.description ?? '',
   });
   const [imageOrder, setImageOrder] = useState<string[]>();
+  const [error, setError] = useState<Error>();
   const [fetchSuccess, setFetchSuccess] = useState(false);
-  const {error, fetchData} = useFetch<Album>({
-    method: 'PUT',
-    url: `/api/album/${album._id}`,
-    data: {
-      ...formState,
-      authors: formState.authors.split(','),
-      images: imageOrder,
-    },
-  }, false, () => setFetchSuccess(true));
 
   /**
    * Handles submitting of the form
    * @param event FormEvent passed by onSubmit
    */
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    fetchData();
+    try {
+      await axios.put<Album>(`/api/album/${album._id}`, {
+        ...formState,
+        authors: formState.authors.split(','),
+        images: imageOrder,
+      });
+      setFetchSuccess(true);
+    } catch (error) {
+      console.error(error);
+      setError(error);
+    }
   }
 
   return (
@@ -68,7 +71,7 @@ export function EditAlbumForm({album}: {album: Album}) {
                 placeholder="Skriv in ett namn"
                 required
                 value={formState.name}
-                onChange={setFormValue}
+                onChange={handleFormChange}
               />
               <label
                 className="form-label"
@@ -86,7 +89,7 @@ export function EditAlbumForm({album}: {album: Album}) {
                 placeholder="Välj ett datum"
                 required
                 value={formState.date}
-                onChange={setFormValue}
+                onChange={handleFormChange}
               />
               <label
                 className="form-label"
@@ -103,7 +106,7 @@ export function EditAlbumForm({album}: {album: Album}) {
                 name="authors"
                 placeholder="Skriv in ett fotograferare"
                 value={formState.authors}
-                onChange={setFormValue}
+                onChange={handleFormChange}
               />
               <label
                 className="form-label"
@@ -120,7 +123,7 @@ export function EditAlbumForm({album}: {album: Album}) {
                 name="description"
                 placeholder="Skriv in en beskrivning"
                 value={formState.description}
-                onChange={setFormValue}
+                onChange={handleFormChange}
               />
               <label
                 className="form-label"

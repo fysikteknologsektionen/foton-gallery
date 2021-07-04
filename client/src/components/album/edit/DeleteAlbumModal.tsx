@@ -1,7 +1,8 @@
 import React, {FormEvent, useState} from 'react';
-import {useFetch, useFormState} from '../../../hooks';
 
 import {Alert} from '../../common';
+import axios from 'axios';
+import {useFormState} from '../../../hooks';
 import {useHistory} from 'react-router-dom';
 
 /**
@@ -15,14 +16,8 @@ export function DeleteAlbumModal({albumId, albumName}: {
   albumName: string
 }) {
   const history = useHistory();
-  const {error, fetchData} = useFetch({
-    method: 'DELETE',
-    url: `/api/album/${albumId}`,
-  }, false, () => {
-    document.getElementById('delete-modal-close-button')?.click();
-    history.push('/');
-  });
-  const {formState, setFormValue} = useFormState();
+  const [error, setError] = useState<Error>();
+  const {formState, handleFormChange} = useFormState();
   const [validationError, setValidationError] = useState(false);
 
   /**
@@ -35,7 +30,14 @@ export function DeleteAlbumModal({albumId, albumName}: {
       setValidationError(true);
       return;
     }
-    await fetchData();
+    try {
+      await axios.delete(`/api/album/${albumId}`);
+      document.getElementById('delete-modal-close-button')?.click();
+      history.push('/');
+    } catch (error) {
+      console.error(error);
+      setError(error);
+    }
   }
 
   return (
@@ -89,7 +91,7 @@ export function DeleteAlbumModal({albumId, albumName}: {
                   autoComplete="off"
                   autoCapitalize="off"
                   value={formState.name}
-                  onChange={setFormValue}
+                  onChange={handleFormChange}
                 />
               </div>
             </div>

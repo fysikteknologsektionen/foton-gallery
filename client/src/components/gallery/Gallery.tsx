@@ -3,7 +3,7 @@ import {Alert, Spinner} from '../common';
 import {Album} from '../../interfaces';
 import {GalleryThumbnail} from './GalleryThumbnail';
 import React from 'react';
-import {useFetch} from '../../hooks';
+import {useGetData} from '../../hooks';
 import {useParams} from 'react-router-dom';
 
 /**
@@ -12,19 +12,13 @@ import {useParams} from 'react-router-dom';
  */
 export function Gallery() {
   const {page = '0'} = useParams<{page: string}>();
-  let {data, error} = useFetch<Album[]>({
-    method: 'GET',
+  const {data, error} = useGetData<Album[]>({
     url: '/api/album',
     params: {
       limit: 24,
       offset: Number(page) * 24,
     },
-  }, true);
-
-  // Handle case of single album
-  if (data && !Array.isArray(data)) {
-    data = [data];
-  }
+  });
 
   if (error) {
     return (

@@ -5,7 +5,7 @@ import {DeleteAlbumModal} from './DeleteAlbumModal';
 import {EditAlbumForm} from './EditAlbumForm';
 import React from 'react';
 import {UploadImagesModal} from './UploadImagesModal';
-import {useFetch} from '../../../hooks';
+import {useGetData} from '../../../hooks';
 import {useParams} from 'react-router-dom';
 
 /**
@@ -19,14 +19,14 @@ export function EditAlbum() {
     day: string,
     slug: string,
   }>();
-  const {data, error} = useFetch<Album>({
-    method: 'GET',
+  const {data: dataArray, error} = useGetData<Album[]>({
     url: '/api/album',
     params: {
       date: `${year}-${month}-${day}`,
       slug: slug,
     },
-  }, true);
+  });
+  const data = dataArray ? dataArray[0] : undefined;
 
   if (error) {
     return (

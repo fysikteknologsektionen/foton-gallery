@@ -4,7 +4,7 @@ import {useHistory, useParams} from 'react-router-dom';
 
 import {Album as AlbumInterface} from '../../interfaces';
 import {BackButton} from '../common/BackButton';
-import {useFetch} from '../../hooks';
+import {useGetData} from '../../hooks';
 import {userSessionContext} from '../../contexts';
 
 /**
@@ -18,14 +18,13 @@ export function Album() {
     day: string,
     slug: string,
   }>();
-  const {data, error} = useFetch<AlbumInterface>({
-    method: 'GET',
+  const {data, error} = useGetData<AlbumInterface>({
     url: '/api/album',
     params: {
       date: `${year}-${month}-${day}`,
       slug: slug,
     },
-  }, true);
+  });
   const {userSession} = useContext(userSessionContext);
   const history = useHistory();
 

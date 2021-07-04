@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 
-import {useFetch} from '../../../hooks';
+import axios from 'axios';
 import {userSessionContext} from '../../../contexts';
 
 /**
@@ -10,16 +10,16 @@ import {userSessionContext} from '../../../contexts';
  */
 export function LoginButton() {
   const {userSession, setUserSession} = useContext(userSessionContext);
-  const {fetchData} = useFetch({
-    method: 'DELETE',
-    url: '/api/auth',
-  });
 
   /**
- * Logs user out
- */
+   * Logs user out
+   */
   async function logoutUser() {
-    await fetchData();
+    try {
+      await axios.delete('/api/auth');
+    } catch (error) {
+      console.error(error);
+    }
     setUserSession(undefined);
   }
 

@@ -19,11 +19,13 @@ export function useFormState(initialState: Record<string, string> = {}) {
   });
 
   /**
-   * Sets an individual state value
-   * @param event FormEvent  passed by onChange
+   * Updates form state from form event
+   * @param event FormEvent passed by onChange
    */
-  function setFormValue(
-      event: FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+  function handleFormChange(
+      event: FormEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
   ) {
     setState({
       ...state,
@@ -33,7 +35,7 @@ export function useFormState(initialState: Record<string, string> = {}) {
 
   return {
     formState: stateProxy,
-    setFormValue,
-    reset: () => setState({}),
+    handleFormChange,
+    clear: () => setState({}),
   };
 }
