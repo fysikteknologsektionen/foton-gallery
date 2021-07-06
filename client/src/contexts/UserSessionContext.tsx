@@ -3,30 +3,27 @@ import React, {createContext, useState} from 'react';
 import Cookies from 'js-cookie';
 import {UserSession} from '../interfaces';
 
-// We need to allow a generic Function type for the default value,
-// with this hack we still keep type guard
 interface UserSessionContext {
-  userSession?: UserSession,
-  setUserSession: React.Dispatch<
-    React.SetStateAction<UserSession | undefined>
-  > | Function,
+  userSession: UserSession | undefined,
+  setUserSession:
+    React.Dispatch<React.SetStateAction<UserSession | undefined>> |
+    (() => undefined),
 }
 
-// Set default to some throwaway values,
-// these should never be used since the context is almost top-level
 export const userSessionContext = createContext<UserSessionContext>({
   userSession: undefined,
-  setUserSession: console.error,
+  setUserSession: () => undefined,
 });
 
 /**
  * Context provider for UserSession
- * @param children Child components
+ * @param children Child components to provide context to
  * @returns React component
  */
 export function UserSessionContextProvider({children}: {
-  children: JSX.Element
+  children: JSX.Element | JSX.Element[]
 }) {
+  // Try to load existing session from cookie storage
   let sessionCookie: UserSession | undefined;
   try {
     sessionCookie = Cookies.getJSON('session') as UserSession;
@@ -34,9 +31,7 @@ export function UserSessionContextProvider({children}: {
     sessionCookie = undefined;
   }
 
-  const [userSession, setUserSession] = useState<
-    UserSession | undefined
-  >(sessionCookie);
+  const [userSession, setUserSession] = useState(sessionCookie);
 
   return (
     <userSessionContext.Provider value={{userSession, setUserSession}}>

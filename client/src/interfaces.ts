@@ -7,9 +7,18 @@ export interface UserSession {
 }
 
 /**
+ * User interface
+ */
+export interface User {
+  _id: string,
+  username: string,
+  isAdmin: boolean,
+}
+
+/**
  * Album interface
  */
-export interface Album extends Record<string, any> {
+export interface Album {
   _id: string,
   name: string,
   slug: string,
