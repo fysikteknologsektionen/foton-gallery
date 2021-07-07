@@ -16,6 +16,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "valid-jsdoc": ["error", {"requireParamType": false, "requireReturnType": false, "requireReturn": false}]
+        "valid-jsdoc": ["error", {"requireParamType": false, "requireReturnType": false, "requireReturn": false}],
+        "sort-imports": "error"
     }
 }

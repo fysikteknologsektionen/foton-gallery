@@ -2,4 +2,4 @@ export {
   ValidationError,
   EntryNotFoundError,
   DuplicateEntryError,
-} from './Errors';
+} from './errors';
