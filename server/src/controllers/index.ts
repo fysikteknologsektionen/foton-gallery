@@ -1,3 +1,3 @@
-export * as albumController from './albumController';
-export * as userController from './userController';
+export * as albumController from './albumsController';
+export * as userController from './usersController';
 export * as authController from './authController';

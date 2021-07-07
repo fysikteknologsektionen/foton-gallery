@@ -1,8 +1,9 @@
 import '../db';
+
 import {Album} from '../interfaces';
+import {AlbumModel} from '../models';
 import fs from 'fs';
 import path from 'path';
-import {AlbumModel} from '../models';
 import {processImages} from '../utils/processImages';
 
 const albumData: Partial<Album>[] = [
@@ -22,14 +23,16 @@ const albumData: Partial<Album>[] = [
   },
   {
     name: 'Example album 3',
-    description: 'This is yet another example album containing example images. 🔥',
+    description: `This is yet another example album 
+      containing example images. 🔥`,
     authors: ['Barfoo Barfooson'],
     date: new Date('2021-03-21'),
     images: ['album3'],
   },
   {
     name: 'Example album 4',
-    description: 'This is even another example album containing example images. ✨',
+    description: `This is even another example album
+      containing example images. ✨`,
     authors: ['Foofoo BarBarson', 'Barbar FooFooson'],
     date: new Date('2019-05-23'),
     images: ['album4'],
@@ -42,9 +45,10 @@ const albumData: Partial<Album>[] = [
 function createExampleAlbums() {
   try {
     const promises = albumData.map(async (data) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const imagePath = path.join(__dirname, 'images', data.images![0]);
       data.images = fs.readdirSync(imagePath);
-      const album: Album = new AlbumModel({...data});
+      const album = new AlbumModel({...data});
       await album.save();
       processImages(data.images.map((image) => ({
         path: path.join(imagePath, image),

@@ -7,14 +7,14 @@ import bcrypt from 'bcrypt';
 const userSchema = new Schema<UserDocument>({
   username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
-  isAdmin: {type: Boolean, required: true},
+  role: {type: String, required: true, enum: ['user', 'admin']},
 });
 
-userSchema.index({username: 1}, {unique: true});
-
-// Hashes the password before saving it
+/**
+ * Hash passwords before saving them
+ */
 userSchema.pre('save', async function(next) {
-  if (this.modifiedPaths().includes('password')) {
+  if (this.isModified('password')) {
     const hash = await bcrypt.hash(this.password, 12);
     this.password = hash;
   }
@@ -24,9 +24,10 @@ userSchema.pre('save', async function(next) {
 /**
  * Compares a given password to the users password
  * @param password Password to compare with
- * @return Whether the password matches or not
+ * @returns Promise that resolves to true if the passwords
+ * matches otherwise false
  */
-userSchema.methods.comparePassword = async function(password: string): Promise<boolean> {
+userSchema.methods.comparePassword = async function(password: string) {
   return bcrypt.compare(password, this.password);
 };
 

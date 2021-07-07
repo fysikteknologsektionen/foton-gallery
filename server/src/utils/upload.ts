@@ -1,8 +1,9 @@
-import cryptoRandomString from 'crypto-random-string';
-import {Request} from 'express';
 import multer, {FileFilterCallback} from 'multer';
+
+import {Request} from '../interfaces';
+import {config} from '../config';
+import cryptoRandomString from 'crypto-random-string';
 import path from 'path';
-import {config} from '../env';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -10,7 +11,9 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Generate a "unique" file name
-    cb(null, cryptoRandomString({length: 32}) + path.extname(file.originalname));
+    cb(null, cryptoRandomString(
+        {length: 32}) + path.extname(file.originalname),
+    );
   },
 });
 
@@ -20,7 +23,11 @@ const storage = multer.diskStorage({
  * @param file Files to filter
  * @param cb Callback
  */
-function fileFilter(req: Request, file: Express.Multer.File, cb: FileFilterCallback) {
+function fileFilter(
+    req: Request,
+    file: Express.Multer.File,
+    cb: FileFilterCallback,
+): void {
   // Check if the mimetype is any image/*-type
   if (file.mimetype.match(/^image\//)) {
     cb(null, true);

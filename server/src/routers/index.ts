@@ -1,3 +1,3 @@
-export {publicAlbumRouter, privateAlbumRouter} from './albumRouter';
-export {userRouter} from './userRouter';
+export {albumsRouter} from './albumsRouter';
+export {usersRouter} from './usersRouter';
 export {authRouter} from './authRouter';

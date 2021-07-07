@@ -6,7 +6,7 @@ import {UserModel} from '../models';
 const userData: Partial<User> = {
   username: 'foo',
   password: 'bar',
-  isAdmin: true,
+  role: 'admin',
 };
 
 /**

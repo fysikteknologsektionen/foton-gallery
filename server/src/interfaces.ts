@@ -1,30 +1,27 @@
-/* eslint-disable no-unused-vars */
 import {Document} from 'mongoose';
+import {Request as ExpressRequest} from 'express';
 
-// Extend the Request interface for express to allow attaching a user object
-declare global {
-  namespace Express {
-    interface Request {
-      user?: UserSession
-    }
-  }
+/**
+ * Extension to Express' request type to allow attaching user session
+ */
+export interface Request extends ExpressRequest {
+  user?: UserSession,
 }
 
 /**
  * User session interface
  */
 export interface UserSession {
-  _id: string,
-  isAdmin: boolean,
+  role: 'user' | 'admin',
 }
 
 /**
  * User interface
  */
-export interface User extends Record<string, any> {
+export interface User {
   username: string,
   password: string,
-  isAdmin: boolean,
+  role: 'user' | 'admin',
 }
 
 /**
@@ -37,17 +34,17 @@ export interface UserDocument extends User, Document {
 /**
  * Album interface
  */
-export interface Album extends Record<string, any> {
+export interface Album {
   name: string,
   slug: string,
+  date: Date,
+  authors?: string[],
   description?: string,
   images?: string[],
-  authors?: string[],
-  date: Date,
   thumbnail?: string
 }
 
 /**
  * Album document interface
  */
-export interface AlbumDocument extends Album, Document {};
+export interface AlbumDocument extends Album, Document {}

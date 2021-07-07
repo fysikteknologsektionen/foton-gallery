@@ -1,11 +1,11 @@
 import {Router} from 'express';
 import {authController} from '../controllers';
 import {check} from 'express-validator';
-import {checkValidationResult} from '../utils/checkValidationResult';
+import {checkValidationResult} from '../middleware';
 
 // Public endpoints
 // eslint-disable-next-line new-cap
-export const authRouter = Router();
+const authRouter = Router();
 
 authRouter.post(
     '/',
@@ -19,3 +19,5 @@ authRouter.delete(
     '/',
     authController.logoutUser,
 );
+
+export {authRouter};
