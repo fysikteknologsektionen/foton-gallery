@@ -35,7 +35,8 @@ export async function createUser(
 export async function updateUser(
     req: Request,
     res: Response,
-    next: NextFunction): Promise<void> {
+    next: NextFunction,
+): Promise<void> {
   const {id, ...data} = matchedData(req) as {id: string} & User;
   try {
     const user = await UserModel.findById(id);

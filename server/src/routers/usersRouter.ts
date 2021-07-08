@@ -15,11 +15,15 @@ usersRouter.use(authenticateAdmin);
 const usersValidationChain = [
   check('username').notEmpty().escape().trim(),
   check('password').notEmpty().escape().trim(),
-  check('role').notEmpty().escape().trim().custom((value) => {
-    if (!['user', 'admin'].includes(value)) {
-      throw new Error('Invalid user role');
-    }
-  }),
+  check('role')
+      .notEmpty()
+      .escape()
+      .trim()
+      .custom((value) => {
+        if (!['user', 'admin'].includes(value)) {
+          throw new Error('Invalid user role');
+        }
+      }),
 ];
 
 usersRouter.post(
@@ -37,10 +41,7 @@ usersRouter.put(
     userController.updateUser,
 );
 
-usersRouter.get(
-    '/',
-    userController.getUsers,
-);
+usersRouter.get('/', userController.getUsers);
 
 usersRouter.delete(
     '/:id',

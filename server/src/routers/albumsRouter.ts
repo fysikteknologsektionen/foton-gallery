@@ -64,15 +64,19 @@ privateRouter.delete(
 
 privateRouter.post(
     '/:id/images',
-    check('id').notEmpty().isAlphanumeric().bail().custom(async (id) => {
-      return AlbumModel.exists({_id: id}).then((exists) => {
-        if (!exists) {
-          return Promise.reject(
-              new EntryNotFoundError('Album cannot be found.'),
-          );
-        }
-      });
-    }),
+    check('id')
+        .notEmpty()
+        .isAlphanumeric()
+        .bail()
+        .custom(async (id) => {
+          return AlbumModel.exists({_id: id}).then((exists) => {
+            if (!exists) {
+              return Promise.reject(
+                  new EntryNotFoundError('Album cannot be found.'),
+              );
+            }
+          });
+        }),
     checkValidationResult,
     upload.array('images', config.APP_MAX_FILE_UPLOADS),
     albumController.addImages,

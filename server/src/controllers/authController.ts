@@ -18,19 +18,22 @@ export async function loginUser(
     next: NextFunction,
 ): Promise<void> {
   const {username, password} = matchedData(req) as {
-    username: string,
-    password: string,
+    username: string;
+    password: string;
   };
   try {
     const user = await UserModel.findOne({username: username}).exec();
-    if (!user || !await user.comparePassword(password)) {
+    if (!user || !(await user.comparePassword(password))) {
       res.status(401).send();
       return;
     }
     const session: UserSession = {role: user.role};
     // Max session length in seconds
-    const expires = 0.5*60*60;
-    jwt.sign(session, config.APP_SECRET, {expiresIn: expires},
+    const expires = 0.5 * 60 * 60;
+    jwt.sign(
+        session,
+        config.APP_SECRET,
+        {expiresIn: expires},
         (error, token) => {
           if (error) {
             throw error;
@@ -40,16 +43,17 @@ export async function loginUser(
             httpOnly: true,
             sameSite: 'strict',
             secure: true,
-            maxAge: expires*1000,
+            maxAge: expires * 1000,
           });
           // Cookie used by front end (not secure)
           res.cookie('session', JSON.stringify(session), {
             sameSite: 'strict',
             secure: true,
-            maxAge: expires*1000,
+            maxAge: expires * 1000,
           });
           res.status(200).send();
-        });
+        },
+    );
   } catch (error) {
     next(error);
   }
@@ -61,10 +65,7 @@ export async function loginUser(
  * @param res Express reponse object
  * @param next Express next function
  */
-export function logoutUser(
-    req: Request,
-    res: Response,
-): void {
+export function logoutUser(req: Request, res: Response): void {
   res.clearCookie('auth', {httpOnly: true, sameSite: 'strict', secure: true});
   res.clearCookie('session', {sameSite: 'strict', secure: true});
   res.status(205).send();

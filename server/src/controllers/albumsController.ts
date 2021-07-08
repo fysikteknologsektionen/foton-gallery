@@ -19,10 +19,10 @@ export async function createAlbum(
     next: NextFunction,
 ): Promise<void> {
   const data = matchedData(req) as {
-    name: string,
-    date: Date,
-    authors: string[],
-    description: string,
+    name: string;
+    date: Date;
+    authors: string[];
+    description: string;
   };
   try {
     const album = new AlbumModel({...data});
@@ -45,11 +45,11 @@ export async function updateAlbum(
     next: NextFunction,
 ): Promise<void> {
   const {id, ...data} = matchedData(req) as {
-    id: string,
-    name: string,
-    date: Date,
-    authors?: string[],
-    description?: string,
+    id: string;
+    name: string;
+    date: Date;
+    authors?: string[];
+    description?: string;
   };
   try {
     const album = await AlbumModel.findById(id);
@@ -76,9 +76,9 @@ export async function getAlbum(
     next: NextFunction,
 ): Promise<void> {
   const {date, slug} = matchedData(req) as {
-  date: Date,
-  slug: string,
-};
+    date: Date;
+    slug: string;
+  };
   try {
     const album = await AlbumModel.findOne({date: date, slug: slug}).exec();
     res.json(album);
@@ -99,12 +99,15 @@ export async function getAlbums(
     next: NextFunction,
 ): Promise<void> {
   const {limit, offset} = matchedData(req) as {
-    limit: number,
-    offset: number,
+    limit: number;
+    offset: number;
   };
   try {
-    const albums = await AlbumModel.find().sort('-dates')
-        .limit(limit).skip(offset).exec();
+    const albums = await AlbumModel.find()
+        .sort('-dates')
+        .limit(limit)
+        .skip(offset)
+        .exec();
     res.json(albums);
   } catch (error) {
     next(error);
@@ -185,9 +188,9 @@ export async function updateImages(
     next: NextFunction,
 ): Promise<void> {
   const {id, images, thumbnail} = matchedData(req) as {
-    id: string,
-    images?: string[],
-    thumbnail?: string,
+    id: string;
+    images?: string[];
+    thumbnail?: string;
   };
   try {
     const album = await AlbumModel.findById(id).exec();

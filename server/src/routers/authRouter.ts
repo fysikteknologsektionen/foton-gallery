@@ -15,9 +15,6 @@ authRouter.post(
     authController.loginUser,
 );
 
-authRouter.delete(
-    '/',
-    authController.logoutUser,
-);
+authRouter.delete('/', authController.logoutUser);
 
 export {authRouter};
