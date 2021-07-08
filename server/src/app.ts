@@ -3,6 +3,7 @@ import express, {json} from 'express';
 
 import {config} from './config';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import path from 'path';
 import {populateUserField} from './middleware';
 
@@ -12,6 +13,7 @@ const imagesPath = path.join(__dirname, '..', 'images');
 const app = express();
 
 // Global middleware
+app.use(helmet());
 app.use(cookieParser());
 app.use(json());
 app.use(populateUserField);

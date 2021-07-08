@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import dotenvParseVariables from 'dotenv-parse-variables';
+import path from 'path';
 
 interface Config {
   APP_HOST: string;
@@ -14,7 +15,7 @@ interface Config {
   DB_PASSWORD?: string;
 }
 
-let env = dotenv.config({path: '../.env'});
+let env = dotenv.config({path: path.join(__dirname, '..', '..', '.env')});
 if (env.error) {
   throw env.error;
 }
