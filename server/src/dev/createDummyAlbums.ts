@@ -8,7 +8,7 @@ import path from 'path';
 import {processImages} from '../app/utils';
 
 const numAlbums = 30;
-const numImagesInAlbum = 16;
+const numImagesInAlbum = 6;
 
 /**
  * Creates dummy albums
@@ -23,31 +23,31 @@ async function createDummyAlbums() {
       // Select 16 random elements from files
       const images = faker.random.arrayElements(files, numImagesInAlbum);
 
-      const albumData = {
-        name: faker.lorem.words(3),
-        date: faker.date.past(),
-        authors: Array.from({length: faker.datatype.number(3)}, () =>
-          faker.name.findName(),
-        ),
-        description: faker.lorem.paragraphs(1),
-        images: images,
-        thumbnail: faker.datatype.number(images.length - 1),
-      };
-
-      const album = new Album({...albumData});
-      await album.save();
-
       // Copy files and rename them
       const newFileNames = [];
       for (const image of images) {
         const newFileName =
-          cryptoRandomString({length: 32}) + path.extname(image);
+                cryptoRandomString({length: 32}) + path.extname(image);
         await fs.copyFile(
             path.join(imagesDir, image),
             path.join(imagesDir, newFileName),
         );
         newFileNames.push(newFileName);
       }
+
+      const albumData = {
+        name: faker.lorem.words(3),
+        date: faker.date.past(10).toISOString().substring(0, 10),
+        authors: Array.from({length: faker.datatype.number(3)}, () =>
+          faker.name.findName(),
+        ),
+        description: faker.lorem.paragraphs(1),
+        images: newFileNames,
+        thumbnail: faker.datatype.number(images.length - 1),
+      };
+
+      const album = new Album({...albumData});
+      await album.save();
 
       // Process images
       processImages(
