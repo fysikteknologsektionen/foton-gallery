@@ -73,3 +73,18 @@ export class ForbiddenError extends StatusError {
     this.status = 403;
   }
 }
+
+/**
+ * Error for when the user tries to POST or PUT to a resource that already
+ * exists.
+ */
+export class ConflictError extends StatusError {
+  /**
+   * @param message Error message
+   */
+  constructor(message?: string) {
+    super(message || 'Conflict');
+    this.name = 'ConflictError';
+    this.status = 409;
+  }
+}

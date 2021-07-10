@@ -1,7 +1,7 @@
+import {ConflictError, NotFoundError} from '../errors';
 import {NextFunction, Request, Response} from 'express';
 import {UserAuthenicationData, UserSession} from '../../interfaces';
 
-import {NotFoundError} from '../errors';
 import {User} from '../models';
 import {matchedData} from 'express-validator';
 
@@ -22,6 +22,11 @@ export async function createUser(
     await user.save();
     res.status(201).send();
   } catch (error) {
+    // Catch duplicate key error
+    if (error.code === 11000) {
+      next(new ConflictError(`User with name ${data.username} already exists`));
+      return;
+    }
     next(error);
   }
 }
@@ -48,6 +53,11 @@ export async function updateUser(
     await user.save();
     res.status(204).send();
   } catch (error) {
+    // Catch duplicate key error
+    if (error.code === 11000) {
+      next(new ConflictError(`User with name ${data.username} already exists`));
+      return;
+    }
     next(error);
   }
 }

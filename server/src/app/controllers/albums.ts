@@ -1,9 +1,9 @@
 import {AlbumImageData, AlbumMetaData} from '../../interfaces';
+import {ConflictError, NotFoundError} from '../errors';
 import {NextFunction, Request, Response} from 'express';
 import {deleteImages, processImages} from '../utils';
 
 import {Album} from '../models';
-import {NotFoundError} from '../errors';
 import {matchedData} from 'express-validator';
 
 /**
@@ -23,6 +23,14 @@ export async function createAlbum(
     await album.save();
     res.status(201).send();
   } catch (error) {
+    // Catch duplicate key error
+    if (error.code === 11000) {
+      next(
+          new ConflictError(`Album with name ${data.name} and
+            date ${data.date} already exists`),
+      );
+      return;
+    }
     next(error);
   }
 }
@@ -50,6 +58,14 @@ export async function updateAlbum(
     await album.save();
     res.status(204).send();
   } catch (error) {
+    // Catch duplicate key error
+    if (error.code === 11000) {
+      next(
+          new ConflictError(`Album with name ${data.name} and
+            date ${data.date} already exists`),
+      );
+      return;
+    }
     next(error);
   }
 }
@@ -67,7 +83,7 @@ export async function getAlbum(
 ): Promise<void> {
   const data = matchedData(req) as {date: Date; slug: string};
   try {
-    const album = await Album.findOne({...data}).exec();
+    const album = await Album.findOne({slug: data.slug}).exec();
     if (!album) {
       throw new NotFoundError(
           `Album with slug ${data.slug} and date ${data.date} not found`,
@@ -80,7 +96,7 @@ export async function getAlbum(
 }
 
 /**
- * Gets a subset of all albums
+ * Gets a subset of all albums sorted by date
  * @param req Request object
  * @param res Response object
  * @param next Next function
@@ -93,7 +109,7 @@ export async function getAlbums(
   const {count, page} = matchedData(req) as {count: number; page: number};
   try {
     const albums = await Album.find()
-        .sort('-dates')
+        .sort('-date')
         .limit(count)
         .skip(page * count)
         .exec();
