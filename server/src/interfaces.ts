@@ -1,50 +1,56 @@
 import {Document} from 'mongoose';
-import {Request as ExpressRequest} from 'express';
+import {Request} from 'express';
 
 /**
- * Extension to Express' request type to allow attaching user session
+ * Extension of Express' Request interface to allow attaching a session object
  */
-export interface Request extends ExpressRequest {
+export interface RequestWithUser extends Request {
   user?: UserSession;
 }
 
 /**
- * User session interface
+ * Session type encoded in authentication tokens
  */
 export interface UserSession {
   role: 'user' | 'admin';
 }
 
 /**
- * User interface
+ * Interface for a user's data
  */
-export interface User {
+export interface UserAuthenicationData {
   username: string;
   password: string;
-  role: 'user' | 'admin';
 }
 
 /**
- * User document interface
+ * Interface for representing a user document
  */
-export interface UserDocument extends User, Document {
+export interface User extends UserSession, UserAuthenicationData, Document {
   comparePassword(password: string): Promise<boolean>;
 }
 
 /**
- * Album interface
+ * Interface for an album's meta information
  */
-export interface Album {
+export interface AlbumMetaData {
   name: string;
-  slug: string;
   date: Date;
-  authors?: string[];
+  authors: string[];
   description?: string;
-  images?: string[];
-  thumbnail?: string;
 }
 
 /**
- * Album document interface
+ * Interface for an albums image information
  */
-export interface AlbumDocument extends Album, Document {}
+export interface AlbumImageData {
+  images: string[];
+  thumbnail?: number;
+}
+
+/**
+ * Interface for representing an album document
+ */
+export interface Album extends AlbumMetaData, AlbumImageData, Document {
+  slug: string;
+}
