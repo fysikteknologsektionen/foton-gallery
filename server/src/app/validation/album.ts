@@ -14,7 +14,7 @@ const noNewImages: CustomValidator = async (
     images: string[],
     {req},
 ): Promise<void> => {
-  const album = await Album.findById(req.body.id);
+  const album = await Album.findById(req.params?.id);
   if (!album) {
     return Promise.reject();
   }
@@ -28,11 +28,13 @@ const noNewImages: CustomValidator = async (
  * Checks if the the thumbnail is a valid image
  * @param thumbnail Thumbnail index
  * @param req Request object
+ * @returns True if the value passes validation
  */
-const validThumbnail: CustomValidator = (thumbnail: number, {req}): void => {
-  if (thumbnail > req.body.images.length - 1) {
+const validThumbnail: CustomValidator = (thumbnail: string, {req}): boolean => {
+  if (!(req.body.images as string[]).includes(thumbnail)) {
     throw new Error();
   }
+  return true;
 };
 
 export const albumValidators = {
@@ -50,7 +52,6 @@ export const albumValidators = {
       .custom(noNewImages),
   thumbnail: body('thumbnail')
       .optional()
-      .isInt({min: 0})
       .custom(validThumbnail),
   count: query('count').isInt({min: 1, max: 24}).toInt(),
   page: query('page').isInt({min: 0}).toInt(),

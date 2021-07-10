@@ -45,7 +45,7 @@ export interface AlbumMetaData {
  */
 export interface AlbumImageData {
   images: string[];
-  thumbnail?: number;
+  thumbnail?: string;
 }
 
 /**

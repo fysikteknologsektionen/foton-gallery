@@ -11,7 +11,7 @@ const albumSchema = new Schema<IAlbum>({
   authors: [String],
   description: String,
   images: [String],
-  thumbnail: Number,
+  thumbnail: String,
 });
 
 albumSchema.index({date: -1, slug: 1}, {unique: true});
