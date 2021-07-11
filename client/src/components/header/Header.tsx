@@ -11,7 +11,7 @@ import {sessionContext} from '../../contexts';
  * Component for rendering a header
  * @returns Header component
  */
-export function Header(): JSX.Element {
+export const Header: React.VFC = () => {
   const {session} = useContext(sessionContext);
   const navCollapseRef = useRef<HTMLDivElement>(null);
   const [navCollapsed, setNavCollapsed] = useState(true);
@@ -104,4 +104,4 @@ export function Header(): JSX.Element {
       </nav>
     </header>
   );
-}
+};

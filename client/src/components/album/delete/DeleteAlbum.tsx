@@ -11,7 +11,7 @@ import {useHistory} from 'react-router-dom';
  * @param album Album data
  * @return DeletAlbum view-component
  */
-export function DeleteAlbum({album}: {album: Album}): JSX.Element {
+export const DeleteAlbum: React.VFC<{album: Album}> = ({album}) => {
   const {formState, handleFormChange} = useFormState();
   const history = useHistory();
   const newToast = useContext(toastContext);
@@ -79,4 +79,4 @@ export function DeleteAlbum({album}: {album: Album}): JSX.Element {
       </form>
     </>
   );
-}
+};

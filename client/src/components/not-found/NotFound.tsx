@@ -5,7 +5,7 @@ import React from 'react';
  * Component for rendering a generic 404 not-found-view
  * @returns NotFound view-component
  */
-export function NotFound(): JSX.Element {
+export const NotFound: React.VFC = () => {
   return (
     <>
       <h1>404: Sidan kunde inte hittas</h1>
@@ -15,4 +15,4 @@ export function NotFound(): JSX.Element {
       </Link>
     </>
   );
-}
+};

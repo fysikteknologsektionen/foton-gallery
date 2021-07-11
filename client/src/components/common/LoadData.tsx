@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ReactElement, useCallback, useEffect, useState} from 'react';
 import axios, {AxiosRequestConfig} from 'axios';
 
 import {Spinner} from './Spinner';
@@ -8,33 +8,39 @@ import {Spinner} from './Spinner';
  * component. Renders a loading indicator while waiting and an error message
  * if fetching fails
  * @template T Passed to fetch request and typeof data passed to child
- * @param children Function that takes a data parameter and returns child
- * component
+ * @param children Function that takes a data parameter and a data update
+ * function and returns child component
  * @returns WaitForData component for render-props pattern
  */
-export function LoadData<T>({
+export const LoadData = <T, >({
   children,
   url,
   config,
 }: {
-  children: (data: T) => JSX.Element;
+  children: (data: T, getData: () => Promise<void>) => JSX.Element;
   url: string;
   config?: AxiosRequestConfig;
-}): JSX.Element {
+}): ReactElement => {
   const [data, setData] = useState<T>();
   const [error, setError] = useState(false);
 
+  /**
+   * GET:s data
+   */
+  const getData = useCallback(async (): Promise<void> => {
+    try {
+      const res = await axios.get<T>(url, config);
+      setData(res.data);
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    }
+  }, [config, url]);
+
+  // Get data on mount
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get<T>(url, config);
-        setData(res.data);
-      } catch (error) {
-        console.error(error);
-        setError(true);
-      }
-    })();
-  }, [url, config]);
+    getData();
+  }, [getData]);
 
   if (error) {
     return (
@@ -52,6 +58,6 @@ export function LoadData<T>({
   if (!data) {
     return <Spinner />;
   } else {
-    return children(data);
+    return children(data, getData);
   }
-}
+};

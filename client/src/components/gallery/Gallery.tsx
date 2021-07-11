@@ -8,7 +8,7 @@ import {LoadData} from '../common';
  * Component for rendering the gallery (home) view
  * @returns Gallery view-component
  */
-export function Gallery(): JSX.Element {
+export const Gallery: React.VFC = () => {
   const [page] = useState(0);
 
   return (
@@ -34,4 +34,4 @@ export function Gallery(): JSX.Element {
       )}
     </LoadData>
   );
-}
+};

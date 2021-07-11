@@ -13,19 +13,14 @@ import {sessionContext} from '../../contexts';
  * @param component Component to render if authorized
  * @return ProtectedRoute component
  */
-export function ProtectedRoute({
-  adminOnly = false,
-  path,
-  exact = false,
-  component,
-}: {
-  adminOnly?: boolean;
+export const ProtectedRoute: React.VFC<{
+  isAdminOnly?: boolean;
   path: string;
   exact?: boolean;
   component: React.VFC;
-}): JSX.Element {
+}> = ({isAdminOnly, path, exact, component}) => {
   const {session} = useContext(sessionContext);
-  const authorized = !(!session || (adminOnly && session.role !== 'admin'));
+  const authorized = !(!session || (isAdminOnly && session.role !== 'admin'));
 
   return (
     <Route
@@ -34,4 +29,4 @@ export function ProtectedRoute({
       component={authorized ? component : NotFound}
     />
   );
-}
+};

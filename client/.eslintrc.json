@@ -1,5 +1,4 @@
 {
-  
   "env": {
     "browser": true
   },
@@ -9,5 +8,8 @@
       "jsx": true
     }
   },
-  "plugins": ["react"]
+  "plugins": ["react"],
+  "rules": {
+    "react/prop-types": "off"
+  }
 }

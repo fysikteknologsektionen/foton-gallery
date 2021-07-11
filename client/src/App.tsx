@@ -14,7 +14,7 @@ const AlbumRouter = React.lazy(() => import('./components/album'));
  * Component for rendering the main application tree
  * @returns App component
  */
-export function App(): JSX.Element {
+export const App: React.VFC = () => {
   return (
     <SessionContextProvider>
       <ToastContextProvider>
@@ -25,7 +25,7 @@ export function App(): JSX.Element {
               <Switch>
                 <Route exact path="/" component={Gallery} />
                 <ProtectedRoute
-                  adminOnly
+                  isAdminOnly
                   path="/users"
                   component={UsersRouter}
                 />
@@ -38,4 +38,4 @@ export function App(): JSX.Element {
       </ToastContextProvider>
     </SessionContextProvider>
   );
-}
+};

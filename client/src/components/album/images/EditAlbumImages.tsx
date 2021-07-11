@@ -11,7 +11,7 @@ import {toastContext} from '../../../contexts';
  * @param album Album data
  * @return React component
  */
-export function EditAlbumImages({album}: {album: Album}): JSX.Element {
+export const EditAlbumImages: React.VFC<{album: Album}> = ({album}) => {
   const [imageOrder, setImageOrder] = useState<string[]>(album.images);
   const [thumbnail, setThumbnail] = useState<string | undefined>(
       album.thumbnail,
@@ -150,4 +150,4 @@ export function EditAlbumImages({album}: {album: Album}): JSX.Element {
       </button>
     </>
   );
-}
+};

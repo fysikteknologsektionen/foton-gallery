@@ -9,7 +9,7 @@ import {toastContext} from '../../../contexts';
  * @param users Array of user data
  * @return DeleteUser view-component
  */
-export function DeleteUser({users}: {users: User[]}): JSX.Element {
+export const DeleteUser: React.VFC<{users: User[]}> = ({users}) => {
   const [selectedUser, setSelectedUser] = useState(0);
   const newToast = useContext(toastContext);
 
@@ -64,4 +64,4 @@ export function DeleteUser({users}: {users: User[]}): JSX.Element {
       </button>
     </form>
   );
-}
+};

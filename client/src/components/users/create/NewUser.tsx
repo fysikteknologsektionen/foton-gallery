@@ -8,7 +8,7 @@ import {useFormState} from '../../../hooks';
  * Component for rendering a form to create a new user
  * @return CreateUser view-component
  */
-export function NewUser(): JSX.Element {
+export const NewUser: React.VFC = () => {
   const {formState, handleFormChange} = useFormState();
   const [adminInputChecked, setAdminInputChecked] = useState(false);
   const newToast = useContext(toastContext);
@@ -96,4 +96,4 @@ export function NewUser(): JSX.Element {
       </form>
     </>
   );
-}
+};

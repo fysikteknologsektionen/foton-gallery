@@ -8,7 +8,7 @@ import {User} from '../../../interfaces';
  * @param users Array of user data
  * @returns EditUser view-component
  */
-export function EditUser({users}: {users: User[]}): JSX.Element {
+export const EditUser: React.VFC<{users: User[]}> = ({users}) => {
   const [selectedUserIndex, setSelectedUserIndex] = useState(0);
 
   return (
@@ -41,4 +41,4 @@ export function EditUser({users}: {users: User[]}): JSX.Element {
       />
     </>
   );
-}
+};

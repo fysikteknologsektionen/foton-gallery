@@ -8,11 +8,11 @@ import React, {
 } from 'react-router-dom';
 
 import {Album} from '../../interfaces';
+import {AlbumNav} from './AlbumNav';
 import {DeleteAlbum} from './delete';
 import {EditAlbum} from './edit';
 import {ManageAlbumImages} from './images';
 import {ViewAlbum} from './view';
-import {withAlbumNav} from './withAlbumNav';
 
 /**
  * Router component for album views
@@ -24,28 +24,32 @@ export function AlbumRouter(): JSX.Element {
 
   return (
     <LoadData<Album> url={`/api/albums/${date}/${slug}`}>
-      {(album) => (
+      {(album, updateData) => (
         <Switch>
           <Route
             exact
             path={path}
             component={() => <ViewAlbum album={album} />}
           />
-          <ProtectedRoute
-            exact
-            path={`${path}/edit`}
-            component={withAlbumNav(EditAlbum, album)}
-          />
-          <ProtectedRoute
-            exact
-            path={`${path}/images`}
-            component={withAlbumNav(ManageAlbumImages, album)}
-          />
-          <ProtectedRoute
-            exact
-            path={`${path}/delete`}
-            component={withAlbumNav(DeleteAlbum, album)}
-          />
+          <AlbumNav album={album}>
+            <ProtectedRoute
+              exact
+              path={`${path}/edit`}
+              component={() => (
+                <EditAlbum album={album} updateData={updateData} />
+              )}
+            />
+            <ProtectedRoute
+              exact
+              path={`${path}/images`}
+              component={() => <ManageAlbumImages album={album} />}
+            />
+            <ProtectedRoute
+              exact
+              path={`${path}/delete`}
+              component={() => <DeleteAlbum album={album} />}
+            />
+          </AlbumNav>
           <Route component={() => <Redirect to="edit" />} />
         </Switch>
       )}

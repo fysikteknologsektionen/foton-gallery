@@ -10,7 +10,7 @@ import {useHistory} from 'react-router-dom';
  * @param albumId ID of the album to add images to
  * @return React component
  */
-export function AddImagesModal({albumId}: {albumId: string}): JSX.Element {
+export const AddImagesModal: React.VFC<{albumId: string}> = ({albumId}) => {
   const history = useHistory();
   const newToast = useContext(toastContext);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -120,4 +120,4 @@ export function AddImagesModal({albumId}: {albumId: string}): JSX.Element {
       </div>
     </>
   );
-}
+};

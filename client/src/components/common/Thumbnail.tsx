@@ -11,15 +11,11 @@ import placeholderImage from './placeholder.jpg';
  * @param className className property to pass to image element
  * @return Thumbnail component
  */
-export function Thumbnail({
-  fileName,
-  alt,
-  className,
-}: {
+export const Thumbnail: React.VFC<{
   fileName: string;
   alt: string;
   className?: string;
-}): JSX.Element {
+}> = ({fileName, alt, className}) => {
   const thumbnailImage = `/images/thumbnail/${fileName}`;
   const scaledImage = `/images/scaled/${fileName}`;
   const fullsizeImage = `/images/fullsize/${fileName}`;
@@ -49,4 +45,4 @@ export function Thumbnail({
       onError={handleError}
     />
   );
-}
+};

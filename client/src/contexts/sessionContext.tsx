@@ -21,11 +21,9 @@ export const sessionContext = createContext<
  * @param children Children to provide context to
  * @returns SessionContextProvider component
  */
-export function SessionContextProvider({
+export const SessionContextProvider: React.VFC<{children: React.ReactNode}> = ({
   children,
-}: {
-  children: JSX.Element;
-}): JSX.Element {
+}) => {
   const [session, setSession] = useState<UserSession>();
 
   /**
@@ -46,4 +44,4 @@ export function SessionContextProvider({
       {children}
     </sessionContext.Provider>
   );
-}
+};

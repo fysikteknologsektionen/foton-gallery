@@ -10,7 +10,7 @@ import {useFormState} from '../../hooks';
  * @param albumId ID of the album to add images to
  * @return React component
  */
-export function LoginModal(): JSX.Element {
+export const LoginModal: React.VFC = () => {
   const {formState, handleFormChange, clearForm} = useFormState();
   const {session, updateSession} = useContext(sessionContext);
   const newToast = useContext(toastContext);
@@ -173,4 +173,4 @@ export function LoginModal(): JSX.Element {
       </div>
     </>
   );
-}
+};

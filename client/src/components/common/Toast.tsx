@@ -9,15 +9,11 @@ import {Toast as BootstrapToast} from 'bootstrap';
  * @param type Toast type, affects background color
  * @returns Toast component
  */
-export function Toast({
-  title,
-  message,
-  type,
-}: {
+export const Toast: React.VFC<{
   title: string;
   message: string;
   type: 'success' | 'warning' | 'danger';
-}): JSX.Element {
+}> = ({title, message, type}) => {
   const toastRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -62,4 +58,4 @@ export function Toast({
       </div>
     </div>
   );
-}
+};

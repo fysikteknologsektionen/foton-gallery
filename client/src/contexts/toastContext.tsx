@@ -8,19 +8,21 @@ interface ToastData {
   type: 'success' | 'warning' | 'danger';
 }
 
+interface ToastContext {
+  (data: ToastData): void;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const toastContext = createContext<(data: ToastData) => void>(() => {});
+export const toastContext = createContext<ToastContext>(() => {});
 
 /**
  * Provider component for toastContext
  * @param children Children to provide context to
  * @returns ToastContextProvider component
  */
-export function ToastContextProvider({
+export const ToastContextProvider: React.VFC<{children: React.ReactNode}> = ({
   children,
-}: {
-  children: JSX.Element;
-}): JSX.Element {
+}) => {
   const [toasts, setToasts] = useState<JSX.Element[]>([]);
 
   /**
@@ -43,4 +45,4 @@ export function ToastContextProvider({
       <toastContext.Provider value={newToast}>{children}</toastContext.Provider>
     </>
   );
-}
+};

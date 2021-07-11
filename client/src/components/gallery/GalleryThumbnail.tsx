@@ -8,7 +8,7 @@ import {Thumbnail} from '../common';
  * @param album Album data
  * @returns GalleryThumbnail component
  */
-export function GalleryThumbnail({album}: {album: Album}): JSX.Element {
+export const GalleryThumbnail: React.VFC<{album: Album}> = ({album}) => {
   const albumDate = album.date.substring(0, 10);
   // Check for a valid thumbnail, otherwise fallback to first image
   const thumbnail =
@@ -41,4 +41,4 @@ export function GalleryThumbnail({album}: {album: Album}): JSX.Element {
       </div>
     </Link>
   );
-}
+};

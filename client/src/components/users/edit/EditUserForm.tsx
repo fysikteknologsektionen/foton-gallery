@@ -10,7 +10,7 @@ import {useFormState} from '../../../hooks';
  * @param user User data
  * @return EditUserForm component
  */
-export function EditUserForm({user}: {user: User}): JSX.Element {
+export const EditUserForm: React.VFC<{user: User}> = ({user}) => {
   const {formState, handleFormChange} = useFormState({
     username: user.username,
   });
@@ -98,4 +98,4 @@ export function EditUserForm({user}: {user: User}): JSX.Element {
       </button>
     </form>
   );
-}
+};

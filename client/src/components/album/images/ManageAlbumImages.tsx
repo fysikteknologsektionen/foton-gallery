@@ -7,7 +7,7 @@ import React from 'react';
  * Component for rendering a view for editing album images
  * @returns EditAlbumImages view-component
  */
-export function ManageAlbumImages({album}: {album: Album}): JSX.Element {
+export const ManageAlbumImages: React.VFC<{album: Album}> = ({album}) => {
   return (
     <>
       <h2 className="visually-hidden">Hantera albumbilder</h2>
@@ -16,4 +16,4 @@ export function ManageAlbumImages({album}: {album: Album}): JSX.Element {
       <EditAlbumImages album={album} />
     </>
   );
-}
+};

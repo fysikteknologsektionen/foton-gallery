@@ -10,7 +10,7 @@ import {sessionContext} from '../../../contexts';
  * images of an album
  * @return React component
  */
-export function ViewAlbum({album}: {album: Album}): JSX.Element {
+export const ViewAlbum: React.VFC<{album: Album}> = ({album}) => {
   const {url} = useRouteMatch();
   const {session} = useContext(sessionContext);
 
@@ -45,4 +45,4 @@ export function ViewAlbum({album}: {album: Album}): JSX.Element {
       </div>
     </>
   );
-}
+};

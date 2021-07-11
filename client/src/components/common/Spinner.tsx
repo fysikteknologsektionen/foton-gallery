@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
  * Component for rendering a loading spinner
  * @return Spinner component
  */
-export function Spinner(): JSX.Element {
+export const Spinner: React.VFC = () => {
   const [show, setShow] = useState(false);
 
   // Wait to display the spinner to prevent flickering
@@ -26,4 +26,4 @@ export function Spinner(): JSX.Element {
       </div>
     </div>
   );
-}
+};

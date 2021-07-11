@@ -2,23 +2,23 @@ import React, {useContext} from 'react';
 
 import {Album} from '../../../interfaces';
 import axios from 'axios';
-import slug from 'slug';
 import {toastContext} from '../../../contexts';
 import {useFormState} from '../../../hooks';
-import {useHistory} from 'react-router-dom';
 
 /**
  * Component for rendering a form to edit album information
  * @return EditAlbum view-component
  */
-export function EditAlbum({album}: {album: Album}): JSX.Element {
+export const EditAlbum: React.VFC<{
+  album: Album;
+  updateData: () => Promise<void>;
+}> = ({album, updateData}) => {
   const {formState, handleFormChange} = useFormState({
     name: album.name,
     date: album.date.substring(0, 10),
     authors: album.authors.join(', '),
     description: album.description ?? '',
   });
-  const history = useHistory();
   const newToast = useContext(toastContext);
 
   /**
@@ -51,9 +51,7 @@ export function EditAlbum({album}: {album: Album}): JSX.Element {
         message: 'Ändringarna har sparats.',
         type: 'success',
       });
-      history.push(
-          `/album/${formState.date}/${slug(formState.name)}/edit`,
-      );
+      updateData();
     } catch (error) {
       console.error(error);
       newToast({
@@ -125,4 +123,4 @@ export function EditAlbum({album}: {album: Album}): JSX.Element {
       </form>
     </>
   );
-}
+};
