@@ -19,7 +19,7 @@ usersRouter.post(
 
 usersRouter.put(
     '/:id',
-    validate(userValidators, ['id', 'username', 'password', 'role']),
+    validate(userValidators, ['id', 'username', 'optionalPassword', 'role']),
     updateUser,
 );
 
