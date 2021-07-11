@@ -1,8 +1,2 @@
-export {
-  userSessionContext,
-  UserSessionContextProvider,
-} from './UserSessionContext';
-export {
-  usersContext,
-  UsersContextProvider,
-} from './UsersContext';
+export {toastContext, ToastContextProvider} from './toastContext';
+export {sessionContext, SessionContextProvider} from './sessionContext';

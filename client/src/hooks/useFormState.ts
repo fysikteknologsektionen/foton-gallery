@@ -1,4 +1,4 @@
-import {FormEvent, useState} from 'react';
+import {useState} from 'react';
 
 /**
  * Hook for managing the state of a form
@@ -6,10 +6,18 @@ import {FormEvent, useState} from 'react';
  * @returns Form state, function to set individual state values and function
  * to reset form
  */
-export function useFormState(initialState: Record<string, string> = {}) {
+export function useFormState(initialState: Record<string, string> = {}): {
+  formState: Record<string, string>;
+  handleFormChange: (
+    event: React.FormEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  clearForm: () => void;
+} {
   const [state, setState] = useState(initialState);
 
-  // Proxy to set default value of state properties to ''
+  // Proxy to set default value of state properties to empty string
   const stateProxy = new Proxy(state, {
     get: (target, prop) => {
       if (typeof prop === 'string') {
@@ -23,19 +31,20 @@ export function useFormState(initialState: Record<string, string> = {}) {
    * @param event FormEvent passed by onChange
    */
   function handleFormChange(
-      event: FormEvent<
+      event: React.FormEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
       >,
   ) {
-    setState({
+    const target = event.currentTarget;
+    setState((state) => ({
       ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
+      [target.name]: target.value,
+    }));
   }
 
   return {
     formState: stateProxy,
     handleFormChange,
-    clear: () => setState({}),
+    clearForm: () => setState({}),
   };
 }

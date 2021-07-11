@@ -3,17 +3,23 @@ import React, {SyntheticEvent} from 'react';
 import placeholderImage from './placeholder.jpg';
 
 /**
- * Component for rendering an image thumbnail.
- * Falls back to scaled and fullsize version if thumbnail does not exist
+ * Component for rendering an image thumbnail. Prioritizes thumbnail first, then
+ * scaled and finally fullsize version. Falls back to placeholder if neither
+ * can be loaded.
  * @param fileName Filename of the image to display
+ * @param alt alt propert to pass to image element
  * @param className className property to pass to image element
- * @return React component
+ * @return Thumbnail component
  */
-export function Thumbnail({fileName, alt, className}: {
-  fileName: string,
-  alt: string,
-  className?: string
-}) {
+export function Thumbnail({
+  fileName,
+  alt,
+  className,
+}: {
+  fileName: string;
+  alt: string;
+  className?: string;
+}): JSX.Element {
   const thumbnailImage = `/images/thumbnail/${fileName}`;
   const scaledImage = `/images/scaled/${fileName}`;
   const fullsizeImage = `/images/fullsize/${fileName}`;
@@ -37,7 +43,7 @@ export function Thumbnail({fileName, alt, className}: {
 
   return (
     <img
-      className={className}
+      className={`w-100 ${className}`}
       src={fileName ? thumbnailImage : placeholderImage}
       alt={alt}
       onError={handleError}

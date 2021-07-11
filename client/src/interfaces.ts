@@ -1,30 +1,29 @@
 /**
- * User session interface
+ * Interface repsenting a user session as retrieved from backend
  */
 export interface UserSession {
-  _id: string,
-  isAdmin: boolean,
+  role: 'user' | 'admin';
 }
 
 /**
- * User interface
+ * Interface representing a user
  */
 export interface User {
-  _id: string,
-  username: string,
-  isAdmin: boolean,
+  _id: string;
+  username: string;
+  role: 'user' | 'admin';
 }
 
 /**
- * Album interface
+ * Interface representing an album
  */
 export interface Album {
-  _id: string,
-  name: string,
-  slug: string,
-  description?: string,
-  images?: string[],
-  authors?: string[],
-  date: string,
-  thumbnail?: string
+  _id: string;
+  name: string;
+  slug: string;
+  date: string;
+  authors: string[];
+  description?: string;
+  images: string[];
+  thumbnail?: string;
 }

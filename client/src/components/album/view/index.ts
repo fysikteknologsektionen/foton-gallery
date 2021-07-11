@@ -1,0 +1,1 @@
+export {ViewAlbum} from './ViewAlbum';

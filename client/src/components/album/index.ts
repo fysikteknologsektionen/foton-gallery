@@ -1,1 +1,1 @@
-export {Album} from './Album';
+export {AlbumRouter as default} from './AlbumRouter';

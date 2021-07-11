@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 
 /**
  * Component for rendering a loading spinner
- * @return React component
+ * @return Spinner component
  */
-export function Spinner() {
+export function Spinner(): JSX.Element {
   const [show, setShow] = useState(false);
 
   // Wait to display the spinner to prevent flickering
@@ -16,11 +16,7 @@ export function Spinner() {
   }, []);
 
   return (
-    <div
-      className={
-        `d-flex justify-content-center mt-5 ${!show && 'd-none'}`
-      }
-    >
+    <div className={`d-flex justify-content-center mt-5 ${!show && 'd-none'}`}>
       <div
         className="spinner-grow"
         style={{width: '2.5rem', height: '2.5rem'}}

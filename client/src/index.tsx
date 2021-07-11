@@ -1,7 +1,6 @@
-import '../node_modules/bootstrap/dist/js/bootstrap.js';
 import './style.scss';
 
-import {App} from './components/app';
+import {App} from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
