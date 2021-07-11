@@ -18,8 +18,8 @@ export const UsersRouter: React.VFC = () => {
   return (
     <LoadData<User[]> url="/api/users" config={{withCredentials: true}}>
       {(users) => (
-        <Switch>
-          <UsersNav>
+        <UsersNav>
+          <Switch>
             <Route exact path={`${path}/new`} component={() => <NewUser />} />
             <Route
               exact
@@ -36,9 +36,9 @@ export const UsersRouter: React.VFC = () => {
               path={path}
               component={() => <Redirect to={`${url}/new`} />}
             />
-          </UsersNav>
-          <Route component={() => <Redirect to="new" />} />
-        </Switch>
+            <Route component={() => <Redirect to="new" />} />
+          </Switch>
+        </UsersNav>
       )}
     </LoadData>
   );

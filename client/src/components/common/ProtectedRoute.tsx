@@ -15,9 +15,9 @@ import {sessionContext} from '../../contexts';
  */
 export const ProtectedRoute: React.VFC<{
   isAdminOnly?: boolean;
-  path: string;
+  path: string | string[];
   exact?: boolean;
-  component: React.VFC;
+  component: React.ComponentType;
 }> = ({isAdminOnly, path, exact, component}) => {
   const {session} = useContext(sessionContext);
   const authorized = !(!session || (isAdminOnly && session.role !== 'admin'));

@@ -20,37 +20,42 @@ import {ViewAlbum} from './view';
  */
 export function AlbumRouter(): JSX.Element {
   const {date, slug} = useParams<{date: string; slug: string}>();
-  const {path} = useRouteMatch();
+  const {path, url} = useRouteMatch();
 
   return (
     <LoadData<Album> url={`/api/albums/${date}/${slug}`}>
-      {(album, updateData) => (
+      {(album) => (
         <Switch>
           <Route
             exact
             path={path}
             component={() => <ViewAlbum album={album} />}
           />
-          <AlbumNav album={album}>
-            <ProtectedRoute
-              exact
-              path={`${path}/edit`}
-              component={() => (
-                <EditAlbum album={album} updateData={updateData} />
-              )}
-            />
-            <ProtectedRoute
-              exact
-              path={`${path}/images`}
-              component={() => <ManageAlbumImages album={album} />}
-            />
-            <ProtectedRoute
-              exact
-              path={`${path}/delete`}
-              component={() => <DeleteAlbum album={album} />}
-            />
-          </AlbumNav>
-          <Route component={() => <Redirect to="edit" />} />
+          <ProtectedRoute
+            path={path}
+            component={() => (
+              <AlbumNav album={album}>
+                <Switch>
+                  <Route
+                    exact
+                    path={`${path}/edit`}
+                    component={() => <EditAlbum album={album} />}
+                  />
+                  <Route
+                    exact
+                    path={`${path}/images`}
+                    component={() => <ManageAlbumImages album={album} />}
+                  />
+                  <Route
+                    exact
+                    path={`${path}/delete`}
+                    component={() => <DeleteAlbum album={album} />}
+                  />
+                  <Route component={() => <Redirect to={`${url}/edit`} />} />
+                </Switch>
+              </AlbumNav>
+            )}
+          />
         </Switch>
       )}
     </LoadData>
