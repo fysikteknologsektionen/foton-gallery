@@ -9,7 +9,10 @@ import {toastContext} from '../../../contexts';
  * @param users Array of user data
  * @return DeleteUser view-component
  */
-export const DeleteUser: React.VFC<{users: User[]}> = ({users}) => {
+export const DeleteUser: React.VFC<{
+  users: User[];
+  updateData: () => Promise<void>;
+}> = ({users, updateData}) => {
   const [selectedUser, setSelectedUser] = useState(0);
   const newToast = useContext(toastContext);
 
@@ -28,6 +31,7 @@ export const DeleteUser: React.VFC<{users: User[]}> = ({users}) => {
         message: 'Användaren har tagits bort.',
         type: 'success',
       });
+      updateData();
     } catch (error) {
       console.error(error);
       newToast({

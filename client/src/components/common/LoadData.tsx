@@ -17,11 +17,11 @@ export const LoadData = <T, >({
   url,
   config,
 }: {
-  children: (data: T, getData: () => Promise<void>) => JSX.Element;
+  children: (data: T, getData: () => Promise<void>) => React.ReactElement;
   url: string;
   config?: AxiosRequestConfig;
 }): ReactElement => {
-  const [data, setData] = useState<T>();
+  const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState(false);
 
   /**
@@ -35,7 +35,7 @@ export const LoadData = <T, >({
       console.error(error);
       setError(true);
     }
-  }, [config, url]);
+  }, [url, config]);
 
   // Get data on mount
   useEffect(() => {

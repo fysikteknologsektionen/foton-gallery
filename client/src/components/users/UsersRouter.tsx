@@ -7,6 +7,7 @@ import {NewUser} from './create';
 import React from 'react';
 import {User} from '../../interfaces';
 import {UsersNav} from './UsersNav';
+import {join} from 'path';
 
 /**
  * Router component for users views
@@ -17,26 +18,29 @@ export const UsersRouter: React.VFC = () => {
 
   return (
     <LoadData<User[]> url="/api/users" config={{withCredentials: true}}>
-      {(users) => (
+      {(users, updateData) => (
         <UsersNav>
           <Switch>
-            <Route exact path={`${path}/new`} component={() => <NewUser />} />
+            <Route
+              exact
+              path={`${path}/new`}
+              component={() => <NewUser updateData={updateData} />}
+            />
             <Route
               exact
               path={`${path}/edit`}
-              component={() => <EditUser users={users} />}
+              component={() => (
+                <EditUser users={users} updateData={updateData} />
+              )}
             />
             <Route
               exact
               path={`${path}/delete`}
-              component={() => <DeleteUser users={users} />}
+              component={() => (
+                <DeleteUser users={users} updateData={updateData} />
+              )}
             />
-            <Route
-              exact
-              path={path}
-              component={() => <Redirect to={`${url}/new`} />}
-            />
-            <Route component={() => <Redirect to="new" />} />
+            <Route component={() => <Redirect to={join(url, 'new')} />} />
           </Switch>
         </UsersNav>
       )}

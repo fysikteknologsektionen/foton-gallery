@@ -1,5 +1,7 @@
-import {NavLink} from 'react-router-dom';
+import {NavLink, useRouteMatch} from 'react-router-dom';
+
 import React from 'react';
+import {join} from 'path';
 
 /**
  * HOC for rendering a navigation for users pages
@@ -10,17 +12,30 @@ import React from 'react';
 export const UsersNav: React.VFC<{children: React.ReactNode}> = ({
   children,
 }) => {
+  const {url} = useRouteMatch();
   return (
     <>
       <h1>Hantera användare</h1>
       <nav className="nav nav-tabs mb-3">
-        <NavLink className="nav-link" to="new" activeClassName="active">
+        <NavLink
+          className="nav-link"
+          to={join(url, 'new')}
+          activeClassName="active"
+        >
           Skapa ny
         </NavLink>
-        <NavLink className="nav-link" to="edit" activeClassName="active">
+        <NavLink
+          className="nav-link"
+          to={join(url, 'edit')}
+          activeClassName="active"
+        >
           Redigera
         </NavLink>
-        <NavLink className="nav-link" to="delete" activeClassName="active">
+        <NavLink
+          className="nav-link"
+          to={join(url, 'delete')}
+          activeClassName="active"
+        >
           Ta bort
         </NavLink>
       </nav>

@@ -8,7 +8,10 @@ import {User} from '../../../interfaces';
  * @param users Array of user data
  * @returns EditUser view-component
  */
-export const EditUser: React.VFC<{users: User[]}> = ({users}) => {
+export const EditUser: React.VFC<{
+  users: User[];
+  updateData: () => Promise<void>;
+}> = ({users, updateData}) => {
   const [selectedUserIndex, setSelectedUserIndex] = useState(0);
 
   return (
@@ -37,7 +40,8 @@ export const EditUser: React.VFC<{users: User[]}> = ({users}) => {
       <hr />
       <EditUserForm
         key={users[selectedUserIndex]._id}
-        user={users[selectedUserIndex]}
+        {...users[selectedUserIndex]}
+        updateData={updateData}
       />
     </>
   );
