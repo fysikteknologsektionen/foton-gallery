@@ -11,11 +11,11 @@ import {toastContext} from '../../../contexts';
  * @param album Album data
  * @return React component
  */
-export const EditAlbumImages: React.VFC<{album: Album}> = ({album}) => {
-  const [imageOrder, setImageOrder] = useState<string[]>(album.images);
-  const [thumbnail, setThumbnail] = useState<string | undefined>(
-      album.thumbnail,
-  );
+export const EditAlbumImages: React.VFC<Album> = ({_id, images, thumbnail}) => {
+  const [imageOrder, setImageOrder] = useState<string[]>(images);
+  const [selectedThumbnail, setSelectedThumbnail] = useState<
+    string | undefined
+  >(thumbnail);
   const newToast = useContext(toastContext);
 
   /**
@@ -26,10 +26,12 @@ export const EditAlbumImages: React.VFC<{album: Album}> = ({album}) => {
       images: imageOrder,
       thumbnail:
         // If the user has selected an invalid thumbnail, set it to undefined
-        thumbnail && imageOrder.includes(thumbnail) ? thumbnail : undefined,
+        selectedThumbnail && imageOrder.includes(selectedThumbnail) ?
+          selectedThumbnail :
+          undefined,
     };
     try {
-      await axios.put(`/api/albums/${album._id}/images`, data, {
+      await axios.put(`/api/albums/${_id}/images`, data, {
         withCredentials: true,
       });
       newToast({
@@ -100,7 +102,9 @@ export const EditAlbumImages: React.VFC<{album: Album}> = ({album}) => {
               className="position-relative rounded"
               style={{
                 boxShadow:
-                  image === thumbnail ? '0 0 0 0.50rem var(--bs-teal)' : 'none',
+                  image === selectedThumbnail ?
+                    '0 0 0 0.50rem var(--bs-teal)' :
+                    'none',
                 transition: 'box-shadow 0.15s ease-in-out',
               }}
             >
@@ -133,7 +137,7 @@ export const EditAlbumImages: React.VFC<{album: Album}> = ({album}) => {
                 className="position-absolute btn btn-success"
                 style={{left: 0, top: 0}}
                 type="button"
-                onClick={() => setThumbnail(image)}
+                onClick={() => setSelectedThumbnail(image)}
               >
                 <i className="bi-star" />
               </button>

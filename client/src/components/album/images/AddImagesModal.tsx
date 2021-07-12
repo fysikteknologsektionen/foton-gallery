@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useRef} from 'react';
 
+import {Album} from '../../../interfaces';
 import {Modal} from 'bootstrap';
 import axios from 'axios';
 import {toastContext} from '../../../contexts';
@@ -7,10 +8,10 @@ import {useHistory} from 'react-router-dom';
 
 /**
  * Component for displaying modal that allows uploading images
- * @param albumId ID of the album to add images to
+ * @param _id ID of the album to add images to
  * @return React component
  */
-export const AddImagesModal: React.VFC<{albumId: string}> = ({albumId}) => {
+export const AddImagesModal: React.VFC<Album> = ({_id}) => {
   const history = useHistory();
   const newToast = useContext(toastContext);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -38,7 +39,7 @@ export const AddImagesModal: React.VFC<{albumId: string}> = ({albumId}) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     try {
-      await axios.post(`/api/albums/${albumId}/images`, formData, {
+      await axios.post(`/api/albums/${_id}/images`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

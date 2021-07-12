@@ -2,24 +2,30 @@ import React, {useContext} from 'react';
 
 import {Album} from '../../../interfaces';
 import axios from 'axios';
+import slug from 'slug';
 import {toastContext} from '../../../contexts';
 import {useFormState} from '../../../hooks';
+import {useHistory} from 'react-router-dom';
 
 /**
  * Component for rendering a form to edit album information
  * @return EditAlbum view-component
  */
-export const EditAlbum: React.VFC<{
-  album: Album;
-  updateData: () => Promise<void>;
-}> = ({album, updateData}) => {
+export const EditAlbum: React.VFC<Album> = ({
+  _id,
+  name,
+  date,
+  authors,
+  description,
+}) => {
   const {formState, handleFormChange} = useFormState({
-    name: album.name,
-    date: album.date.substring(0, 10),
-    authors: album.authors.join(', '),
-    description: album.description ?? '',
+    name: name,
+    date: date.substring(0, 10),
+    authors: authors.join(', '),
+    description: description ?? '',
   });
   const newToast = useContext(toastContext);
+  const history = useHistory();
 
   /**
    * Handles submitting of the form
@@ -43,7 +49,7 @@ export const EditAlbum: React.VFC<{
       }
     }
     try {
-      await axios.put<Album>(`/api/albums/${album._id}`, data, {
+      await axios.put(`/api/albums/${_id}`, data, {
         withCredentials: true,
       });
       newToast({
@@ -51,7 +57,8 @@ export const EditAlbum: React.VFC<{
         message: 'Ändringarna har sparats.',
         type: 'success',
       });
-      updateData();
+      // Update url
+      history.replace(`/album/${formState.date}/${slug(formState.name)}/edit`);
     } catch (error) {
       console.error(error);
       newToast({

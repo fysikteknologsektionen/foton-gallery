@@ -11,9 +11,9 @@ export const ManageAlbumImages: React.VFC<{album: Album}> = ({album}) => {
   return (
     <>
       <h2 className="visually-hidden">Hantera albumbilder</h2>
-      <AddImagesModal albumId={album._id} />
+      <AddImagesModal {...album} />
       <hr />
-      <EditAlbumImages album={album} />
+      <EditAlbumImages {...album} />
     </>
   );
 };

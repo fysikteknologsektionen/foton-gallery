@@ -11,7 +11,7 @@ import {useHistory} from 'react-router-dom';
  * @param album Album data
  * @return DeletAlbum view-component
  */
-export const DeleteAlbum: React.VFC<{album: Album}> = ({album}) => {
+export const DeleteAlbum: React.VFC<Album> = ({_id, name}) => {
   const {formState, handleFormChange} = useFormState();
   const history = useHistory();
   const newToast = useContext(toastContext);
@@ -22,7 +22,7 @@ export const DeleteAlbum: React.VFC<{album: Album}> = ({album}) => {
    */
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (formState.name !== album.name) {
+    if (formState.name !== name) {
       newToast({
         title: 'Ta bort album',
         message: 'Det angivna namnet stämmer inte.',
@@ -31,7 +31,7 @@ export const DeleteAlbum: React.VFC<{album: Album}> = ({album}) => {
       return;
     }
     try {
-      await axios.delete(`/api/albums/${album._id}`, {
+      await axios.delete(`/api/albums/${_id}`, {
         withCredentials: true,
       });
       newToast({

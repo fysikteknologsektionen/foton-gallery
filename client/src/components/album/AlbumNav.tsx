@@ -1,6 +1,8 @@
+import {NavLink, useRouteMatch} from 'react-router-dom';
+
 import {Album} from '../../interfaces';
-import {NavLink} from 'react-router-dom';
 import React from 'react';
+import {join} from 'path';
 
 /**
  * HOC for rendering a navigation for album pages
@@ -8,21 +10,35 @@ import React from 'react';
  * @param album Album data (also passed to child)
  * @returns withAlbumsNav HOC
  */
-export const AlbumNav: React.VFC<{children: React.ReactNode; album: Album}> = ({
+export const AlbumNav: React.VFC<{children: React.ReactNode} & Album> = ({
   children,
-  album,
+  name,
 }) => {
+  const {url} = useRouteMatch();
   return (
     <>
-      <h1>{`Hantera album: ${album.name}`}</h1>
+      <h1>Hantera album:</h1>
+      <span className="text-muted">{name}</span>
       <nav className="nav nav-tabs mb-3">
-        <NavLink className="nav-link" to="edit" activeClassName="active">
+        <NavLink
+          className="nav-link"
+          to={join(url, 'edit')}
+          activeClassName="active"
+        >
           Redigera albuminformation
         </NavLink>
-        <NavLink className="nav-link" to="images" activeClassName="active">
+        <NavLink
+          className="nav-link"
+          to={join(url, 'images')}
+          activeClassName="active"
+        >
           Hantera bilder
         </NavLink>
-        <NavLink className="nav-link" to="delete" activeClassName="active">
+        <NavLink
+          className="nav-link"
+          to={join(url, 'delete')}
+          activeClassName="active"
+        >
           Ta bort
         </NavLink>
       </nav>
