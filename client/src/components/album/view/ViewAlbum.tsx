@@ -1,8 +1,8 @@
 import {Link, useRouteMatch} from 'react-router-dom';
+import {MasonryGrid, Thumbnail} from '../../common';
 import React, {useContext} from 'react';
 
 import {Album} from '../../../interfaces';
-import {Thumbnail} from '../../common';
 import {join} from 'path';
 import {sessionContext} from '../../../contexts';
 
@@ -35,21 +35,16 @@ export const ViewAlbum: React.VFC<Album> = ({
         </Link>
       )}
 
-      <div
-        className="d-grid gap-3 justify-content-sm-center"
-        style={{
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, max-content))',
-        }}
-      >
+      <MasonryGrid>
         {images.map((image) => (
           <Thumbnail
-            className="w-100 rounded"
+            className="w-100 rounded scale-on-hover"
             key={image}
             fileName={image}
             alt="Albumbild"
           />
         ))}
-      </div>
+      </MasonryGrid>
     </>
   );
 };

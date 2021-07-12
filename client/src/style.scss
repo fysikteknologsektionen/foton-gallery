@@ -29,3 +29,13 @@ html {
 body {
  padding-right: 0 !important;
 }
+
+// Custom class to enable scale on hover effect
+.scale-on-hover {
+  transition: transform 0.15s ease-in-out;
+}
+
+.scale-on-hover:hover {
+  transform: scale(1.05);
+  z-index: 8000;
+}

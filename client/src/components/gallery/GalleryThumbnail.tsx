@@ -17,28 +17,25 @@ export const GalleryThumbnail: React.VFC<{album: Album}> = ({album}) => {
       album.images[0];
 
   return (
-    <Link
-      key={`${album.date}-${album.slug}`}
-      to={`/album/${albumDate}/${album.slug}`}
-    >
-      <div className="card">
+    <div className="card scale-on-hover">
+      <Link
+        key={`${album.date}-${album.slug}`}
+        to={`/album/${albumDate}/${album.slug}`}
+      >
         <Thumbnail className="card-img" fileName={thumbnail} alt={album.name} />
         <div
           className={`card-img-overlay d-inline-flex
             flex-column justify-content-end p-0`}
         >
           <div
-            className="bg-dark text-white rounded-bottom p-3"
+            className="bg-dark text-white rounded-bottom p-2"
             style={{opacity: 0.8}}
           >
             <h2 className="card-title h5">{album.name}</h2>
-            <p className="card-text">
-              {album.date.substring(0, 10)}
-              {album.authors.length > 0 && ` | ${album.authors.join(', ')}`}
-            </p>
+            <p className="card-text">{album.date.substring(0, 10)}</p>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
