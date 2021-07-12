@@ -1,4 +1,4 @@
-import React, {SyntheticEvent} from 'react';
+import React, {SyntheticEvent, useState} from 'react';
 
 import placeholderImage from './placeholder.jpg';
 
@@ -8,7 +8,7 @@ import placeholderImage from './placeholder.jpg';
  * can be loaded.
  * @param fileName Filename of the image to display
  * @param alt alt propert to pass to image element
- * @param className className property to pass to image element
+ * @param className Additional classes to pass to image element
  * @return Thumbnail component
  */
 export const Thumbnail: React.VFC<{
@@ -16,6 +16,7 @@ export const Thumbnail: React.VFC<{
   alt: string;
   className?: string;
 }> = ({fileName, alt, className}) => {
+  const [loaded, setLoaded] = useState(false);
   const thumbnailImage = `/images/thumbnail/${fileName}`;
   const scaledImage = `/images/scaled/${fileName}`;
   const fullsizeImage = `/images/fullsize/${fileName}`;
@@ -38,11 +39,21 @@ export const Thumbnail: React.VFC<{
   }
 
   return (
-    <img
-      className={`w-100 ${className}`}
-      src={fileName ? thumbnailImage : placeholderImage}
-      alt={alt}
-      onError={handleError}
-    />
+    <>
+      {!loaded && (
+        <img
+          className="w-100 rounded"
+          style={{minHeight: '300px'}}
+          src={placeholderImage}
+        />
+      )}
+      <img
+        className={`w-100 rounded ${className ?? ''}`}
+        src={fileName ? thumbnailImage : placeholderImage}
+        alt={alt}
+        onError={handleError}
+        onLoad={() => setLoaded(true)}
+      />
+    </>
   );
 };
