@@ -108,7 +108,7 @@ export const EditAlbumImages: React.VFC<Album> = ({_id, images, thumbnail}) => {
                 transition: 'box-shadow 0.15s ease-in-out',
               }}
             >
-              <Thumbnail fileName={image} alt="Albumbild" className="rounded" />
+              <Thumbnail fileName={image} alt="Albumbild" />
               <button
                 className="position-absolute btn btn-primary"
                 style={{left: 0, top: '50%'}}

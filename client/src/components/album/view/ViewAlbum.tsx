@@ -38,7 +38,7 @@ export const ViewAlbum: React.VFC<Album> = ({
       <MasonryGrid>
         {images.map((image) => (
           <Thumbnail
-            className="w-100 rounded scale-on-hover"
+            className="scale-on-hover"
             key={image}
             fileName={image}
             alt="Albumbild"

@@ -17,8 +17,8 @@ export const AlbumNav: React.VFC<{children: React.ReactNode} & Album> = ({
   const {url} = useRouteMatch();
   return (
     <>
-      <h1>Hantera album:</h1>
-      <span className="text-muted">{name}</span>
+      <h1>Hantera album</h1>
+      <p className="text-muted">{name}</p>
       <nav className="nav nav-tabs mb-3">
         <NavLink
           className="nav-link"
