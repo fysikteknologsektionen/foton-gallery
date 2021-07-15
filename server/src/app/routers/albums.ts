@@ -12,6 +12,7 @@ import {albumValidators, validate} from '../validation';
 
 import {Router} from 'express';
 import {config} from '../../config';
+import {getAlbumCount} from '../controllers/albums';
 import {restrictToUsers} from '../middlewares';
 import {upload} from '../utils';
 
@@ -25,6 +26,8 @@ publicRouter.get(
 );
 
 publicRouter.get('/', validate(albumValidators, ['page', 'count']), getAlbums);
+
+publicRouter.get('/count', getAlbumCount);
 
 // Private endpoints
 const privateRouter = Router();

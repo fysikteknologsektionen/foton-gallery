@@ -111,9 +111,28 @@ export async function getAlbums(
     const albums = await Album.find()
         .sort('-date')
         .limit(count)
-        .skip(page * count)
+        .skip((page - 1) * count)
         .exec();
     res.json(albums);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Gets approximate album count
+ * @param req Request object
+ * @param res Response object
+ * @param next Next function
+ */
+export async function getAlbumCount(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+  try {
+    const count = await Album.estimatedDocumentCount();
+    res.json({count});
   } catch (error) {
     next(error);
   }

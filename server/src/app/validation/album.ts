@@ -50,9 +50,7 @@ export const albumValidators = {
       .isArray({min: 1})
       .bail()
       .custom(noNewImages),
-  thumbnail: body('thumbnail')
-      .optional()
-      .custom(validThumbnail),
-  count: query('count').isInt({min: 1, max: 24}).toInt(),
-  page: query('page').isInt({min: 0}).toInt(),
+  thumbnail: body('thumbnail').optional().custom(validThumbnail),
+  count: query('count').isInt({min: 1, max: 32}).toInt(),
+  page: query('page').isInt({min: 1}).toInt(),
 };

@@ -24,7 +24,11 @@ export const App: React.VFC = () => {
           <main className="container mt-3">
             <Suspense fallback={<Spinner />}>
               <Switch>
-                <Route exact path="/" component={Gallery} />
+                <Route
+                  exact
+                  path={['/', '/page/:page(\\d+)']}
+                  component={Gallery}
+                />
                 <ProtectedRoute
                   isAdminOnly
                   path="/users"
