@@ -1,4 +1,4 @@
-import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom';
+import {Link, Redirect, Route, Switch, useRouteMatch} from 'react-router-dom';
 
 import {DeleteUser} from './delete';
 import {EditUser} from './edit';
@@ -17,7 +17,22 @@ export const UsersRouter: React.VFC = () => {
   const {path, url} = useRouteMatch();
 
   return (
-    <LoadData<User[]> url="/api/users" config={{withCredentials: true}}>
+    <LoadData<User[]>
+      url="/api/users"
+      config={{withCredentials: true}}
+      errorElement={
+        <div>
+          <h1>Något gick fel. 🙁</h1>
+          <p>
+            Det gick inte att hämta en lista över användare. Detta beror
+            sannolikt på ett tillfälligt avbrott. Försök igen om en stund.
+          </p>
+          <Link className="btn btn-secondary" to="/">
+            Till startsidan
+          </Link>
+        </div>
+      }
+    >
       {(users, updateData) => (
         <UsersNav>
           <Switch>

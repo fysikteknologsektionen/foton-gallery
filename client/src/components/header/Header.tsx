@@ -34,7 +34,10 @@ export const Header: React.VFC = () => {
 
   return (
     <header>
-      <nav className="navbar navbar-expand-md navbar-light bg-light">
+      <nav
+        className="navbar navbar-expand-md navbar-light bg-light"
+        aria-label="Huvudnavigering"
+      >
         <div className="container">
           <div>
             <a

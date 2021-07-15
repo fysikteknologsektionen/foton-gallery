@@ -1,11 +1,12 @@
-import {LoadData, ProtectedRoute} from '../common';
 import {
+  Link,
   Redirect,
   Route,
   Switch,
   useParams,
   useRouteMatch,
 } from 'react-router-dom';
+import {LoadData, ProtectedRoute} from '../common';
 
 import {Album} from '../../interfaces';
 import {AlbumNav} from './AlbumNav';
@@ -25,7 +26,21 @@ export const AlbumRouter: React.VFC = () => {
   const {path, url} = useRouteMatch();
 
   return (
-    <LoadData<Album> url={`/api/albums/${date}/${slug}`}>
+    <LoadData<Album>
+      url={`/api/albums/${date}/${slug}`}
+      errorElement={
+        <div>
+          <h1>Något gick fel. 🙁</h1>
+          <p>
+            Det gick inte att hitta albumet. Om du blev länkad hit är det
+            möjligt att albumet har flyttats till en ny adress.
+          </p>
+          <Link className="btn btn-secondary" to="/">
+            Till startsidan
+          </Link>
+        </div>
+      }
+    >
       {(album) => {
         return (
           <Switch>

@@ -15,10 +15,12 @@ import {Spinner} from './Spinner';
 export const LoadData = <T, >({
   children,
   url,
+  errorElement,
   config,
 }: {
   children: (data: T, getData: () => Promise<void>) => React.ReactElement;
   url: string;
+  errorElement: React.ReactElement;
   config?: AxiosRequestConfig;
 }): ReactElement => {
   const [data, setData] = useState<T | null>(null);
@@ -43,16 +45,7 @@ export const LoadData = <T, >({
   }, [getData]);
 
   if (error) {
-    return (
-      <>
-        <h1>Något gick fel</h1>
-        <p>
-          Det gick inte att hämta sidinnehållet. Försök igen om en stund.
-          Kvarstår problemet kan du{' '}
-          <a href="mailto:spidera@ftek.se">kontakta Spidera</a>.
-        </p>
-      </>
-    );
+    return errorElement;
   }
 
   if (!data) {

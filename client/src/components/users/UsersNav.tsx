@@ -16,7 +16,7 @@ export const UsersNav: React.VFC<{children: React.ReactNode}> = ({
   return (
     <>
       <h1>Hantera användare</h1>
-      <nav className="nav nav-tabs mb-3">
+      <nav className="nav nav-tabs mb-3" aria-label="Verktygsnavigering">
         <NavLink
           className="nav-link"
           to={join(url, 'new')}

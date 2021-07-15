@@ -19,7 +19,7 @@ export const AlbumNav: React.VFC<{children: React.ReactNode} & Album> = ({
     <>
       <h1>Hantera album</h1>
       <p className="text-muted">{name}</p>
-      <nav className="nav nav-tabs mb-3">
+      <nav className="nav nav-tabs mb-3" aria-label="Verktygsnavigering">
         <NavLink
           className="nav-link"
           to={join(url, 'edit')}
