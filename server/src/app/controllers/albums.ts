@@ -21,7 +21,7 @@ export async function createAlbum(
   try {
     const album = new Album({...data});
     await album.save();
-    res.status(201).send();
+    res.status(201).json(album);
   } catch (error) {
     // Catch duplicate key error
     if (error.code === 11000) {
@@ -56,7 +56,7 @@ export async function updateAlbum(
     }
     album.set(data);
     await album.save();
-    res.status(204).send();
+    res.status(204).json(album);
   } catch (error) {
     // Catch duplicate key error
     if (error.code === 11000) {

@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 
 import {Album} from '../../../interfaces';
 import axios from 'axios';
-import slug from 'slug';
 import {toastContext} from '../../../contexts';
 import {useFormState} from '../../../hooks';
 import {useHistory} from 'react-router-dom';
@@ -49,7 +48,7 @@ export const EditAlbum: React.VFC<Album> = ({
       }
     }
     try {
-      await axios.put(`/api/albums/${_id}`, data, {
+      const res = await axios.put<Album>(`/api/albums/${_id}`, data, {
         withCredentials: true,
       });
       newToast({
@@ -58,7 +57,9 @@ export const EditAlbum: React.VFC<Album> = ({
         type: 'success',
       });
       // Update url
-      history.replace(`/album/${formState.date}/${slug(formState.name)}/edit`);
+      history.replace(
+          `/album/${res.data.date.substring(0, 10)}/${res.data.slug}/edit`,
+      );
     } catch (error) {
       console.error(error);
       newToast({
