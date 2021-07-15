@@ -79,7 +79,7 @@ export const Header: React.VFC = () => {
                 <li className="nav-item">
                   <NavLink
                     className="nav-link"
-                    to="/albums"
+                    to="/albums/new"
                     activeClassName="active"
                   >
                     Nytt album
