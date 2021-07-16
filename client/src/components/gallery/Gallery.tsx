@@ -1,5 +1,5 @@
 import {LoadData, MasonryGrid} from '../common';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 
 import {Album} from '../../interfaces';
@@ -17,6 +17,7 @@ export const Gallery: React.VFC = () => {
   const [albumCount, setAlbumCount] = useState(0);
   const history = useHistory();
 
+  // Get album count
   useEffect(() => {
     (async () => {
       try {
@@ -27,6 +28,15 @@ export const Gallery: React.VFC = () => {
       }
     })();
   }, []);
+
+  // Scroll to top when switching pages
+  useLayoutEffect(() => {
+    // setTimeout is used as a hack to make sure the layout is more or less done
+    // adjusting before scrolling to the top. This is necessary in some browsers
+    // since the scroll can otherwise be interupted.
+    const timeout = setTimeout(() => window.scrollTo(0, 0), 300);
+    return () => clearTimeout(timeout);
+  }, [page]);
 
   return (
     <>
