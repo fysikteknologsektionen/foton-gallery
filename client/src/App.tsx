@@ -30,7 +30,7 @@ export const App: React.VFC = () => {
                   component={Gallery}
                 />
                 <ProtectedRoute
-                  isAdminOnly
+                  adminOnly
                   path="/users"
                   component={UsersRouter}
                 />
