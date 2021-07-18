@@ -1,7 +1,10 @@
+import 'react-image-lightbox/style.css';
+
 import {Link, useRouteMatch} from 'react-router-dom';
 import {MasonryGrid, Thumbnail} from '../../common';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
+import Lightbox from 'react-image-lightbox';
 import {join} from 'path';
 import {sessionContext} from '../../../contexts';
 import {useGetAlbum} from '../../../hooks';
@@ -15,6 +18,18 @@ export const ViewAlbum: React.VFC = () => {
   const album = useGetAlbum();
   const {url} = useRouteMatch();
   const {session} = useContext(sessionContext);
+  const [showLightbox, setShowLightbox] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
+
+  // Hide scrollbar when opening lightbox
+  useEffect(() => {
+    if (showLightbox) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }, [showLightbox]);
+
   if (album) {
     return (
       <>
@@ -32,17 +47,44 @@ export const ViewAlbum: React.VFC = () => {
             Hantera
           </Link>
         )}
-
         <MasonryGrid>
-          {album.images.map((image) => (
-            <Thumbnail
+          {album.images.map((image, index) => (
+            <div
               className="scale-on-hover"
               key={image}
-              fileName={image}
-              alt="Albumbild"
-            />
+              onClick={() => {
+                setActiveImage(index);
+                setShowLightbox(true);
+              }}
+            >
+              <Thumbnail fileName={image} alt="Albumbild" />
+            </div>
           ))}
         </MasonryGrid>
+        {showLightbox && (
+          <Lightbox
+            mainSrc={`/images/scaled/${album.images[activeImage]}`}
+            nextSrc={`/images/scaled/${
+              album.images[(activeImage + 1) % album.images.length]
+            }`}
+            prevSrc={`/images/scaled/${
+              album.images[
+                  (activeImage + album.images.length - 1) % album.images.length
+              ]
+            }`}
+            onCloseRequest={() => setShowLightbox(false)}
+            onMoveNextRequest={() =>
+              setActiveImage((prev) => (prev + 1) % album.images.length)
+            }
+            onMovePrevRequest={() =>
+              setActiveImage(
+                  (prev) => (
+                    (prev + album.images.length - 1) % album.images.length
+                  ),
+              )
+            }
+          />
+        )}
       </>
     );
   } else {

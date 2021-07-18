@@ -33,6 +33,7 @@ body {
 // Custom class to enable scale on hover effect
 .scale-on-hover {
   transition: all 0.15s ease-in-out;
+  cursor: pointer;
 }
 
 .scale-on-hover:hover {
