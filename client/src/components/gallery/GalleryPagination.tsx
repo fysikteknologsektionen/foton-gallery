@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import React from 'react';
 
-export const GalleryPagination: React.VFC<{
+const GalleryPaginationComponent: React.VFC<{
   count: number;
   currentPage: number;
 }> = ({count, currentPage}) => {
@@ -129,3 +129,5 @@ export const GalleryPagination: React.VFC<{
     </nav>
   );
 };
+
+export const GalleryPagination = React.memo(GalleryPaginationComponent);
