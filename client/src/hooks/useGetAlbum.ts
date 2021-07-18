@@ -8,7 +8,7 @@ import {useParams} from 'react-router-dom';
  */
 export function useGetAlbum(): Album | undefined {
   const {date, slug} = useParams<{date: string; slug: string}>();
-  const {data: album} = useFetch<Album>({
+  const album = useFetch<Album>({
     url: `/api/albums/${date}/${slug}`,
     errorMessage: `Det gick inte att hitta albumet. Om du blev du länkad hit
        är det möjligt att albumet har flyttats till en ny adress.`,

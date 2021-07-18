@@ -6,7 +6,7 @@ import {useFetch} from '../hooks/useFetch';
  * @returns Array of users
  */
 export function useGetUsers(): User[] | undefined {
-  const {data: users} = useFetch<User[]>({
+  const users = useFetch<User[]>({
     url: '/api/users',
     config: {withCredentials: true},
     errorMessage: 'Det gick inte att hämta användardata. Försök igen senare.',
