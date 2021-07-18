@@ -9,9 +9,7 @@ import {join} from 'path';
  * @param users Album data (also passed to child)
  * @returns withUserNav HOC
  */
-export const UsersNav: React.VFC<{children: React.ReactNode}> = ({
-  children,
-}) => {
+export const UsersNav: React.VFC = () => {
   const {url} = useRouteMatch();
   return (
     <>
@@ -39,7 +37,6 @@ export const UsersNav: React.VFC<{children: React.ReactNode}> = ({
           Ta bort
         </NavLink>
       </nav>
-      {children}
     </>
   );
 };

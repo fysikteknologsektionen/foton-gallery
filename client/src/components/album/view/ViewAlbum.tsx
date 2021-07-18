@@ -2,49 +2,50 @@ import {Link, useRouteMatch} from 'react-router-dom';
 import {MasonryGrid, Thumbnail} from '../../common';
 import React, {useContext} from 'react';
 
-import {Album} from '../../../interfaces';
 import {join} from 'path';
 import {sessionContext} from '../../../contexts';
+import {useGetAlbum} from '../../../hooks';
 
 /**
  * Component for rendering the album view that displays details and
  * images of an album
  * @return React component
  */
-export const ViewAlbum: React.VFC<Album> = ({
-  name,
-  date,
-  authors,
-  description,
-  images,
-}) => {
+export const ViewAlbum: React.VFC = () => {
+  const album = useGetAlbum();
   const {url} = useRouteMatch();
   const {session} = useContext(sessionContext);
+  if (album) {
+    return (
+      <>
+        <h1 className="text-break">{album.name}</h1>
+        <p className="text-break">
+          {album.date.substring(0, 10)}
+          {album.authors.length > 0 && ` | ${album.authors.join(', ')}`}
+        </p>
+        {album.description && <p className="text-break">{album.description}</p>}
+        {session && (
+          <Link
+            className="btn btn-outline-secondary mb-3"
+            to={join(url, 'edit-album')}
+          >
+            Hantera
+          </Link>
+        )}
 
-  return (
-    <>
-      <h1 className="text-break">{name}</h1>
-      <p className="text-break">
-        {date.substring(0, 10)}
-        {authors.length > 0 && ` | ${authors.join(', ')}`}
-      </p>
-      {description && <p className="text-break">{description}</p>}
-      {session && (
-        <Link className="btn btn-outline-secondary mb-3" to={join(url, 'edit')}>
-          Hantera
-        </Link>
-      )}
-
-      <MasonryGrid>
-        {images.map((image) => (
-          <Thumbnail
-            className="scale-on-hover"
-            key={image}
-            fileName={image}
-            alt="Albumbild"
-          />
-        ))}
-      </MasonryGrid>
-    </>
-  );
+        <MasonryGrid>
+          {album.images.map((image) => (
+            <Thumbnail
+              className="scale-on-hover"
+              key={image}
+              fileName={image}
+              alt="Albumbild"
+            />
+          ))}
+        </MasonryGrid>
+      </>
+    );
+  } else {
+    return null;
+  }
 };

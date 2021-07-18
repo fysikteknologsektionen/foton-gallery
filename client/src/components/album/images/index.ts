@@ -1,1 +1,0 @@
-export {ManageAlbumImages} from './ManageAlbumImages';

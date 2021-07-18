@@ -41,7 +41,7 @@ export async function createAlbum(
  * @param res Response object
  * @param next Next function
  */
-export async function updateAlbum(
+export async function updateAlbumMeta(
     req: Request,
     res: Response,
     next: NextFunction,
@@ -56,7 +56,7 @@ export async function updateAlbum(
     }
     album.set(data);
     await album.save();
-    res.status(204).json(album);
+    res.status(200).json(album);
   } catch (error) {
     // Catch duplicate key error
     if (error.code === 11000) {
@@ -165,12 +165,12 @@ export async function deleteAlbum(
 }
 
 /**
- * Adds images to an album
+ * Adds additional images to an album
  * @param req Request object
  * @param res Response object
  * @param next Next function
  */
-export async function addImages(
+export async function addImagesToAlbum(
     req: Request,
     res: Response,
     next: NextFunction,
@@ -189,7 +189,7 @@ export async function addImages(
     processImages(files);
     res.status(201).send();
   } catch (error) {
-    // Delete images from system
+    // Delete images from disk
     try {
       deleteImages(fileNames);
     } catch (error) {
@@ -205,7 +205,7 @@ export async function addImages(
  * @param res Response object
  * @param next Next function
  */
-export async function updateImages(
+export async function updateAlbumImages(
     req: Request,
     res: Response,
     next: NextFunction,

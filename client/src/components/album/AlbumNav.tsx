@@ -1,6 +1,5 @@
 import {NavLink, useRouteMatch} from 'react-router-dom';
 
-import {Album} from '../../interfaces';
 import React from 'react';
 import {join} from 'path';
 
@@ -10,26 +9,22 @@ import {join} from 'path';
  * @param album Album data (also passed to child)
  * @returns withAlbumsNav HOC
  */
-export const AlbumNav: React.VFC<{children: React.ReactNode} & Album> = ({
-  children,
-  name,
-}) => {
+export const AlbumNav: React.VFC = () => {
   const {url} = useRouteMatch();
   return (
     <>
       <h1>Hantera album</h1>
-      <p className="text-muted">{name}</p>
       <nav className="nav nav-tabs mb-3" aria-label="Verktygsnavigering">
         <NavLink
           className="nav-link"
-          to={join(url, 'edit')}
+          to={join(url, 'edit-album')}
           activeClassName="active"
         >
           Redigera albuminformation
         </NavLink>
         <NavLink
           className="nav-link"
-          to={join(url, 'images')}
+          to={join(url, 'edit-images')}
           activeClassName="active"
         >
           Hantera bilder
@@ -42,7 +37,6 @@ export const AlbumNav: React.VFC<{children: React.ReactNode} & Album> = ({
           Ta bort
         </NavLink>
       </nav>
-      {children}
     </>
   );
 };

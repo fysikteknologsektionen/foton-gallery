@@ -1,18 +1,18 @@
 import {
-  addImages,
+  addImagesToAlbum,
   createAlbum,
   deleteAlbum,
   getAlbum,
+  getAlbumCount,
   getAlbums,
-  updateAlbum,
-  updateImages,
+  updateAlbumImages,
+  updateAlbumMeta,
 } from '../controllers';
 /* eslint-disable new-cap */
 import {albumValidators, validate} from '../validation';
 
 import {Router} from 'express';
 import {config} from '../../config';
-import {getAlbumCount} from '../controllers/albums';
 import {restrictToUsers} from '../middlewares';
 import {upload} from '../utils';
 
@@ -45,7 +45,7 @@ privateRouter.post(
     createAlbum,
 );
 
-privateRouter.put(
+privateRouter.patch(
     '/:id',
     validate(albumValidators, [
       'id',
@@ -55,7 +55,7 @@ privateRouter.put(
       'authors.*',
       'description',
     ]),
-    updateAlbum,
+    updateAlbumMeta,
 );
 
 privateRouter.delete('/:id', validate(albumValidators, ['id']), deleteAlbum);
@@ -64,13 +64,13 @@ privateRouter.post(
     '/:id/images',
     validate(albumValidators, ['id']),
     upload.array('images', config.APP_MAX_FILE_UPLOADS),
-    addImages,
+    addImagesToAlbum,
 );
 
-privateRouter.put(
+privateRouter.patch(
     '/:id/images',
     validate(albumValidators, ['id', 'images', 'thumbnail']),
-    updateImages,
+    updateAlbumImages,
 );
 
 publicRouter.use('/', privateRouter);

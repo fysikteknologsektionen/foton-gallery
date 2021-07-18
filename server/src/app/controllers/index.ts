@@ -1,11 +1,12 @@
 export {
   getAlbum,
   getAlbums,
+  getAlbumCount,
   createAlbum,
-  updateAlbum,
+  updateAlbumMeta,
   deleteAlbum,
-  addImages,
-  updateImages,
+  addImagesToAlbum,
+  updateAlbumImages,
 } from './albums';
 export {createUser, updateUser, deleteUser} from './users';
 export {loginUser, logoutUser} from './authentication';

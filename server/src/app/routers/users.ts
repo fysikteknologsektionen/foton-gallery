@@ -17,7 +17,7 @@ usersRouter.post(
     createUser,
 );
 
-usersRouter.put(
+usersRouter.patch(
     '/:id',
     validate(userValidators, ['id', 'username', 'optionalPassword', 'role']),
     updateUser,

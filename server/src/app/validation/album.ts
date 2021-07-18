@@ -45,11 +45,7 @@ export const albumValidators = {
   description: body('description').optional().notEmpty().escape().trim(),
   authors: body('authors').optional().isArray({min: 1}),
   ['authors.*']: body('authors.*').notEmpty().escape().trim(),
-  images: body('images')
-      .optional()
-      .isArray({min: 1})
-      .bail()
-      .custom(noNewImages),
+  images: body('images').optional().isArray().bail().custom(noNewImages),
   thumbnail: body('thumbnail').optional().custom(validThumbnail),
   count: query('count').isInt({min: 1, max: 32}).toInt(),
   page: query('page').isInt({min: 1}).toInt(),
