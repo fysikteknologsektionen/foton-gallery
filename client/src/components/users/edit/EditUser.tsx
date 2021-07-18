@@ -2,6 +2,7 @@ import {Field, Form, Formik} from 'formik';
 import React, {useContext, useState} from 'react';
 
 import axios from 'axios';
+import {getNonEmptyFields} from '../../../utils';
 import {toastContext} from '../../../contexts';
 import {useGetUsers} from '../../../hooks';
 
@@ -51,15 +52,13 @@ export const EditUser: React.VFC = () => {
           initialValues={initialValues}
           enableReinitialize
           onSubmit={async (values) => {
-            // Unset password if empty string
-            const data = {
-              ...values,
-              password: values.password || undefined,
-            };
+            const nonEmptyValues = getNonEmptyFields(values);
             try {
-              await axios.patch(`/api/users/${users[selectedUser]._id}`, data, {
-                withCredentials: true,
-              });
+              await axios.patch(
+                  `/api/users/${users[selectedUser]._id}`,
+                  nonEmptyValues,
+                  {withCredentials: true},
+              );
               newToast({
                 title: 'Redigera användare',
                 message: 'Ändringarna har sparats.',
