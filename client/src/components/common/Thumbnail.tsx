@@ -1,11 +1,10 @@
-import React, {SyntheticEvent, useState} from 'react';
+import React, {useState} from 'react';
 
 import placeholderImage from './placeholder.jpg';
 
 /**
- * Component for rendering an image thumbnail. Prioritizes thumbnail first, then
- * scaled and finally fullsize version. Falls back to placeholder if neither
- * can be loaded.
+ * Component for rendering an image thumbnail. Falls back to placeholder
+ * if thumbnail cannot be loaded.
  * @param fileName Filename of the image to display
  * @param alt alt propert to pass to image element
  * @param className Additional classes to pass to image element
@@ -17,26 +16,6 @@ export const Thumbnail: React.VFC<{
   className?: string;
 }> = ({fileName, alt, className}) => {
   const [loaded, setLoaded] = useState(false);
-  const thumbnailImage = `/images/thumbnail/${fileName}`;
-  const scaledImage = `/images/scaled/${fileName}`;
-  const fullsizeImage = `/images/fullsize/${fileName}`;
-
-  /**
-   * Handles onError events when loading image
-   * @param event Event fired by onError
-   */
-  function handleError(event: SyntheticEvent<HTMLImageElement>) {
-    event.currentTarget.src = (() => {
-      switch (event.currentTarget.src) {
-        case thumbnailImage:
-          return scaledImage;
-        case scaledImage:
-          return fullsizeImage;
-        default:
-          return placeholderImage;
-      }
-    })();
-  }
 
   return (
     <>
@@ -49,9 +28,11 @@ export const Thumbnail: React.VFC<{
       )}
       <img
         className={`w-100 rounded ${className ?? ''}`}
-        src={fileName ? thumbnailImage : placeholderImage}
+        src={fileName ? `/images/thumbnail/${fileName}` : placeholderImage}
         alt={alt}
-        onError={handleError}
+        onError={(event) => {
+          event.currentTarget.src = placeholderImage;
+        }}
         onLoad={() => setLoaded(true)}
       />
     </>
