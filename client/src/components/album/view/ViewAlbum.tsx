@@ -72,6 +72,15 @@ export const ViewAlbum: React.VFC = () => {
                   (activeImage + album.images.length - 1) % album.images.length
               ]
             }`}
+            mainSrcThumbnail={`/images/thumbnail/${album.images[activeImage]}`}
+            nextSrcThumbnail={`/images/thumbnail/${
+              album.images[(activeImage + 1) % album.images.length]
+            }`}
+            prevSrcThumbnail={`/images/thumbnail/${
+              album.images[
+                  (activeImage + album.images.length - 1) % album.images.length
+              ]
+            }`}
             onCloseRequest={() => setShowLightbox(false)}
             onMoveNextRequest={() =>
               setActiveImage((prev) => (prev + 1) % album.images.length)
@@ -83,6 +92,13 @@ export const ViewAlbum: React.VFC = () => {
                   ),
               )
             }
+            imageLoadErrorMessage="Det gick inte att ladda bilden."
+            imageTitle={`Bild ${activeImage + 1}/${album.images.length}`}
+            nextLabel="Nästa bild"
+            prevLabel="Föregående bild"
+            zoomInLabel="Förstora"
+            zoomOutLabel="Förminska"
+            closeLabel="Stäng fönster"
           />
         )}
       </>
