@@ -132,7 +132,7 @@ export async function getAlbumCount(
 ): Promise<void> {
   try {
     const count = await Album.estimatedDocumentCount();
-    res.json({count});
+    res.json(count);
   } catch (error) {
     next(error);
   }
