@@ -1,5 +1,5 @@
 /**
- * Interface repsenting a user session as retrieved from backend
+ * Interface representing a user session as received from backend
  */
 export interface UserSession {
   role: 'user' | 'admin';
