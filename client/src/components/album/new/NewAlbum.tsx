@@ -11,7 +11,7 @@ import {useHistory} from 'react-router-dom';
  * Component for rendering a form to create an album
  * @return Create album view-component
  */
-export const CreateAlbum: React.VFC = () => {
+export const NewAlbum: React.VFC = () => {
   const newToast = useContext(toastContext);
   const history = useHistory();
 

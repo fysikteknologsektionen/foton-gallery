@@ -1,1 +1,1 @@
-export {DeleteAlbum} from './DeleteAlbum';
+export {DeleteAlbum as default} from './DeleteAlbum';

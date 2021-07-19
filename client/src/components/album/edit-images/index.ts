@@ -1,1 +1,1 @@
-export {EditImages} from './EditImages';
+export {EditImages as default} from './EditImages';

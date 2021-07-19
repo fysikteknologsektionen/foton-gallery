@@ -3,13 +3,12 @@ import {ProtectedRoute, Spinner} from './components/common';
 import React, {Suspense} from 'react';
 import {SessionContextProvider, ToastContextProvider} from './contexts';
 
-import {CreateAlbum} from './components/album/create';
+import AlbumRouter from './components/album';
 import {Gallery} from './components/gallery';
 import {Header} from './components/header';
 import {NotFound} from './components/not-found';
 
 const UsersRouter = React.lazy(() => import('./components/users'));
-const AlbumRouter = React.lazy(() => import('./components/album'));
 
 /**
  * Component for rendering the main application tree
@@ -24,19 +23,18 @@ export const App: React.VFC = () => {
           <main className="container mt-3">
             <Suspense fallback={<Spinner />}>
               <Switch>
-                <Route
-                  exact
-                  path={['/', '/page/:page(\\d+)']}
-                  component={Gallery}
-                />
-                <ProtectedRoute
-                  adminOnly
-                  path="/users"
-                  component={UsersRouter}
-                />
-                <ProtectedRoute path="/albums/new" component={CreateAlbum} />
-                <Route path="/album/:date/:slug" component={AlbumRouter} />
-                <Route component={NotFound} />
+                <Route exact path={['/', '/page/:page(\\d+)']}>
+                  <Gallery />
+                </Route>
+                <ProtectedRoute adminOnly path="/users">
+                  <UsersRouter />
+                </ProtectedRoute>
+                <Route path="/album">
+                  <AlbumRouter />
+                </Route>
+                <Route>
+                  <NotFound />
+                </Route>
               </Switch>
             </Suspense>
           </main>

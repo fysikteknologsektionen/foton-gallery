@@ -11,6 +11,7 @@ import {join} from 'path';
  */
 export const AlbumNav: React.VFC = () => {
   const {url} = useRouteMatch();
+
   return (
     <>
       <h1>Hantera album</h1>
