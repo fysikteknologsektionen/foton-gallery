@@ -1,7 +1,6 @@
+import {NotFound, ProtectedRoute} from '../common';
 import {Route, Switch} from 'react-router-dom';
 
-import {NotFound} from '../not-found';
-import {ProtectedRoute} from '../common';
 import React from 'react';
 import {ViewAlbum} from './view';
 

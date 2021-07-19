@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {Route, RouteProps} from 'react-router-dom';
 
-import {NotFound} from '../not-found';
+import {NotFound} from '../common';
 import {sessionContext} from '../../contexts';
 
 /**
