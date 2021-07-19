@@ -31,7 +31,7 @@ export function useFetch<T>({
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [url, JSON.stringify(config), errorMessage]);
 
   return data;
 }
