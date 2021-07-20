@@ -1,1 +1,0 @@
-export {NewUser} from './NewUser';
