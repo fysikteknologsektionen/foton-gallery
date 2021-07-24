@@ -4,13 +4,15 @@ import {ValidationError as EVValidatorError} from 'express-validator';
  * Generic error with a status field.
  */
 export class StatusError extends Error {
-  status = 400;
+  status: number;
 
   /**
    * @param message Error message
+   * @param status Status code
    */
-  constructor(message?: string) {
+  constructor(message?: string, status?: number) {
     super(message);
+    this.status = status ?? 400;
   }
 }
 
@@ -25,9 +27,8 @@ export class ValidationError extends StatusError {
    * @param message Error message
    */
   constructor(validatorErrors: EVValidatorError[], message?: string) {
-    super(message || 'Validation error');
+    super(message || 'Validation error', 422);
     this.name = 'ValidationError';
-    this.status = 422;
     this.validationErrors = validatorErrors;
   }
 }
@@ -40,9 +41,8 @@ export class NotFoundError extends StatusError {
    * @param message Error message
    */
   constructor(message?: string) {
-    super(message || 'Not found');
+    super(message || 'Not found', 404);
     this.name = 'NotFoundError';
-    this.status = 404;
   }
 }
 
@@ -54,9 +54,8 @@ export class UnauthorizedError extends StatusError {
    * @param message Error message
    */
   constructor(message?: string) {
-    super(message || 'Unauthorized');
+    super(message || 'Unauthorized', 401);
     this.name = 'UnauthorizedError';
-    this.status = 401;
   }
 }
 
@@ -68,9 +67,8 @@ export class ForbiddenError extends StatusError {
    * @param message Error message
    */
   constructor(message?: string) {
-    super(message || 'Forbidden');
+    super(message || 'Forbidden', 403);
     this.name = 'ForbiddenError';
-    this.status = 403;
   }
 }
 
@@ -83,8 +81,7 @@ export class ConflictError extends StatusError {
    * @param message Error message
    */
   constructor(message?: string) {
-    super(message || 'Conflict');
+    super(message || 'Conflict', 409);
     this.name = 'ConflictError';
-    this.status = 409;
   }
 }
