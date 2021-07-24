@@ -1,7 +1,7 @@
 import {AlbumImageData, AlbumMetaData} from '../../interfaces';
 import {ConflictError, NotFoundError} from '../errors';
 import {NextFunction, Request, Response} from 'express';
-import {deleteImages, processImages} from '../utils';
+import {deleteImages, processImage} from '../utils';
 
 import {Album} from '../models';
 import {matchedData} from 'express-validator';
@@ -156,7 +156,7 @@ export async function deleteAlbum(
       throw new NotFoundError(`Album with id ${id} not found`);
     }
     if (album.images.length > 0) {
-      deleteImages(album.images);
+      await deleteImages(album.images);
     }
     res.status(204).send();
   } catch (error) {
@@ -170,28 +170,29 @@ export async function deleteAlbum(
  * @param res Response object
  * @param next Next function
  */
-export async function addImagesToAlbum(
+export async function addImageToAlbum(
     req: Request,
     res: Response,
     next: NextFunction,
 ): Promise<void> {
   const {id} = matchedData(req) as {id: string};
-  // Since we use Multer.array() we can assert that req.files is an array
-  const files = req.files as Express.Multer.File[];
-  const fileNames = files.map((file) => file.filename);
+  // Since we use Multer.single() we can assert req.file will always
+  // be defined
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const image = req.file!;
   try {
     const album = await Album.findById(id).exec();
     if (!album) {
       throw new NotFoundError(`Album with id ${id} not found`);
     }
-    album.images.push(...fileNames);
+    album.images.push(image.filename);
     await album.save();
-    processImages(files);
-    res.status(201).send();
+    await processImage(image);
+    res.status(201).json(image.filename);
   } catch (error) {
     // Delete images from disk
     try {
-      deleteImages(fileNames);
+      await deleteImages([image.filename]);
     } catch (error) {
       console.error(error);
     }

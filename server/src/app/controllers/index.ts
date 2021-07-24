@@ -5,7 +5,7 @@ export {
   createAlbum,
   updateAlbumMeta,
   deleteAlbum,
-  addImagesToAlbum,
+  addImageToAlbum,
   updateAlbumImages,
 } from './albums';
 export {createUser, updateUser, deleteUser} from './users';

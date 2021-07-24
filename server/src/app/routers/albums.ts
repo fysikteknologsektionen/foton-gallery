@@ -1,5 +1,5 @@
 import {
-  addImagesToAlbum,
+  addImageToAlbum,
   createAlbum,
   deleteAlbum,
   getAlbum,
@@ -12,7 +12,6 @@ import {
 import {albumValidators, validate} from '../validation';
 
 import {Router} from 'express';
-import {config} from '../../config';
 import {restrictToUsers} from '../middlewares';
 import {upload} from '../utils';
 
@@ -63,8 +62,8 @@ privateRouter.delete('/:id', validate(albumValidators, ['id']), deleteAlbum);
 privateRouter.post(
     '/:id/images',
     validate(albumValidators, ['id']),
-    upload.array('images', config.APP_MAX_FILE_UPLOADS),
-    addImagesToAlbum,
+    upload.single('image'),
+    addImageToAlbum,
 );
 
 privateRouter.patch(
