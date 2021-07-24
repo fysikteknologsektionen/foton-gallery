@@ -1,10 +1,10 @@
 import {Form, Formik} from 'formik';
 import React, {useContext, useEffect, useRef} from 'react';
 
-import {Album} from '../../../../interfaces';
+import {Album} from '../../../../../../interfaces';
 import {Modal} from 'bootstrap';
 import axios from 'axios';
-import {toastContext} from '../../../contexts/toast';
+import {toastContext} from '../../../../../contexts/toast';
 import {useHistory} from 'react-router-dom';
 
 /**

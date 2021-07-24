@@ -1,10 +1,10 @@
 import {Field, FieldArray, Form, Formik} from 'formik';
 import React, {useContext} from 'react';
 
-import {Album} from '../../../../interfaces';
-import {Thumbnail} from '../../../components/common/thumbnail';
+import {Album} from '../../../../../../interfaces';
+import {Thumbnail} from '../../../../../components/common/thumbnail';
 import axios from 'axios';
-import {toastContext} from '../../../contexts/toast';
+import {toastContext} from '../../../../../contexts/toast';
 
 /**
  * Component for rendering a grid of an album's images that allows editing

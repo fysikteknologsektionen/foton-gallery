@@ -1,7 +1,7 @@
-import {Album} from '../../../interfaces';
+import {Album} from '../../../../../interfaces';
 import {Link} from 'react-router-dom';
 import React from 'react';
-import {Thumbnail} from '../../components/common/thumbnail';
+import {Thumbnail} from '../../../../components/common/thumbnail';
 
 /**
  * Component that renders an album-preview card
