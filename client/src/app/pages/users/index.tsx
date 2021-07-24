@@ -1,6 +1,6 @@
 import {Redirect, Route, Switch} from 'react-router-dom';
 
-import {Nav} from './Nav';
+import {Nav} from './components/nav';
 import React from 'react';
 
 const NewUser = React.lazy(() => import('./new'));

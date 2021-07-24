@@ -1,9 +1,9 @@
 import React, {useLayoutEffect} from 'react';
 
 import {Album} from '../../../interfaces';
-import {AlbumPreview} from './AlbumPreview';
+import {AlbumPreview} from './components/album-preview';
 import {MasonryGrid} from '../../components/common/masonry-grid';
-import {Pagination} from './Pagination';
+import {Pagination} from './components/pagination';
 import {Spinner} from '../../components/common/spinner';
 import {useFetch} from '../../hooks';
 import {useParams} from 'react-router-dom';

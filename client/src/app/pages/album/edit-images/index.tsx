@@ -1,5 +1,5 @@
-import {AddImagesModal} from './AddImagesModal';
-import {EditImagesGrid} from './EditImagesGrid';
+import {AddImagesModal} from './components/add-images-modal';
+import {EditImagesGrid} from './components/edit-images-grid';
 import React from 'react';
 import {Spinner} from '../../../components/common/spinner';
 import {useGetAlbum} from '../../../hooks';

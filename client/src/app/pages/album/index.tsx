@@ -1,6 +1,6 @@
 import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom';
 
-import {Nav} from './Nav';
+import {Nav} from './components/nav';
 import {ProtectedRoute} from '../../components/common/protected-route';
 import React from 'react';
 
