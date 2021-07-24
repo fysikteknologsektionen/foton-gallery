@@ -22,27 +22,27 @@ export const AlbumPage: React.VFC = () => {
     <Switch>
       <Route exact path="/album/:date/:slug" component={ViewAlbum} />
       <ProtectedRoute exact path="/album/new" component={NewAlbum} />
-      <Route exact path={['/album/new', '/album/:date/:slug/:route']}>
+      <ProtectedRoute exact path={['/album/new', '/album/:date/:slug/:route']}>
         <Nav />
         <Switch>
-          <ProtectedRoute
+          <Route
             exact
             path="/album/:date/:slug/edit-album"
             component={EditAlbum}
           />
-          <ProtectedRoute
+          <Route
             exact
             path="/album/:date/:slug/edit-images"
-            component={EditImages}
+            component={() => <EditImages />}
           />
-          <ProtectedRoute
+          <Route
             exact
             path="/album/:date/:slug/delete"
             component={DeleteAlbum}
           />
           <Route component={() => <Redirect to={`${url}/edit-album`} />} />
         </Switch>
-      </Route>
+      </ProtectedRoute>
       <Route component={NotFound} />
     </Switch>
   );
