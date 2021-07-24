@@ -1,0 +1,27 @@
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-width: 2px;
+    border-radius: 0.25rem;
+    border-style: dashed;
+    border-color: var(--bs-gray);
+    background-color: var(--bs-light);
+    color: var(--bs-gray);
+    outline: none;
+    transition: border .25s ease-in-out;
+    cursor: pointer;
+}
+
+.dropzone-accept {
+    border-color: var(--bs-success);
+}
+
+.dropzone-reject {
+    border-color: var(--bs-danger);
+}
+
+.dropzone-active, .dropzone:focus {
+    border-color: var(--bs-blue);
+}

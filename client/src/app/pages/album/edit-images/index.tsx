@@ -1,5 +1,5 @@
-import {AddImagesModal} from './components/add-images-modal';
 import {EditImagesGrid} from './components/edit-images-grid';
+import {ImagesDropzone} from './components/images-dropzone';
 import React from 'react';
 import {Spinner} from '../../../components/common/spinner';
 import {useGetAlbum} from '../../../hooks';
@@ -15,14 +15,18 @@ const EditImages: React.VFC = () => {
     return (
       <>
         <h2 className="visually-hidden">Hantera albumbilder</h2>
-        <h3 className="mb-3">Lägg till bilder</h3>
-        <AddImagesModal {...album} />
-        <h3 className="mt-3">Redigera bilder</h3>
-        <p className="text-muted">
-          Du kan flytta om bilder med pilarna, ta bort bilder med krysset och
-          välja en bild som albumets omslagsbild med stjärnan.
-        </p>
-        <EditImagesGrid {...album} />
+        <section>
+          <h3 className="mb-3">Lägg till bilder</h3>
+          <ImagesDropzone {...album} />
+        </section>
+        <section>
+          <h3 className="mt-3">Redigera bilder</h3>
+          <p className="text-muted">
+            Du kan flytta om bilder med pilarna, ta bort bilder med krysset och
+            välja en bild som albumets omslagsbild med stjärnan.
+          </p>
+          <EditImagesGrid {...album} />
+        </section>
       </>
     );
   } else {

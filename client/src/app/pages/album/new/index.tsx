@@ -20,13 +20,11 @@ const NewAlbum: React.VFC = () => {
     date: string;
     authors: string[];
     description: string;
-    images: FileList;
   } = {
     name: '',
     date: '',
     authors: [],
     description: '',
-    images: {} as FileList,
   };
 
   return (
@@ -35,22 +33,11 @@ const NewAlbum: React.VFC = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values) => {
-          const nonEmptyValues = getNonEmptyFields(values);
-          const images = nonEmptyValues.images;
-          const data = {...nonEmptyValues, images: undefined};
+          const data = getNonEmptyFields(values);
           try {
             const res = await axios.post<Album>('/api/albums', data, {
               withCredentials: true,
             });
-            if (images && images.length) {
-              const formData = new FormData();
-              Array.from(images).forEach((image) =>
-                formData.append('images', image),
-              );
-              await axios.post(`/api/albums/${res.data._id}/images`, formData, {
-                withCredentials: true,
-              });
-            }
             newToast({
               title: 'Skapa album',
               message: 'Albumet har skapats.',
@@ -58,7 +45,9 @@ const NewAlbum: React.VFC = () => {
             });
             // Redirect
             history.push(
-                `/album/${res.data.date.substring(0, 10)}/${res.data.slug}`,
+                `/album/${res.data.date.substring(0, 10)}/${
+                  res.data.slug
+                }/edit-images`,
             );
           } catch (error) {
             console.error(error);
@@ -71,7 +60,7 @@ const NewAlbum: React.VFC = () => {
           }
         }}
       >
-        {({values, setFieldValue}) => (
+        {({values}) => (
           <Form>
             <label className="form-label" htmlFor="name">
               Namn
@@ -145,19 +134,6 @@ const NewAlbum: React.VFC = () => {
               name="description"
               as="textarea"
               style={{height: '100px'}}
-            />
-            <label className="form-label" htmlFor="images">
-              Välj bilder
-            </label>
-            <input
-              className="form-control mb-3"
-              id="images"
-              type="file"
-              accept="image/*"
-              onChange={(event) =>
-                setFieldValue('images', event.currentTarget.files)
-              }
-              multiple
             />
             <button className="btn btn-primary" type="submit">
               Skapa
