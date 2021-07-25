@@ -6,6 +6,7 @@ import React, {Suspense} from 'react';
 import {AlbumPage} from './pages/album';
 import {ErrorBoundary} from 'react-error-boundary';
 import {ErrorFallback} from './components/error-fallback';
+import {Footer} from './components/footer';
 import {Header} from './components/header';
 import {ProtectedRoute} from './components/common/protected-route';
 import {SessionContextProvider} from './contexts/session';
@@ -45,6 +46,7 @@ export const App: React.VFC = () => {
               </Suspense>
             </ErrorBoundary>
           </main>
+          <Footer />
         </BrowserRouter>
       </ToastContextProvider>
     </SessionContextProvider>
