@@ -27,7 +27,7 @@ export const App: React.VFC = () => {
       <ToastContextProvider>
         <BrowserRouter>
           <Header />
-          <main className="container mt-3">
+          <main className="container mt-3 mb-3">
             <ErrorBoundary
               fallbackRender={ErrorFallback}
               onError={(error) => console.error(error)}
