@@ -83,7 +83,7 @@ export async function getAlbum(
 ): Promise<void> {
   const data = matchedData(req) as {date: Date; slug: string};
   try {
-    const album = await Album.findOne({slug: data.slug}).exec();
+    const album = await Album.findOne({...data}).exec();
     if (!album) {
       throw new NotFoundError(
           `Album with slug ${data.slug} and date ${data.date} not found`,
