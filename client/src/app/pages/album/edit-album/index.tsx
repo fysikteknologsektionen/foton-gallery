@@ -48,8 +48,9 @@ const EditAlbum: React.VFC = () => {
               });
               // Redirect
               history.push(
-                  `/album/${res.data.date.substring(0, 10)}/
-                    ${res.data.slug}/edit-album`,
+                  `/album/${res.data.date.substring(0, 10)}/${
+                    res.data.slug
+                  }/edit-album`,
               );
             } catch (error) {
               console.error(error);
