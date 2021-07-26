@@ -12,6 +12,7 @@ import {ProtectedRoute} from './components/common/protected-route';
 import {SessionContextProvider} from './contexts/session';
 import {Spinner} from './components/common/spinner';
 import {ToastContextProvider} from './contexts/toast';
+import {UpdateTitle} from './components/update-title';
 
 const HomePage = React.lazy(() => import('./pages/home'));
 const UsersPage = React.lazy(() => import('./pages/users'));
@@ -21,34 +22,33 @@ const NotFound = React.lazy(() => import('./pages/not-found'));
  * Component for rendering the main application tree
  * @returns App component
  */
-export const App: React.VFC = () => {
-  return (
-    <SessionContextProvider>
-      <ToastContextProvider>
-        <BrowserRouter>
-          <Header />
-          <main className="container mt-3 mb-3">
-            <ErrorBoundary
-              fallbackRender={ErrorFallback}
-              onError={(error) => console.error(error)}
-            >
-              <Suspense fallback={<Spinner />}>
-                <Switch>
-                  <Route
-                    exact
-                    path={['/', '/page/:page(\\d+)']}
-                    component={HomePage}
-                  />
-                  <ProtectedRoute path="/users" component={UsersPage} />
-                  <Route path="/album" component={AlbumPage} />
-                  <Route component={NotFound} />
-                </Switch>
-              </Suspense>
-            </ErrorBoundary>
-          </main>
-          <Footer />
-        </BrowserRouter>
-      </ToastContextProvider>
-    </SessionContextProvider>
-  );
-};
+export const App: React.VFC = () => (
+  <SessionContextProvider>
+    <ToastContextProvider>
+      <BrowserRouter>
+        <UpdateTitle />
+        <Header />
+        <main className="container mt-3 mb-3">
+          <ErrorBoundary
+            fallbackRender={ErrorFallback}
+            onError={(error) => console.error(error)}
+          >
+            <Suspense fallback={<Spinner />}>
+              <Switch>
+                <Route
+                  exact
+                  path={['/', '/page/:page(\\d+)']}
+                  component={HomePage}
+                />
+                <ProtectedRoute path="/users" component={UsersPage} />
+                <Route path="/album" component={AlbumPage} />
+                <Route component={NotFound} />
+              </Switch>
+            </Suspense>
+          </ErrorBoundary>
+        </main>
+        <Footer />
+      </BrowserRouter>
+    </ToastContextProvider>
+  </SessionContextProvider>
+);
