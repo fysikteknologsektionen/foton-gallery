@@ -41,8 +41,3 @@ body {
   transform: scale(1.03);
   z-index: 500;
 }
-
-// Make lightbox images appear on top
-.ril__image:not(.ril-errored) {
-  z-index: 2000;
-}
