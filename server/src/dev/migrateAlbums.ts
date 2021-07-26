@@ -51,11 +51,15 @@ async function migrateAlbums(path: string) {
       // Process images
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
-        await processImage({
-          path: join(path, album, 'fullsize', image),
-          destination: join(__dirname, '..', '..', 'images'),
-          filename: image,
-        } as Express.Multer.File);
+        try {
+          await processImage({
+            path: join(path, album, 'fullsize', image),
+            destination: join(__dirname, '..', '..', 'images'),
+            filename: image,
+          } as Express.Multer.File);
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
 
@@ -63,6 +67,7 @@ async function migrateAlbums(path: string) {
     process.exit(0);
   } catch (error) {
     console.error(error);
+    process.exit(1);
   }
 }
 
