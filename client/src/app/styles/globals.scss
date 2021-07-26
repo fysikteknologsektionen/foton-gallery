@@ -43,6 +43,6 @@ body {
 }
 
 // Make lightbox images appear on top
-.ril__image {
+.ril__image:not(.ril-errored) {
   z-index: 2000;
 }
