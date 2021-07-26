@@ -5,7 +5,7 @@ import cryptoRandomString from 'crypto-random-string';
 import faker from 'faker';
 import fs from 'fs/promises';
 import path from 'path';
-import {processImages} from '../app/utils';
+import {processImage} from '../app/utils';
 
 /**
  * Creates dummy albums
@@ -49,16 +49,14 @@ async function createDummyAlbums(numAlbums: number, numImages: number) {
       await album.save();
 
       // Process images
-      processImages(
-          newFileNames.map(
-              (image) =>
-                ({
-                  path: path.join(imagesDir, image),
-                  destination: path.join(__dirname, '..', '..', 'images'),
-                  filename: image,
-                } as Express.Multer.File),
-          ),
-      );
+      for (let i = 0; i < newFileNames.length; i++) {
+        const image = newFileNames[i];
+        await processImage({
+          path: path.join(imagesDir, image),
+          destination: path.join(__dirname, '..', '..', 'images'),
+          filename: image,
+        } as Express.Multer.File);
+      }
     } catch (error) {
       console.error(error);
     }

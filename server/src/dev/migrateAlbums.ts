@@ -5,7 +5,7 @@ import {extname, join, normalize} from 'path';
 import {Album} from '../app/models';
 import cryptoRandomString from 'crypto-random-string';
 import fs from 'fs/promises';
-import {processImages} from '../app/utils';
+import {processImage} from '../app/utils';
 
 /**
  * Migrates albums from the original Foton application
@@ -48,16 +48,15 @@ async function migrateAlbums(path: string) {
       });
       await newAlbum.save();
 
-      processImages(
-          images.map(
-              (image) =>
-                ({
-                  path: join(path, album, 'fullsize', image),
-                  destination: join(__dirname, '..', '..', 'images'),
-                  filename: image,
-                } as Express.Multer.File),
-          ),
-      );
+      // Process images
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+        await processImage({
+          path: join(path, album, 'fullsize', image),
+          destination: join(__dirname, '..', '..', 'images'),
+          filename: image,
+        } as Express.Multer.File);
+      }
     }
 
     console.log('Migration complete.');
