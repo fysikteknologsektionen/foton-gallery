@@ -83,7 +83,7 @@ const NewAlbum: React.VFC = () => {
               required
             />
             <label className="form-label" htmlFor="authors">
-              Fotograferare
+              Fotografer
             </label>
             <FieldArray name="authors">
               {(arrayHelpers) => (
@@ -119,7 +119,7 @@ const NewAlbum: React.VFC = () => {
                       type="button"
                       onClick={() => arrayHelpers.push('')}
                     >
-                      Lägg till en fotograferare
+                      Lägg till en fotograf
                     </button>
                   )}
                 </div>
