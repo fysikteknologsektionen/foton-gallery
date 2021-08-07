@@ -1,20 +1,24 @@
-import {config} from './env';
+import {config} from './config';
 import mongoose from 'mongoose';
 
 const connectionString = `mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`;
 
-mongoose.connect(connectionString, {
-  user: config.DB_USER,
-  pass: config.DB_PASSWORD,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-}, (err) => {
-  if (err) {
-    console.error(err);
-  }
-});
+mongoose.connect(
+    connectionString,
+    {
+      user: config.DB_USER,
+      pass: config.DB_PASSWORD,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    },
+    (err) => {
+      if (err) {
+        console.error(err);
+      }
+    },
+);
 
 const db = mongoose.connection;
 

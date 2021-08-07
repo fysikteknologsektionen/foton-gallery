@@ -1,2 +1,2 @@
 export {db} from './db';
-export {config} from './env';
+export {config} from './config';
