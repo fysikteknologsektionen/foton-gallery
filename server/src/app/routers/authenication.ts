@@ -1,18 +1,21 @@
-import {loginUser, logoutUser} from '../controllers';
-import {userValidators, validate} from '../validation';
-
 import {Router} from 'express';
+import passport from 'passport';
 
 // Public endpoints
 // eslint-disable-next-line new-cap
 const authenticationRouter = Router();
 
-authenticationRouter.post(
-    '/',
-    validate(userValidators, ['username', 'password']),
-    loginUser,
+authenticationRouter.get(
+    '/google',
+    passport.authenticate('google', {scope: ['profile', 'email']}),
 );
 
-authenticationRouter.delete('/', logoutUser);
+authenticationRouter.get(
+    '/google/callback',
+    passport.authenticate('google', {failureRedirect: '/unauthorized'}),
+    (req, res) => {
+      res.redirect('/');
+    },
+);
 
 export {authenticationRouter};

@@ -12,7 +12,6 @@ import {
 import {albumValidators, validate} from '../validation';
 
 import {Router} from 'express';
-import {restrictToUsers} from '../middlewares';
 import {upload} from '../utils';
 
 // Public endpoints
@@ -30,7 +29,7 @@ publicRouter.get('/count', getAlbumCount);
 
 // Private endpoints
 const privateRouter = Router();
-privateRouter.use(restrictToUsers);
+// privateRouter.use(restrictToUsers);
 
 privateRouter.post(
     '/',

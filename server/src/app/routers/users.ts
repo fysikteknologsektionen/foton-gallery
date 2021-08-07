@@ -3,13 +3,14 @@ import {userValidators, validate} from '../validation';
 
 import {Router} from 'express';
 import {getUsers} from '../controllers/users';
-import {restrictToAdmins} from '../middlewares';
+
+// import {restrictToAdmins} from '../middlewares';
 
 // Private endpoints
 // eslint-disable-next-line new-cap
 const usersRouter = Router();
 
-usersRouter.use(restrictToAdmins);
+// usersRouter.use(restrictToAdmins);
 
 usersRouter.post(
     '/',

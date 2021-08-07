@@ -2,7 +2,6 @@ import {Link, NavLink} from 'react-router-dom';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import {Collapse} from 'bootstrap';
-import {LoginModal} from './LoginModal';
 import fotonLogo from './assets/foton.svg';
 import ftekLogo from './assets/ftek.svg';
 import {sessionContext} from '../../contexts/session';
@@ -101,7 +100,9 @@ export const Header: React.VFC = () => {
                 </li>
               )}
             </ul>
-            <LoginModal />
+            <a className="btn btn-outline-secondary" href="/api/auth/google">
+              Logga in
+            </a>
           </div>
         </div>
       </nav>
