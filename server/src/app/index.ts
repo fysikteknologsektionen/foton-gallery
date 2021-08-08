@@ -12,8 +12,16 @@ const clientPath = path.join(__dirname, '..', '..', '..', 'client', 'build');
 const imagesPath = path.join(__dirname, '..', '..', 'images');
 const app = express();
 
-// Global middleware
+// Global middlewares
 app.use(helmet());
+app.use(
+    helmet.contentSecurityPolicy({
+      useDefaults: true,
+      directives: {
+        'img-src': ['\'self\'', '*.googleusercontent.com'],
+      },
+    }),
+);
 app.use(cookieParser());
 app.use(json());
 app.use(passport.initialize());
