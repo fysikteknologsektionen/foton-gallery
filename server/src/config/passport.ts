@@ -1,8 +1,15 @@
 import {Strategy as GoogleStrategy} from 'passport-google-oauth20';
-import {UnauthorizedError} from '../app/errors';
 import {config} from './config';
 import passport from 'passport';
 import urljoin from 'url-join';
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj: Express.User, done) => {
+  done(null, obj);
+});
 
 passport.use(
     new GoogleStrategy(
@@ -28,11 +35,12 @@ passport.use(
               done(null, false);
               return;
             }
-            const session = {
-              id: profile.id,
+            const user = {
+              name: profile.displayName,
+              avatar: profile.photos?.[0],
               role: role,
             };
-            done(null, session);
+            done(null, user);
           } catch (error) {
             done(error);
           }
