@@ -43,7 +43,11 @@ export const LoginButton: React.VFC<{className?: string}> = ({className}) => {
     );
   } else {
     return (
-      <button className={className} type="button" onClick={logout}>
+      <button
+        className={`${className ?? ''} btn btn-link p-0`}
+        type="button"
+        onClick={logout}
+      >
         Logga ut
       </button>
     );
