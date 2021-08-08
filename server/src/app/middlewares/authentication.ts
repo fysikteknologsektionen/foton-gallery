@@ -1,5 +1,4 @@
-import {NextFunction, Response} from 'express';
-import {RequestWithUser, UserSession} from '../../interfaces';
+import {NextFunction, Request, Response} from 'express';
 
 import {config} from '../../config';
 import jwt from 'jsonwebtoken';
@@ -12,18 +11,23 @@ import jwt from 'jsonwebtoken';
  * @param next Next function
  */
 export function populateUserField(
-    req: RequestWithUser,
+    req: Request,
     res: Response,
     next: NextFunction,
 ): void {
-  if (req.cookies.auth) {
-    jwt.verify(req.cookies.auth, config.APP_SECRET, {}, (error, decoded) => {
-      if (error) {
-        res.status(403).send();
-        return;
-      }
-      req.user = decoded as UserSession;
-    });
+  if (req.cookies.authToken) {
+    jwt.verify(
+        req.cookies.authToken,
+        config.APP_SECRET,
+        {},
+        (error, decoded) => {
+          if (error) {
+            res.status(403).send();
+            return;
+          }
+          req.user = decoded as Express.User;
+        },
+    );
   }
   next();
 }
@@ -34,30 +38,12 @@ export function populateUserField(
  * @param res Response object
  * @param next Next function
  */
-export function restrictToUsers(
-    req: RequestWithUser,
+export function restrictToAuthenticated(
+    req: Request,
     res: Response,
     next: NextFunction,
 ): void {
   if (!req.user) {
-    res.status(403).send();
-    return;
-  }
-  next();
-}
-
-/**
- * Middleware that restricts a route to only authenticated admin users
- * @param req Request object
- * @param res Response object
- * @param next Next function
- */
-export function restrictToAdmins(
-    req: RequestWithUser,
-    res: Response,
-    next: NextFunction,
-): void {
-  if (req.user?.role !== 'admin') {
     res.status(403).send();
     return;
   }

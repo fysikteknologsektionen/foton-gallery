@@ -8,14 +8,14 @@ import {
   updateAlbumImages,
   updateAlbumMeta,
 } from '../controllers';
-/* eslint-disable new-cap */
 import {albumValidators, validate} from '../validation';
 
 import {Router} from 'express';
-import {restrictToUsers} from '../middlewares';
+import {restrictToAuthenticated} from '../middlewares/';
 import {upload} from '../utils';
 
 // Public endpoints
+// eslint-disable-next-line new-cap
 const publicRouter = Router();
 
 publicRouter.get(
@@ -29,8 +29,9 @@ publicRouter.get('/', validate(albumValidators, ['page', 'count']), getAlbums);
 publicRouter.get('/count', getAlbumCount);
 
 // Private endpoints
+// eslint-disable-next-line new-cap
 const privateRouter = Router();
-privateRouter.use(restrictToUsers);
+privateRouter.use(restrictToAuthenticated);
 
 privateRouter.post(
     '/',

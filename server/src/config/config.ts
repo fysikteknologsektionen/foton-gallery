@@ -4,6 +4,7 @@ import path from 'path';
 
 interface Config {
   NODE_ENV: string;
+  APP_URL: string;
   APP_HOST: string;
   APP_PORT: number;
   APP_SECRET: string;
@@ -14,6 +15,9 @@ interface Config {
   DB_DATABASE: string;
   DB_USER?: string;
   DB_PASSWORD?: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
+  EMAIL_REGEXP: string;
 }
 
 let env = dotenv.config({path: path.join(__dirname, '..', '..', '..', '.env')});

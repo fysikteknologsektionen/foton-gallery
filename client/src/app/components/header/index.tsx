@@ -2,7 +2,6 @@ import {Link, NavLink} from 'react-router-dom';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import {Collapse} from 'bootstrap';
-import {LoginModal} from './LoginModal';
 import fotonLogo from './assets/foton.svg';
 import ftekLogo from './assets/ftek.svg';
 import {sessionContext} from '../../contexts/session';
@@ -33,13 +32,13 @@ export const Header: React.VFC = () => {
   }
 
   return (
-    <header>
+    <header className="bg-light">
       <nav
-        className="navbar navbar-expand-md navbar-light bg-light"
+        className="navbar navbar-expand-md navbar-light"
         aria-label="Huvudnavigering"
       >
         <div className="container">
-          <div>
+          <div className="me-auto me-md-0">
             <a
               className="navbar-brand"
               href="https://ftek.se"
@@ -52,6 +51,19 @@ export const Header: React.VFC = () => {
               <img src={fotonLogo} alt="Foton" height="40" />
             </Link>
           </div>
+          {session && (
+            <div className="d-flex me-3 me-md-0 order-md-last">
+              <span className="d-none d-sm-block navbar-text me-2">
+                {session.name}
+              </span>
+              <img
+                className="rounded-circle"
+                height="40"
+                src={session.avatar}
+                alt="Profilbild"
+              />
+            </div>
+          )}
           <button
             className="navbar-toggler"
             type="button"
@@ -89,19 +101,7 @@ export const Header: React.VFC = () => {
                   </NavLink>
                 </li>
               )}
-              {session?.role === 'admin' && (
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    to="/users/new"
-                    activeClassName="active"
-                  >
-                    Hantera användare
-                  </NavLink>
-                </li>
-              )}
             </ul>
-            <LoginModal />
           </div>
         </div>
       </nav>

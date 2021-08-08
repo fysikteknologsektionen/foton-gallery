@@ -8,5 +8,4 @@ export {
   addImageToAlbum,
   updateAlbumImages,
 } from './albums';
-export {createUser, updateUser, deleteUser} from './users';
-export {loginUser, logoutUser} from './authentication';
+export {generateToken, clearCookies} from './authentication';

@@ -1,5 +1,1 @@
-export {
-  populateUserField,
-  restrictToUsers,
-  restrictToAdmins,
-} from './authentication';
+export {populateUserField, restrictToAuthenticated} from './authentication';
