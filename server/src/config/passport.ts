@@ -16,7 +16,8 @@ passport.use(
           try {
             const email = profile.emails?.[0].value;
             if (!email) {
-              throw new UnauthorizedError();
+              done(null, false);
+              return;
             }
             const role = new RegExp(config.USER_REGEXP).test(email) ?
           'user' :
@@ -24,7 +25,8 @@ passport.use(
           'admin' :
           undefined;
             if (!role) {
-              throw new UnauthorizedError();
+              done(null, false);
+              return;
             }
             const session = {
               id: profile.id,
