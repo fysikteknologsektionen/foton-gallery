@@ -1,5 +1,6 @@
+import {clearCookies, generateToken} from '../controllers';
+
 import {Router} from 'express';
-import {generateToken} from '../controllers';
 import passport from 'passport';
 
 // Public endpoints
@@ -15,9 +16,8 @@ authenticationRouter.get(
     '/google/callback',
     passport.authenticate('google', {failureRedirect: '/unauthorized'}),
     generateToken,
-    (req, res) => {
-      res.redirect('/');
-    },
 );
+
+authenticationRouter.delete('/logout', clearCookies);
 
 export {authenticationRouter};

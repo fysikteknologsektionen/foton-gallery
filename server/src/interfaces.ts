@@ -1,6 +1,20 @@
 import {Document} from 'mongoose';
 
 /**
+ * Extend user object
+ */
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface User {
+      name: string;
+      avatar?: string;
+      role: 'user' | 'admin';
+    }
+  }
+}
+
+/**
  * Interface for an album's meta information
  */
 export interface AlbumMetaData {

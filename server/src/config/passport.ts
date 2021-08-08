@@ -23,7 +23,7 @@ passport.use(
           try {
             const email = profile.emails?.[0].value;
             if (!email) {
-              done(null, false);
+              done(null, undefined);
               return;
             }
             const role = new RegExp(config.USER_REGEXP).test(email) ?
@@ -32,10 +32,10 @@ passport.use(
           'admin' :
           undefined;
             if (!role) {
-              done(null, false);
+              done(null, undefined);
               return;
             }
-            const user = {
+            const user: Express.User = {
               name: profile.displayName,
               avatar: profile.photos?.[0].value,
               role: role,

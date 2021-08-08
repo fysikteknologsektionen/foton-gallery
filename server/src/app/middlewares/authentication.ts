@@ -1,5 +1,4 @@
-import {NextFunction, Response} from 'express';
-import {RequestWithUser, UserSession} from '../../interfaces';
+import {NextFunction, Request, Response} from 'express';
 
 import {config} from '../../config';
 import jwt from 'jsonwebtoken';
@@ -12,18 +11,23 @@ import jwt from 'jsonwebtoken';
  * @param next Next function
  */
 export function populateUserField(
-    req: RequestWithUser,
+    req: Request,
     res: Response,
     next: NextFunction,
 ): void {
-  if (req.cookies.auth) {
-    jwt.verify(req.cookies.auth, config.APP_SECRET, {}, (error, decoded) => {
-      if (error) {
-        res.status(403).send();
-        return;
-      }
-      req.user = decoded as UserSession;
-    });
+  if (req.cookies.authToken) {
+    jwt.verify(
+        req.cookies.authToken,
+        config.APP_SECRET,
+        {},
+        (error, decoded) => {
+          if (error) {
+            res.status(403).send();
+            return;
+          }
+          req.user = decoded as Express.User;
+        },
+    );
   }
   next();
 }
@@ -35,7 +39,7 @@ export function populateUserField(
  * @param next Next function
  */
 export function restrictToUsers(
-    req: RequestWithUser,
+    req: Request,
     res: Response,
     next: NextFunction,
 ): void {
@@ -53,7 +57,7 @@ export function restrictToUsers(
  * @param next Next function
  */
 export function restrictToAdmins(
-    req: RequestWithUser,
+    req: Request,
     res: Response,
     next: NextFunction,
 ): void {

@@ -4,7 +4,7 @@ import {config} from '../../config';
 import jwt from 'jsonwebtoken';
 
 /**
- * Genereates a JWT token and sets it as a cookie
+ * Generates a JWT token, sets it as a cookie and redirects user
  * @param req Request object
  * @param res Response object
  * @param next Next function
@@ -41,7 +41,7 @@ export async function generateToken(
             secure: true,
             maxAge: sessionLength * 1000,
           });
-          next();
+          res.redirect('/');
         },
     );
   } catch (error) {
@@ -55,7 +55,7 @@ export async function generateToken(
  * @param res Response object
  * @param next Next function
  */
-export function logoutUser(req: Request, res: Response): void {
+export function clearCookies(req: Request, res: Response): void {
   res.clearCookie('authToken', {
     httpOnly: true,
     sameSite: 'strict',
