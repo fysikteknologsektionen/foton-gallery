@@ -37,7 +37,7 @@ passport.use(
             }
             const user = {
               name: profile.displayName,
-              avatar: profile.photos?.[0],
+              avatar: profile.photos?.[0].value,
               role: role,
             };
             done(null, user);
