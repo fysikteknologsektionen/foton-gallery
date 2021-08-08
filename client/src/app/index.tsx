@@ -14,6 +14,7 @@ import {ToastContextProvider} from './contexts/toast';
 import {UpdateTitle} from './components/update-title';
 
 const HomePage = React.lazy(() => import('./pages/home'));
+const Unauthorized = React.lazy(() => import('./pages/unauthorized'));
 const NotFound = React.lazy(() => import('./pages/not-found'));
 
 /**
@@ -40,6 +41,7 @@ export const App: React.VFC = () => (
                     component={HomePage}
                   />
                   <Route path="/album" component={AlbumPage} />
+                  <Route path="/unauthorized" component={Unauthorized} />
                   <Route component={NotFound} />
                 </Switch>
               </Suspense>
