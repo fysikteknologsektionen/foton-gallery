@@ -17,8 +17,7 @@ interface Config {
   DB_PASSWORD?: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
-  USER_REGEXP: string;
-  ADMIN_REGEXP: string;
+  EMAIL_REGEXP: string;
 }
 
 let env = dotenv.config({path: path.join(__dirname, '..', '..', '..', '.env')});

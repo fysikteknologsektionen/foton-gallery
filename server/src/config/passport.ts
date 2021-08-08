@@ -22,23 +22,13 @@ passport.use(
         async (accessToken, refreshToken, profile, done) => {
           try {
             const email = profile.emails?.[0].value;
-            if (!email) {
-              done(null, undefined);
-              return;
-            }
-            const role = new RegExp(config.USER_REGEXP).test(email) ?
-          'user' :
-          new RegExp(config.ADMIN_REGEXP).test(email) ?
-          'admin' :
-          undefined;
-            if (!role) {
+            if (!email || !new RegExp(config.EMAIL_REGEXP).test(email)) {
               done(null, undefined);
               return;
             }
             const user: Express.User = {
               name: profile.displayName,
               avatar: profile.photos?.[0].value,
-              role: role,
             };
             done(null, user);
           } catch (error) {

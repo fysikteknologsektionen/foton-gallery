@@ -9,7 +9,6 @@ declare global {
     interface User {
       name: string;
       avatar?: string;
-      role: 'user' | 'admin';
     }
   }
 }

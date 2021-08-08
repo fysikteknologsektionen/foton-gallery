@@ -38,30 +38,12 @@ export function populateUserField(
  * @param res Response object
  * @param next Next function
  */
-export function restrictToUsers(
+export function restrictToAuthenticated(
     req: Request,
     res: Response,
     next: NextFunction,
 ): void {
   if (!req.user) {
-    res.status(403).send();
-    return;
-  }
-  next();
-}
-
-/**
- * Middleware that restricts a route to only authenticated admin users
- * @param req Request object
- * @param res Response object
- * @param next Next function
- */
-export function restrictToAdmins(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): void {
-  if (req.user?.role !== 'admin') {
     res.status(403).send();
     return;
   }
