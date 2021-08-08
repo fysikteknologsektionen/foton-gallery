@@ -38,7 +38,7 @@ export const Header: React.VFC = () => {
         aria-label="Huvudnavigering"
       >
         <div className="container">
-          <div>
+          <div className="me-auto me-md-0">
             <a
               className="navbar-brand"
               href="https://ftek.se"
