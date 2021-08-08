@@ -19,7 +19,7 @@ app.use(
     helmet.contentSecurityPolicy({
       useDefaults: true,
       directives: {
-        'img-src': ['\'self\'', '*.googleusercontent.com'],
+        'img-src': ['\'self\'', 'data:', '*.googleusercontent.com'],
       },
     }),
 );
