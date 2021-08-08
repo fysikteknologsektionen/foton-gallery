@@ -2,7 +2,6 @@ import {Link, NavLink} from 'react-router-dom';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import {Collapse} from 'bootstrap';
-import {LoginButton} from './LoginButton';
 import fotonLogo from './assets/foton.svg';
 import ftekLogo from './assets/ftek.svg';
 import {sessionContext} from '../../contexts/session';
@@ -89,19 +88,18 @@ export const Header: React.VFC = () => {
                   </NavLink>
                 </li>
               )}
-              {session?.role === 'admin' && (
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    to="/users/new"
-                    activeClassName="active"
-                  >
-                    Hantera användare
-                  </NavLink>
-                </li>
-              )}
             </ul>
-            <LoginButton />
+            {session && (
+              <div className="d-flex">
+                <span>{session.name}</span>
+                <img
+                  className="rounded-circle"
+                  height="50"
+                  src={session.avatar}
+                  alt="Profilbild"
+                />
+              </div>
+            )}
           </div>
         </div>
       </nav>

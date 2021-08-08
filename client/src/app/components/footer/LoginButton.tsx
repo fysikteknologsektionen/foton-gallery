@@ -9,7 +9,7 @@ import {toastContext} from '../../contexts/toast';
  * @param albumId ID of the album to add images to
  * @return React component
  */
-export const LoginButton: React.VFC = () => {
+export const LoginButton: React.VFC<{className?: string}> = ({className}) => {
   const {session, updateSession} = useContext(sessionContext);
   const newToast = useContext(toastContext);
 
@@ -37,20 +37,13 @@ export const LoginButton: React.VFC = () => {
 
   if (!session) {
     return (
-      <a
-        className="btn btn-outline-secondary mt-1 mt-md-0"
-        href="/api/auth/google"
-      >
+      <a className={className} href="/api/auth/google">
         Logga in
       </a>
     );
   } else {
     return (
-      <button
-        className="btn btn-outline-secondary mt-1 mt-md-0"
-        type="button"
-        onClick={logout}
-      >
+      <button className={className} type="button" onClick={logout}>
         Logga ut
       </button>
     );

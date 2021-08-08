@@ -8,14 +8,12 @@ import {ErrorBoundary} from 'react-error-boundary';
 import {ErrorFallback} from './components/error-fallback';
 import {Footer} from './components/footer';
 import {Header} from './components/header';
-import {ProtectedRoute} from './components/common/protected-route';
 import {SessionContextProvider} from './contexts/session';
 import {Spinner} from './components/common/spinner';
 import {ToastContextProvider} from './contexts/toast';
 import {UpdateTitle} from './components/update-title';
 
 const HomePage = React.lazy(() => import('./pages/home'));
-const UsersPage = React.lazy(() => import('./pages/users'));
 const NotFound = React.lazy(() => import('./pages/not-found'));
 
 /**
@@ -40,7 +38,6 @@ export const App: React.VFC = () => (
                   path={['/', '/page/:page(\\d+)']}
                   component={HomePage}
                 />
-                <ProtectedRoute path="/users" component={UsersPage} />
                 <Route path="/album" component={AlbumPage} />
                 <Route component={NotFound} />
               </Switch>
