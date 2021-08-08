@@ -51,6 +51,27 @@ export const Header: React.VFC = () => {
               <img src={fotonLogo} alt="Foton" height="40" />
             </Link>
           </div>
+          {session && (
+            <div className="d-flex me-3 me-md-0 order-md-last">
+              <span className="navbar-text me-2">{session.name}</span>
+              <img
+                className="rounded-circle"
+                height="40"
+                src={session.avatar}
+                alt="Profilbild"
+              />
+            </div>
+          )}
+          <button
+            className="navbar-toggler"
+            type="button"
+            aria-controls="navbar-nav-content"
+            aria-expanded={navCollapsed ? 'false' : 'true'}
+            aria-label="Visa/dölj navigation"
+            onClick={toggleNavCollapse}
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
           <div
             className="collapse navbar-collapse"
             id="navbar-nav-content"
@@ -80,27 +101,6 @@ export const Header: React.VFC = () => {
               )}
             </ul>
           </div>
-          {session && (
-            <div className="d-flex">
-              <span className="navbar-text me-2">{session.name}</span>
-              <img
-                className="rounded-circle"
-                height="40"
-                src={session.avatar}
-                alt="Profilbild"
-              />
-            </div>
-          )}
-          <button
-            className="navbar-toggler"
-            type="button"
-            aria-controls="navbar-nav-content"
-            aria-expanded={navCollapsed ? 'false' : 'true'}
-            aria-label="Visa/dölj navigation"
-            onClick={toggleNavCollapse}
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
         </div>
       </nav>
     </header>
