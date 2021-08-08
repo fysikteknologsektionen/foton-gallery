@@ -14,6 +14,7 @@ authenticationRouter.get(
     '/google/callback',
     passport.authenticate('google', {failureRedirect: '/unauthorized'}),
     (req, res) => {
+      console.log(req.user);
       res.redirect('/');
     },
 );

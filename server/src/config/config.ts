@@ -4,6 +4,7 @@ import path from 'path';
 
 interface Config {
   NODE_ENV: string;
+  APP_URL: string;
   APP_HOST: string;
   APP_PORT: number;
   APP_SECRET: string;
