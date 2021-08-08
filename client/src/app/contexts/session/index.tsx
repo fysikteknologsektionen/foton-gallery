@@ -1,16 +1,18 @@
 import React, {createContext, useEffect, useState} from 'react';
 
 import Cookies from 'js-cookie';
-import {UserSession} from '../../../interfaces';
 
-interface SessionContext<T> {
-  session: T;
+export interface UserSession {
+  name: string;
+  avatar: string;
+}
+
+interface SessionContext {
+  session?: UserSession;
   updateSession: () => void;
 }
 
-export const sessionContext = createContext<
-  SessionContext<UserSession | undefined>
->({
+export const sessionContext = createContext<SessionContext>({
   session: undefined,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateSession: () => {},

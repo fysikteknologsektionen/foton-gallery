@@ -1,4 +1,4 @@
-import {albumsRouter, authenticationRouter, usersRouter} from './routers';
+import {albumsRouter, authenticationRouter} from './routers';
 import {config, passport} from '../config';
 import express, {json} from 'express';
 
@@ -6,21 +6,30 @@ import cookieParser from 'cookie-parser';
 import {errorHandler} from './errors';
 import helmet from 'helmet';
 import path from 'path';
+import {populateUserField} from './middlewares';
 
 // Constants
 const clientPath = path.join(__dirname, '..', '..', '..', 'client', 'build');
 const imagesPath = path.join(__dirname, '..', '..', 'images');
 const app = express();
 
-// Global middleware
+// Global middlewares
 app.use(helmet());
+app.use(
+    helmet.contentSecurityPolicy({
+      useDefaults: true,
+      directives: {
+        'img-src': ['\'self\'', 'data:', '*.googleusercontent.com'],
+      },
+    }),
+);
 app.use(cookieParser());
 app.use(json());
+app.use(populateUserField);
 app.use(passport.initialize());
 
 // API routers
 app.use('/api/albums', albumsRouter);
-app.use('/api/users', usersRouter);
 app.use('/api/auth', authenticationRouter);
 
 // Static files

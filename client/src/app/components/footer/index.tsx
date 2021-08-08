@@ -1,3 +1,4 @@
+import {LoginButton} from './LoginButton';
 import React from 'react';
 
 /**
@@ -75,6 +76,7 @@ export const Footer: React.VFC = () => {
             Spidera
           </a>
         </span>
+        <LoginButton className="link-secondary text-decoration-none mb-3" />
         <span className="mb-3">
           &copy; {new Date().getFullYear()} Fysikteknologsektionen
         </span>
