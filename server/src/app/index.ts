@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import {errorHandler} from './errors';
 import helmet from 'helmet';
 import path from 'path';
+import {populateUserField} from './middlewares';
 
 // Constants
 const clientPath = path.join(__dirname, '..', '..', '..', 'client', 'build');
@@ -24,6 +25,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(json());
+app.use(populateUserField);
 app.use(passport.initialize());
 
 // API routers
