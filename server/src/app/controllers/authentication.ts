@@ -1,40 +1,27 @@
 import {NextFunction, Request, Response} from 'express';
-import {UserAuthenicationData, UserSession} from '../../interfaces';
 
-import {UnauthorizedError} from '../errors';
-import {User} from '../models';
-import bcrypt from 'bcrypt';
 import {config} from '../../config';
 import jwt from 'jsonwebtoken';
-import {matchedData} from 'express-validator';
 
 /**
- * Logs in user and returns cookies with JWT token and session
+ * Genereates a JWT token and sets it as a cookie
  * @param req Request object
  * @param res Response object
  * @param next Next function
  */
-export async function loginUser(
+export async function generateToken(
     req: Request,
     res: Response,
     next: NextFunction,
 ): Promise<void> {
-  const {username, password} = matchedData(req) as UserAuthenicationData;
   try {
-    const user = await User.findOne({username: username}).exec();
-    if (!user) {
-      throw new UnauthorizedError();
+    if (!req.user) {
+      throw new Error('User is not deserialized.');
     }
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      throw new UnauthorizedError();
-    }
-
     // Max session length in seconds
     const sessionLength = 0.5 * 60 * 60;
-    const session: UserSession = {role: user.role};
     jwt.sign(
-        session,
+        req.user,
         config.APP_SECRET,
         {expiresIn: sessionLength},
         (error, token) => {
@@ -42,19 +29,19 @@ export async function loginUser(
             throw error;
           }
           // Cookie used for authentication
-          res.cookie('auth', token, {
+          res.cookie('authToken', token, {
             httpOnly: true,
             sameSite: 'strict',
             secure: true,
             maxAge: sessionLength * 1000,
           });
           // Cookie used by front end (not secure)
-          res.cookie('session', JSON.stringify(session), {
+          res.cookie('session', JSON.stringify(req.user), {
             sameSite: 'strict',
             secure: true,
             maxAge: sessionLength * 1000,
           });
-          res.status(200).send();
+          next();
         },
     );
   } catch (error) {
@@ -69,7 +56,11 @@ export async function loginUser(
  * @param next Next function
  */
 export function logoutUser(req: Request, res: Response): void {
-  res.clearCookie('auth', {httpOnly: true, sameSite: 'strict', secure: true});
+  res.clearCookie('authToken', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: true,
+  });
   res.clearCookie('session', {sameSite: 'strict', secure: true});
   res.status(205).send();
 }

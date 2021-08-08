@@ -9,4 +9,4 @@ export {
   updateAlbumImages,
 } from './albums';
 export {createUser, updateUser, deleteUser} from './users';
-export {loginUser, logoutUser} from './authentication';
+export {generateToken, logoutUser} from './authentication';

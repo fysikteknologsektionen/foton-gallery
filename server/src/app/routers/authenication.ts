@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import {generateToken} from '../controllers';
 import passport from 'passport';
 
 // Public endpoints
@@ -13,8 +14,8 @@ authenticationRouter.get(
 authenticationRouter.get(
     '/google/callback',
     passport.authenticate('google', {failureRedirect: '/unauthorized'}),
+    generateToken,
     (req, res) => {
-      console.log(req.user);
       res.redirect('/');
     },
 );
