@@ -2,7 +2,6 @@ import {NextFunction, Request, Response} from 'express';
 
 import {ValidationError} from '../errors';
 import {albumValidators} from './album';
-import {userValidators} from './user';
 import {validationResult} from 'express-validator';
 
 /**
@@ -30,10 +29,12 @@ function checkValidationResult(
  * @param fields Fields to scheck
  * @returns Validation chain and checkValidationResult
  */
-export function validate<
-  T extends typeof albumValidators | typeof userValidators
->(validatorObject: T, fields: Array<keyof T>): (
-  T[keyof T] | ((req: Request, res: Response, next: NextFunction) => void)
+export function validate<T extends typeof albumValidators>(
+    validatorObject: T,
+    fields: Array<keyof T>,
+): (
+  | T[keyof T]
+  | ((req: Request, res: Response, next: NextFunction) => void)
 )[] {
   const validators = fields.map((field) => validatorObject[field]);
   return [...validators, checkValidationResult];

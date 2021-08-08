@@ -1,4 +1,4 @@
-import {albumsRouter, authenticationRouter, usersRouter} from './routers';
+import {albumsRouter, authenticationRouter} from './routers';
 import {config, passport} from '../config';
 import express, {json} from 'express';
 
@@ -20,7 +20,6 @@ app.use(passport.initialize());
 
 // API routers
 app.use('/api/albums', albumsRouter);
-app.use('/api/users', usersRouter);
 app.use('/api/auth', authenticationRouter);
 
 // Static files
