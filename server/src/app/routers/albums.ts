@@ -11,7 +11,7 @@ import {
 import {albumValidators, validate} from '../validation';
 
 import {Router} from 'express';
-import {restrictToAuthenticated} from '../middlewares/authentication';
+import {restrictToAuthenticated} from '../middlewares/';
 import {upload} from '../utils';
 
 // Public endpoints
