@@ -26,23 +26,25 @@ export const App: React.VFC = () => (
       <BrowserRouter>
         <UpdateTitle />
         <Header />
-        <main className="container mt-3 mb-3">
-          <ErrorBoundary
-            fallbackRender={ErrorFallback}
-            onError={(error) => console.error(error)}
-          >
-            <Suspense fallback={<Spinner />}>
-              <Switch>
-                <Route
-                  exact
-                  path={['/', '/page/:page(\\d+)']}
-                  component={HomePage}
-                />
-                <Route path="/album" component={AlbumPage} />
-                <Route component={NotFound} />
-              </Switch>
-            </Suspense>
-          </ErrorBoundary>
+        <main>
+          <div className="container mt-3 mb-3">
+            <ErrorBoundary
+              fallbackRender={ErrorFallback}
+              onError={(error) => console.error(error)}
+            >
+              <Suspense fallback={<Spinner />}>
+                <Switch>
+                  <Route
+                    exact
+                    path={['/', '/page/:page(\\d+)']}
+                    component={HomePage}
+                  />
+                  <Route path="/album" component={AlbumPage} />
+                  <Route component={NotFound} />
+                </Switch>
+              </Suspense>
+            </ErrorBoundary>
+          </div>
         </main>
         <Footer />
       </BrowserRouter>

@@ -32,9 +32,9 @@ export const Header: React.VFC = () => {
   }
 
   return (
-    <header>
+    <header className="bg-light">
       <nav
-        className="navbar navbar-expand-md navbar-light bg-light"
+        className="navbar navbar-expand-md navbar-light"
         aria-label="Huvudnavigering"
       >
         <div className="container">
@@ -53,7 +53,9 @@ export const Header: React.VFC = () => {
           </div>
           {session && (
             <div className="d-flex me-3 me-md-0 order-md-last">
-              <span className="navbar-text me-2">{session.name}</span>
+              <span className="d-none d-sm-block navbar-text me-2">
+                {session.name}
+              </span>
               <img
                 className="rounded-circle"
                 height="40"

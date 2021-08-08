@@ -21,8 +21,8 @@ main {
 }
 
 // Fix scrollbar jumping
-html {
-  margin-left: calc(100vw - 100%);
+header, main, footer {
+  padding-left: calc(100vw - 100%);
 }
 
 // Override bootstrap scrollbar jumping fix
