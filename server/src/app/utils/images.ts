@@ -30,7 +30,6 @@ export async function processImage(image: Image): Promise<void> {
         path.join(basePath, 'fullsize', image.originalFilename),
     );
   } catch (error) {
-    console.log('lol');
     console.error(error);
   }
 }
