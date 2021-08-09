@@ -1,3 +1,4 @@
+import {Image} from '../../interfaces';
 import fs from 'fs/promises';
 import path from 'path';
 import sharp from 'sharp';
@@ -5,39 +6,46 @@ import sharp from 'sharp';
 /**
  * Processes full sized image into scaled down versions
  * @param image Image to process
- * @throws Throws an error if sharp or file system operations fail
  */
-export async function processImage(image: Express.Multer.File): Promise<void> {
-  // Create thumbnails
-  await sharp(image.path)
-      .resize(420, null, {
-        fit: 'inside',
-      })
-      .toFile(path.join(image.destination, 'thumbnail', image.filename));
-  // Create scaled down version for web
-  await sharp(image.path)
-      .resize(1920, 1080, {
-        fit: 'inside',
-      })
-      .toFile(path.join(image.destination, 'scaled', image.filename));
-  // Move fullsize images
-  await fs.rename(
-      image.path,
-      path.join(image.destination, 'fullsize', image.filename),
-  );
+export async function processImage(image: Image): Promise<void> {
+  const basePath = path.join(__dirname, '..', '..', '..', 'images');
+  try {
+    // Create thumbnail
+    await sharp(path.join(basePath, image.originalFilename))
+        .resize(420, null, {
+          fit: 'inside',
+        })
+        .toFormat('jpg', {progressive: true})
+        .toFile(path.join(basePath, 'thumbnail', image.filename));
+    // Create scaled down version for web
+    await sharp(path.join(basePath, image.originalFilename))
+        .resize(1920, 1080, {
+          fit: 'inside',
+        })
+        .toFormat('jpg', {quality: 100, progressive: true})
+        .toFile(path.join(basePath, 'scaled', image.filename));
+    // Move fullsized image
+    await fs.rename(
+        path.join(basePath, image.originalFilename),
+        path.join(basePath, 'fullsize', image.originalFilename),
+    );
+  } catch (error) {
+    console.log('lol');
+    console.error(error);
+  }
 }
 
 /**
- * Deletes images from disk
- * @param imageFileNames File names of images to delete
- * @throws Throws an error if file system operations fail
+ * Deletes image from disk
+ * @param image Image to delete
  */
-export async function deleteImages(imageFileNames: string[]): Promise<void> {
-  const imageDir = path.join(__dirname, '..', '..', '..', 'images');
-  for (let i = 0; i < imageFileNames.length; i++) {
-    const file = imageFileNames[i];
-    await fs.unlink(path.join(imageDir, 'fullsize', file));
-    await fs.unlink(path.join(imageDir, 'thumbnail', file));
-    await fs.unlink(path.join(imageDir, 'scaled', file));
+export async function deleteImage(image: Image): Promise<void> {
+  const basePath = path.join(__dirname, '..', '..', '..', 'images');
+  try {
+    await fs.unlink(path.join(basePath, 'fullsize', image.originalFilename));
+    await fs.unlink(path.join(basePath, 'thumbnail', image.filename));
+    await fs.unlink(path.join(basePath, 'scaled', image.filename));
+  } catch (error) {
+    console.error(error);
   }
 }

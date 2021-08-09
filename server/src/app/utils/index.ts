@@ -1,2 +1,2 @@
-export {processImage, deleteImages} from './images';
+export {processImage, deleteImage} from './images';
 export {upload} from './upload';

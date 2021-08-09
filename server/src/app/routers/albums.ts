@@ -69,7 +69,7 @@ privateRouter.post(
 
 privateRouter.patch(
     '/:id/images',
-    validate(albumValidators, ['id', 'images', 'thumbnail']),
+    validate(albumValidators, ['id', 'images', 'images.*', 'thumbnail']),
     updateAlbumImages,
 );
 
