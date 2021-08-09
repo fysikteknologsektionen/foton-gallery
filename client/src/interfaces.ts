@@ -1,5 +1,14 @@
 /**
- * Interface representing an album
+ * Interface for an image
+ */
+export interface Image {
+  _id: string;
+  filename: string;
+  originalFilename: string;
+}
+
+/**
+ * Interface for an album
  */
 export interface Album {
   _id: string;
@@ -8,6 +17,6 @@ export interface Album {
   date: string;
   authors: string[];
   description?: string;
-  images: string[];
-  thumbnail?: string;
+  images: Image[];
+  thumbnail?: Image;
 }

@@ -13,7 +13,8 @@ export const AlbumPreview: React.VFC<{album: Album}> = ({album}) => {
 
   // Check for a valid thumbnail, otherwise fallback to first image
   const thumbnail =
-    album.thumbnail && album.images.includes(album.thumbnail) ?
+    album.thumbnail &&
+    album.images.map((image) => image._id).includes(album.thumbnail._id) ?
       album.thumbnail :
       album.images[0];
 
@@ -23,7 +24,11 @@ export const AlbumPreview: React.VFC<{album: Album}> = ({album}) => {
         key={`${album.date}-${album.slug}`}
         to={`/album/${albumDate}/${album.slug}`}
       >
-        <Thumbnail className="card-img" fileName={thumbnail} alt={album.name} />
+        <Thumbnail
+          className="card-img"
+          filename={thumbnail.filename}
+          alt={album.name}
+        />
         <div
           className={`card-img-overlay d-inline-flex
             flex-column justify-content-end p-0`}

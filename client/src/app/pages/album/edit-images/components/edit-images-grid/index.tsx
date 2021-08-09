@@ -18,8 +18,8 @@ export const EditImagesGrid: React.VFC<Album> = ({_id, images, thumbnail}) => {
   const newToast = useContext(toastContext);
 
   const initialValues: {images: string[]; thumbnail?: string} = {
-    images: images,
-    thumbnail: thumbnail,
+    images: images.map((image) => image._id),
+    thumbnail: thumbnail?._id,
   };
 
   return (
@@ -78,7 +78,13 @@ export const EditImagesGrid: React.VFC<Album> = ({_id, images, thumbnail}) => {
                         className="visually-hidden"
                         name={`images.${index}`}
                       />
-                      <Thumbnail fileName={image} alt="Albumbild" />
+                      <Thumbnail
+                        filename={
+                          images.find((element) => element._id === image)
+                              ?.filename ?? ''
+                        }
+                        alt="Albumbild"
+                      />
                       <button
                         className="position-absolute btn btn-primary"
                         style={{left: 0, top: '50%'}}
