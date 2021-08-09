@@ -49,7 +49,7 @@ export async function updateAlbumMeta(
     id: string;
   } & IAlbum;
   try {
-    const album = await Album.findById(id);
+    const album = await Album.findById(id).exec();
     if (!album) {
       throw new NotFoundError(`Album with id ${id} not found`);
     }
@@ -133,7 +133,7 @@ export async function getAlbumCount(
     next: NextFunction,
 ): Promise<void> {
   try {
-    const count = await Album.estimatedDocumentCount();
+    const count = await Album.estimatedDocumentCount().exec();
     res.json(count);
   } catch (error) {
     next(error);
@@ -157,7 +157,7 @@ export async function deleteAlbum(
     if (!album) {
       throw new NotFoundError(`Album with id ${id} not found`);
     }
-    await album.remove();
+    await album.deleteOne();
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -210,7 +210,9 @@ export async function updateAlbumImages(
 ): Promise<void> {
   const {id, ...data} = matchedData(req) as {
     id: string;
-  } & IAlbum;
+    images: string[];
+    thumbnail: string;
+  };
   try {
     const album = await Album.findById(id).exec();
     if (!album) {
@@ -219,9 +221,13 @@ export async function updateAlbumImages(
     // Check for removed images
     for (let i = 0; i < album.images.length; i++) {
       const image = album.images[i];
-      if (!data.images.includes(image)) {
-        const imageDoc = Image.findById(image);
-        await imageDoc.remove();
+      // We must explicity cast to string since we cannot
+      // compare ObjectId to string
+      if (!data.images.includes(image.toString())) {
+        const imageDoc = await Image.findById(image).exec();
+        if (imageDoc) {
+          await imageDoc.deleteOne();
+        }
       }
     }
     album.set(data);

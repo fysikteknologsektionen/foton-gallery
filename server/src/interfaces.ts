@@ -1,4 +1,4 @@
-import {Document, PopulatedDoc} from 'mongoose';
+import {PopulatedDoc, Types} from 'mongoose';
 
 /**
  * Extend user object
@@ -16,7 +16,7 @@ declare global {
 /**
  * Interface for an image
  */
-export interface Image extends Document {
+export interface Image {
   filename: string; // File name after processing (ending with jpg)
   originalFilename: string; // File name before processing (any image type)
 }
@@ -24,12 +24,12 @@ export interface Image extends Document {
 /**
  * Interface for an album
  */
-export interface Album extends Document {
+export interface Album {
   name: string;
   slug: string;
   date: Date;
   authors: string[];
   description?: string;
-  images: PopulatedDoc<Image & Document>[];
-  thumbnail?: PopulatedDoc<Image & Document>;
+  images: PopulatedDoc<Image, Types.ObjectId>[];
+  thumbnail?: PopulatedDoc<Image, Types.ObjectId>;
 }

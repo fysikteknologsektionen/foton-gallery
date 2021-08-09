@@ -19,7 +19,7 @@ albumSchema.index({date: -1, slug: 1}, {unique: true});
 /**
  * Generates a slug from the name and stores it
  */
-albumSchema.pre('save', function(next) {
+albumSchema.pre<Album>('save', function(next) {
   const nameSlug = slug(this.name);
   this.slug = nameSlug;
   next();
@@ -28,7 +28,7 @@ albumSchema.pre('save', function(next) {
 /**
  * Remove images when removing album
  */
-albumSchema.post('remove', async function(doc: Album) {
+albumSchema.post<Album>('deleteOne', async function(doc) {
   for (let i = 0; i < doc.images.length; i++) {
     await doc.images[i].remove();
   }

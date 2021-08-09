@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 import {Schema, model} from 'mongoose';
 import {deleteImage, processImage} from '../utils';
 
@@ -11,16 +12,20 @@ const imageSchema = new Schema<Image>({
 /**
  * Processes image after saving it
  */
-imageSchema.post('save', async function(doc: Image) {
+imageSchema.post<Image>('save', async function(doc) {
   await processImage(doc);
 });
 
 /**
  * Removes files from disk when removing image
  */
-imageSchema.post('remove', async function(doc: Image) {
-  await deleteImage(doc);
-});
+imageSchema.pre<Image>(
+    'deleteOne',
+    {document: true, query: false},
+    async function() {
+      await deleteImage(this);
+    },
+);
 
 const imageModel = model<Image>('Image', imageSchema);
 export {imageModel as Image};
