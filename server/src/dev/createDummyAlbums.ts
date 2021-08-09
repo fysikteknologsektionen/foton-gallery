@@ -1,11 +1,12 @@
 import '../config';
 
-import {Album} from '../app/models';
+import {Album, Image} from '../app/models';
+
+import {Image as IImage} from '../interfaces';
 import cryptoRandomString from 'crypto-random-string';
 import faker from 'faker';
 import fs from 'fs/promises';
 import path from 'path';
-import {processImage} from '../app/utils';
 
 /**
  * Creates dummy albums
@@ -29,9 +30,19 @@ async function createDummyAlbums(numAlbums: number, numImages: number) {
           cryptoRandomString({length: 32}) + path.extname(image);
         await fs.copyFile(
             path.join(imagesDir, image),
-            path.join(imagesDir, newFileName),
+            path.join(__dirname, '..', '..', 'images', newFileName),
         );
         newFileNames.push(newFileName);
+      }
+      const imageDocs: IImage[] = [];
+      for (let i = 0; i < newFileNames.length; i++) {
+        const filename = newFileNames[i];
+        const imageDoc = new Image({
+          filename: filename,
+          originalFilename: filename,
+        });
+        await imageDoc.save();
+        imageDocs.push(imageDoc);
       }
 
       const albumData = {
@@ -41,22 +52,12 @@ async function createDummyAlbums(numAlbums: number, numImages: number) {
           faker.name.findName(),
         ),
         description: faker.lorem.paragraphs(1),
-        images: newFileNames,
-        thumbnail: faker.datatype.number(images.length - 1),
+        images: imageDocs,
+        thumbnail: faker.random.arrayElement(imageDocs),
       };
 
       const album = new Album({...albumData});
       await album.save();
-
-      // Process images
-      for (let i = 0; i < newFileNames.length; i++) {
-        const image = newFileNames[i];
-        await processImage({
-          path: path.join(imagesDir, image),
-          destination: path.join(__dirname, '..', '..', 'images'),
-          filename: image,
-        } as Express.Multer.File);
-      }
     } catch (error) {
       console.error(error);
     }

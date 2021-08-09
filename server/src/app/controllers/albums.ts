@@ -1,9 +1,8 @@
-import {AlbumImageData, AlbumMetaData} from '../../interfaces';
+import {Album, Image} from '../models';
 import {ConflictError, NotFoundError} from '../errors';
 import {NextFunction, Request, Response} from 'express';
-import {deleteImages, processImage} from '../utils';
 
-import {Album} from '../models';
+import {Album as IAlbum} from '../../interfaces';
 import {matchedData} from 'express-validator';
 
 /**
@@ -17,7 +16,7 @@ export async function createAlbum(
     res: Response,
     next: NextFunction,
 ): Promise<void> {
-  const data = matchedData(req) as AlbumMetaData;
+  const data = matchedData(req) as IAlbum;
   try {
     const album = new Album({...data});
     await album.save();
@@ -48,9 +47,9 @@ export async function updateAlbumMeta(
 ): Promise<void> {
   const {id, ...data} = matchedData(req, {includeOptionals: true}) as {
     id: string;
-  } & AlbumMetaData;
+  } & IAlbum;
   try {
-    const album = await Album.findById(id);
+    const album = await Album.findById(id).exec();
     if (!album) {
       throw new NotFoundError(`Album with id ${id} not found`);
     }
@@ -83,7 +82,9 @@ export async function getAlbum(
 ): Promise<void> {
   const data = matchedData(req) as {date: Date; slug: string};
   try {
-    const album = await Album.findOne({...data}).exec();
+    const album = await Album.findOne({...data})
+        .populate('images thumbnail')
+        .exec();
     if (!album) {
       throw new NotFoundError(
           `Album with slug ${data.slug} and date ${data.date} not found`,
@@ -112,6 +113,7 @@ export async function getAlbums(
         .sort('-date')
         .limit(count)
         .skip((page - 1) * count)
+        .populate('images thumbnail')
         .exec();
     res.json(albums);
   } catch (error) {
@@ -131,7 +133,7 @@ export async function getAlbumCount(
     next: NextFunction,
 ): Promise<void> {
   try {
-    const count = await Album.estimatedDocumentCount();
+    const count = await Album.estimatedDocumentCount().exec();
     res.json(count);
   } catch (error) {
     next(error);
@@ -151,13 +153,11 @@ export async function deleteAlbum(
 ): Promise<void> {
   const {id} = matchedData(req) as {id: string};
   try {
-    const album = await Album.findByIdAndDelete(id).exec();
+    const album = await Album.findById(id).exec();
     if (!album) {
       throw new NotFoundError(`Album with id ${id} not found`);
     }
-    if (album.images.length > 0) {
-      await deleteImages(album.images);
-    }
+    await album.deleteOne();
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -165,7 +165,7 @@ export async function deleteAlbum(
 }
 
 /**
- * Adds additional images to an album
+ * Creates an image and adds it to an album
  * @param req Request object
  * @param res Response object
  * @param next Next function
@@ -176,32 +176,29 @@ export async function addImageToAlbum(
     next: NextFunction,
 ): Promise<void> {
   const {id} = matchedData(req) as {id: string};
-  // Since we use Multer.single() we can assert req.file will always
-  // be defined
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const image = req.file!;
   try {
     const album = await Album.findById(id).exec();
     if (!album) {
       throw new NotFoundError(`Album with id ${id} not found`);
     }
-    album.images.push(image.filename);
+    // Will always be defined since we use multer.single()
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const file = req.file!;
+    const image = new Image({
+      filename: `${file.filename.slice(0, file.filename.lastIndexOf('.'))}.jpg`,
+      originalFilename: file.filename,
+    });
+    const imageDoc = await image.save();
+    album.images.push(imageDoc);
     await album.save();
-    await processImage(image);
-    res.status(201).json(image.filename);
+    res.status(201).json(imageDoc);
   } catch (error) {
-    // Delete images from disk
-    try {
-      await deleteImages([image.filename]);
-    } catch (error) {
-      console.error(error);
-    }
     next(error);
   }
 }
 
 /**
- * Updates an album's images and thumbnail
+ * Updates an album's images (order) and thumbnail
  * @param req Request object
  * @param res Response object
  * @param next Next function
@@ -213,11 +210,25 @@ export async function updateAlbumImages(
 ): Promise<void> {
   const {id, ...data} = matchedData(req) as {
     id: string;
-  } & AlbumImageData;
+    images: string[];
+    thumbnail: string;
+  };
   try {
     const album = await Album.findById(id).exec();
     if (!album) {
       throw new NotFoundError(`Album with id ${id} not found`);
+    }
+    // Check for removed images
+    for (let i = 0; i < album.images.length; i++) {
+      const image = album.images[i];
+      // We must explicity cast to string since we cannot
+      // compare ObjectId to string
+      if (!data.images.includes(image.toString())) {
+        const imageDoc = await Image.findById(image).exec();
+        if (imageDoc) {
+          await imageDoc.deleteOne();
+        }
+      }
     }
     album.set(data);
     await album.save();

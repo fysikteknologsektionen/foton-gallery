@@ -1,4 +1,4 @@
-import {Document} from 'mongoose';
+import {PopulatedDoc, Types} from 'mongoose';
 
 /**
  * Extend user object
@@ -14,26 +14,22 @@ declare global {
 }
 
 /**
- * Interface for an album's meta information
+ * Interface for an image
  */
-export interface AlbumMetaData {
+export interface Image {
+  filename: string; // File name after processing (ending with jpg)
+  originalFilename: string; // File name before processing (any image type)
+}
+
+/**
+ * Interface for an album
+ */
+export interface Album {
   name: string;
+  slug: string;
   date: Date;
   authors: string[];
   description?: string;
-}
-
-/**
- * Interface for an albums image information
- */
-export interface AlbumImageData {
-  images: string[];
-  thumbnail?: string;
-}
-
-/**
- * Interface for representing an album document
- */
-export interface Album extends AlbumMetaData, AlbumImageData, Document {
-  slug: string;
+  images: PopulatedDoc<Image, Types.ObjectId>[];
+  thumbnail?: PopulatedDoc<Image, Types.ObjectId>;
 }

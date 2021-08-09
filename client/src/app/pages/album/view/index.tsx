@@ -52,35 +52,37 @@ const ViewAlbum: React.VFC = () => {
           {album.images.map((image, index) => (
             <div
               className="scale-on-hover"
-              key={image}
+              key={image._id}
               onClick={() => {
                 setActiveImage(index);
                 setShowLightbox(true);
               }}
             >
-              <Thumbnail fileName={image} alt="Albumbild" />
+              <Thumbnail filename={image.filename} alt="Albumbild" />
             </div>
           ))}
         </MasonryGrid>
         {showLightbox && (
           <Lightbox
-            mainSrc={`/images/scaled/${album.images[activeImage]}`}
+            mainSrc={`/images/scaled/${album.images[activeImage].filename}`}
             nextSrc={`/images/scaled/${
-              album.images[(activeImage + 1) % album.images.length]
+              album.images[(activeImage + 1) % album.images.length].filename
             }`}
             prevSrc={`/images/scaled/${
               album.images[
                   (activeImage + album.images.length - 1) % album.images.length
-              ]
+              ].filename
             }`}
-            mainSrcThumbnail={`/images/thumbnail/${album.images[activeImage]}`}
+            mainSrcThumbnail={`/images/thumbnail/${
+              album.images[activeImage].filename
+            }`}
             nextSrcThumbnail={`/images/thumbnail/${
-              album.images[(activeImage + 1) % album.images.length]
+              album.images[(activeImage + 1) % album.images.length].filename
             }`}
             prevSrcThumbnail={`/images/thumbnail/${
               album.images[
                   (activeImage + album.images.length - 1) % album.images.length
-              ]
+              ].filename
             }`}
             onCloseRequest={() => setShowLightbox(false)}
             onMoveNextRequest={() =>

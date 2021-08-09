@@ -1,11 +1,11 @@
 import '../config';
 
+import {Album, Image} from '../app/models';
 import {extname, join, normalize} from 'path';
 
-import {Album} from '../app/models';
+import {Image as IImage} from '../interfaces';
 import cryptoRandomString from 'crypto-random-string';
 import fs from 'fs/promises';
-import {processImage} from '../app/utils';
 
 /**
  * Migrates albums from the original Foton application
@@ -26,15 +26,23 @@ async function migrateAlbums(path: string) {
       const albumDir = await fs.readdir(join(path, album, 'fullsize'));
       delete albumDir[albumDir.indexOf('meta.json')];
 
-      const images = [];
+      const images: IImage[] = [];
       for (const image of albumDir) {
         if (image) {
           const newFileName = cryptoRandomString({length: 32}) + extname(image);
           await fs.copyFile(
               join(path, album, 'fullsize', image),
-              join(path, album, 'fullsize', newFileName),
+              join(__dirname, '..', '..', 'images', newFileName),
           );
-          images.push(newFileName);
+          const imageDoc = new Image({
+            filename: `${newFileName.slice(
+                0,
+                newFileName.lastIndexOf('.'),
+            )}.jpg`,
+            originalFilename: newFileName,
+          });
+          await imageDoc.save();
+          images.push(imageDoc);
         }
       }
 
@@ -47,20 +55,6 @@ async function migrateAlbums(path: string) {
         thumbnail: images[albumDir.indexOf(meta.thumbnail)],
       });
       await newAlbum.save();
-
-      // Process images
-      for (let i = 0; i < images.length; i++) {
-        const image = images[i];
-        try {
-          await processImage({
-            path: join(path, album, 'fullsize', image),
-            destination: join(__dirname, '..', '..', 'images'),
-            filename: image,
-          } as Express.Multer.File);
-        } catch (error) {
-          console.error(error);
-        }
-      }
     }
 
     console.log('Migration complete.');

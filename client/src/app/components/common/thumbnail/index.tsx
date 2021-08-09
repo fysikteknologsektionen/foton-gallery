@@ -11,10 +11,10 @@ import placeholderImage from './assets/placeholder.jpg';
  * @return Thumbnail component
  */
 export const Thumbnail: React.VFC<{
-  fileName: string;
+  filename: string;
   alt: string;
   className?: string;
-}> = ({fileName, alt, className}) => {
+}> = ({filename, alt, className}) => {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -28,7 +28,7 @@ export const Thumbnail: React.VFC<{
       )}
       <img
         className={`w-100 rounded ${className ?? ''}`}
-        src={fileName ? `/images/thumbnail/${fileName}` : placeholderImage}
+        src={filename ? `/images/thumbnail/${filename}` : placeholderImage}
         alt={alt}
         onError={(event) => {
           event.currentTarget.src = placeholderImage;
