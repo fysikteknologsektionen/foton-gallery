@@ -8,7 +8,7 @@ import React from 'react';
  */
 export const ErrorFallback: React.VFC<FallbackProps> = ({
   resetErrorBoundary,
-  error
+  error,
 }) => {
   return (
     <>
