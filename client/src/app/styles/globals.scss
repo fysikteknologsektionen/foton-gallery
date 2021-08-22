@@ -1,6 +1,9 @@
-/* Import bootstrap styles */
-@import '../../../node_modules/bootstrap-icons/font/bootstrap-icons';
+/* Bootstrap overrides */
+$primary: #8d0000;
+
+/* Bootstrap styles */
 @import '../../../node_modules/bootstrap/scss/bootstrap';
+@import '../../../node_modules/bootstrap-icons/font/bootstrap-icons';
 
 /* Additional styles */
 
