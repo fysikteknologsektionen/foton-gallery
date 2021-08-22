@@ -86,7 +86,7 @@ export const EditImagesGrid: React.VFC<Album> = ({_id, images, thumbnail}) => {
                         alt="Albumbild"
                       />
                       <button
-                        className="position-absolute btn btn-primary"
+                        className="position-absolute btn btn-secondary"
                         style={{left: 0, top: '50%'}}
                         type="button"
                         onClick={() => arrayHelpers.move(index, index - 1)}
@@ -95,7 +95,7 @@ export const EditImagesGrid: React.VFC<Album> = ({_id, images, thumbnail}) => {
                         <i className="bi-arrow-left" aria-hidden="true" />
                       </button>
                       <button
-                        className="position-absolute btn btn-primary"
+                        className="position-absolute btn btn-secondary"
                         style={{right: 0, top: '50%'}}
                         type="button"
                         onClick={() => arrayHelpers.move(index, index + 1)}
