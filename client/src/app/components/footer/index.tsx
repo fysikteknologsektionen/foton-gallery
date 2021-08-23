@@ -20,7 +20,7 @@ export const Footer: React.VFC = () => {
             <i className="bi-facebook" aria-label="Besök oss på facebook" />
           </a>
         </span>
-        <span>
+        <span className="text-center">
           Denna sida är en del av{' '}
           <a
             className="link-secondary text-decoration-none"
@@ -32,7 +32,7 @@ export const Footer: React.VFC = () => {
           </a>
           .
         </span>
-        <span>
+        <span className="text-center">
           Vill du veta hur vi hanterar personuppgifter? Läs vår{' '}
           <a
             className="link-secondary text-decoration-none"
@@ -44,7 +44,7 @@ export const Footer: React.VFC = () => {
           </a>
           .
         </span>
-        <span className="mb-3">
+        <span className="text-center mb-3">
           Har du frågor om innehållet på sidan?{' '}
           <a
             className="link-secondary text-decoration-none"

@@ -48,20 +48,24 @@ const ViewAlbum: React.VFC = () => {
             Hantera
           </Link>
         )}
-        <MasonryGrid>
-          {album.images.map((image, index) => (
-            <div
-              className="scale-on-hover"
-              key={image._id}
-              onClick={() => {
-                setActiveImage(index);
-                setShowLightbox(true);
-              }}
-            >
-              <Thumbnail filename={image.filename} alt="Albumbild" />
-            </div>
-          ))}
-        </MasonryGrid>
+        {album.images.length > 0 ? (
+          <MasonryGrid>
+            {album.images.map((image, index) => (
+              <div
+                className="scale-on-hover"
+                key={image._id}
+                onClick={() => {
+                  setActiveImage(index);
+                  setShowLightbox(true);
+                }}
+              >
+                <Thumbnail filename={image.filename} alt="Albumbild" />
+              </div>
+            ))}
+          </MasonryGrid>
+        ) : (
+          <p className="text-muted">Det här albumet innehåller inga bilder.</p>
+        )}
         {showLightbox && (
           <Lightbox
             mainSrc={`/images/scaled/${album.images[activeImage].filename}`}

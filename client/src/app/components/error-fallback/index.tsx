@@ -14,11 +14,9 @@ export const ErrorFallback: React.VFC<FallbackProps> = ({
     <>
       <h1>Något gick fel</h1>
       <p>Det gick inte att ladda sidan. Försök igen senare.</p>
-      <details>
+      <details className="mb-3">
         <summary>Felmeddelande</summary>
-        <pre>
-          {`${error.name}: ${error.message}\n${error.stack}`}
-        </pre>
+        <pre>{`${error.name}: ${error.message}\n${error.stack}`}</pre>
       </details>
       <Link
         className="btn btn-secondary mb-5"
