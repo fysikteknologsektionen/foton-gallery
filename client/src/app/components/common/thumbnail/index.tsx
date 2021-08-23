@@ -11,8 +11,8 @@ import placeholderImage from './assets/placeholder.jpg';
  * @return Thumbnail component
  */
 export const Thumbnail: React.VFC<{
-  filename: string;
-  alt: string;
+  filename?: string;
+  alt?: string;
   className?: string;
 }> = ({filename, alt, className}) => {
   const [loaded, setLoaded] = useState(false);

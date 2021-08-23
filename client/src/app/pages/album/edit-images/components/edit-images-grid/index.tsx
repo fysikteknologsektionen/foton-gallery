@@ -81,7 +81,7 @@ export const EditImagesGrid: React.VFC<Album> = ({_id, images, thumbnail}) => {
                       <Thumbnail
                         filename={
                           images.find((element) => element._id === image)
-                              ?.filename ?? ''
+                              ?.filename
                         }
                         alt="Albumbild"
                       />

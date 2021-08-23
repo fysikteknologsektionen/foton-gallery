@@ -1,4 +1,5 @@
-import {Album} from '../../../../../interfaces';
+import {Album, Image} from '../../../../../interfaces';
+
 import {Link} from 'react-router-dom';
 import React from 'react';
 import {Thumbnail} from '../../../../components/common/thumbnail';
@@ -12,11 +13,15 @@ export const AlbumPreview: React.VFC<{album: Album}> = ({album}) => {
   const albumDate = album.date.substring(0, 10);
 
   // Check for a valid thumbnail, otherwise fallback to first image
-  const thumbnail =
+  let thumbnail: Image | undefined;
+  if (
     album.thumbnail &&
-    album.images.map((image) => image._id).includes(album.thumbnail._id) ?
-      album.thumbnail :
-      album.images[0];
+    album.images.map((image) => image._id).includes(album.thumbnail._id)
+  ) {
+    thumbnail = album.thumbnail;
+  } else if (album.images.length > 0) {
+    thumbnail = album.images[0];
+  }
 
   return (
     <div className="card scale-on-hover">
@@ -26,7 +31,7 @@ export const AlbumPreview: React.VFC<{album: Album}> = ({album}) => {
       >
         <Thumbnail
           className="card-img"
-          filename={thumbnail.filename}
+          filename={thumbnail?.filename}
           alt={album.name}
         />
         <div
