@@ -47,7 +47,7 @@ export const albumValidators = {
   name: body('name').notEmpty().escape().trim(),
   slug: param('slug').notEmpty().escape().trim(),
   date: check('date').isDate().toDate(),
-  description: body('description').optional().notEmpty().escape().trim(),
+  description: body('description').optional().escape().trim(),
   authors: body('authors').optional().isArray({min: 1}),
   ['authors.*']: body('authors.*').notEmpty().escape().trim(),
   images: body('images').optional().isArray().bail().custom(noNewImages),
