@@ -2,6 +2,7 @@ import {Schema, model} from 'mongoose';
 
 /* eslint-disable no-invalid-this */
 import {Album} from '../../interfaces';
+import {Image} from './image';
 import slug from 'slug';
 
 const albumSchema = new Schema<Album>({
@@ -31,9 +32,12 @@ albumSchema.pre<Album>('save', function(next) {
 albumSchema.post<Album>(
     'deleteOne',
     {document: true, query: false},
-    async function(doc) {
-      for (let i = 0; i < doc.images.length; i++) {
-        await doc.images[i].deleteOne();
+    async function() {
+      for (let i = 0; i < this.images.length; i++) {
+        const image = await Image.findById(this.images[i]).exec();
+        if (image) {
+          await image.deleteOne();
+        }
       }
     },
 );
