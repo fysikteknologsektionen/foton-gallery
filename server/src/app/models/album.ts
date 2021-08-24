@@ -28,11 +28,15 @@ albumSchema.pre<Album>('save', function(next) {
 /**
  * Remove images when removing album
  */
-albumSchema.post<Album>('deleteOne', async function(doc) {
-  for (let i = 0; i < doc.images.length; i++) {
-    await doc.images[i].deleteOne();
-  }
-});
+albumSchema.post<Album>(
+    'deleteOne',
+    {document: true, query: false},
+    async function(doc) {
+      for (let i = 0; i < doc.images.length; i++) {
+        await doc.images[i].deleteOne();
+      }
+    },
+);
 
 const albumModel = model<Album>('Album', albumSchema);
 export {albumModel as Album};
