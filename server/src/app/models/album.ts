@@ -30,7 +30,7 @@ albumSchema.pre<Album>('save', function(next) {
  */
 albumSchema.post<Album>('deleteOne', async function(doc) {
   for (let i = 0; i < doc.images.length; i++) {
-    await doc.images[i].remove();
+    await doc.images[i].deleteOne();
   }
 });
 
