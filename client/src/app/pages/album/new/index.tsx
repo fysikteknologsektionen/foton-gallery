@@ -3,7 +3,6 @@ import React, {useContext} from 'react';
 
 import {Album} from '../../../../interfaces';
 import axios from 'axios';
-import {getNonEmptyFields} from '../../../utils';
 import {toastContext} from '../../../contexts/toast';
 import {useHistory} from 'react-router-dom';
 
@@ -33,9 +32,8 @@ const NewAlbum: React.VFC = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values) => {
-          const data = getNonEmptyFields(values);
           try {
-            const res = await axios.post<Album>('/api/albums', data, {
+            const res = await axios.post<Album>('/api/albums', values, {
               withCredentials: true,
             });
             newToast({

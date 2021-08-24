@@ -44,15 +44,19 @@ const validThumbnail: CustomValidator = (
 
 export const albumValidators = {
   id: param('id').notEmpty().isAlphanumeric(),
-  name: body('name').notEmpty().escape().trim(),
-  slug: param('slug').notEmpty().escape().trim(),
-  date: check('date').isDate().toDate(),
-  description: body('description').optional().escape().trim(),
-  authors: body('authors').optional().isArray({min: 1}),
-  ['authors.*']: body('authors.*').notEmpty().escape().trim(),
+  name: body('name').notEmpty().isString().trim(),
+  slug: param('slug').notEmpty().isString().trim(),
+  date: check('date').notEmpty().isDate().toDate(),
+  description: body('description').optional().isString().trim(),
+  authors: body('authors').optional().isArray(),
+  ['authors.*']: body('authors.*').notEmpty().isString().trim(),
   images: body('images').optional().isArray().bail().custom(noNewImages),
-  ['images.*']: body('images.*').notEmpty().escape().trim(),
-  thumbnail: body('thumbnail').optional().custom(validThumbnail),
-  count: query('count').isInt({min: 1, max: 32}).toInt(),
-  page: query('page').isInt({min: 1}).toInt(),
+  ['images.*']: body('images.*').notEmpty().isString().trim(),
+  thumbnail: body('thumbnail')
+      .optional()
+      .isString()
+      .trim()
+      .custom(validThumbnail),
+  count: query('count').notEmpty().isInt({min: 1, max: 32}).toInt(),
+  page: query('page').notEmpty().isInt({min: 1}).toInt(),
 };
