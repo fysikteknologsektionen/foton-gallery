@@ -4,7 +4,7 @@ import {config} from '../../config';
 import jwt from 'jsonwebtoken';
 
 /**
- * Middlware that populates the user field of the request object if an auth
+ * Middleware that populates the user field of the request object if an auth
  * cookie is passed
  * @param req Request object
  * @param res Response object

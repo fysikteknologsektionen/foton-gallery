@@ -8,4 +8,4 @@ export {
   addImageToAlbum,
   updateAlbumImages,
 } from './albums';
-export {generateToken, clearCookies} from './authentication';
+export {generateToken, generateRefreshToken, refreshTokens, clearCookies} from './authentication';
