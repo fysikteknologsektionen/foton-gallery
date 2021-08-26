@@ -32,8 +32,15 @@ export const SessionContextProvider: React.VFC<{children: React.ReactNode}> = ({
    * Updates user session by reading cookie anew
    */
   function updateSession() {
-    const sessionCookie = Cookies.getJSON('session') as UserSession | undefined;
-    setSession(sessionCookie);
+    const sessionCookie = Cookies.get('session');
+    if (sessionCookie) {
+      try {
+        const session: UserSession = JSON.parse(sessionCookie);
+        setSession(session);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
   // Update session on mount

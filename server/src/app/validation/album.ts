@@ -16,7 +16,7 @@ const noNewImages: CustomValidator = async (
     imageIds: mongoose.Types.ObjectId[],
     {req},
 ): Promise<void> => {
-  const album = await Album.findById(req.params?.id).exec();
+  const album = await Album.findById(req.params?.['id']).exec();
   if (!album) {
     return Promise.reject();
   }

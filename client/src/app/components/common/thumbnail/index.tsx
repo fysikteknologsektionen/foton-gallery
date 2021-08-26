@@ -24,6 +24,7 @@ export const Thumbnail: React.VFC<{
           className="w-100 rounded"
           style={{minHeight: '300px'}}
           src={placeholderImage}
+          alt="Tom bild"
         />
       )}
       <img

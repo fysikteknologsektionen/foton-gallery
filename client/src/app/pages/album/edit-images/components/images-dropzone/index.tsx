@@ -29,27 +29,27 @@ export const ImagesDropzone: React.VFC<Album> = ({_id}) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (acceptedFiles.length) {
-      /**
-       * Uploads a file to the api
-       * @param file File to upload
-       */
-      async function uploadFile(file: File) {
-        const formData = new FormData();
-        formData.append('image', file);
-        try {
-          await axios.post(`/api/albums/${_id}/images`, formData);
-          setFileStatus((prev) => ({...prev, [file.name]: 'success'}));
-        } catch (error) {
-          console.error(error);
-          setFileStatus((prev) => ({...prev, [file.name]: 'error'}));
-          newToast({
-            title: 'Lägg till bilder',
-            message: `Det gick inte att lägga till bilden '${file.name}'`,
-            type: 'danger',
-          });
-        }
+    /**
+     * Uploads a file to the api
+     * @param file File to upload
+     */
+    async function uploadFile(file: File) {
+      const formData = new FormData();
+      formData.append('image', file);
+      try {
+        await axios.post(`/api/albums/${_id}/images`, formData);
+        setFileStatus((prev) => ({...prev, [file.name]: 'success'}));
+      } catch (error) {
+        console.error(error);
+        setFileStatus((prev) => ({...prev, [file.name]: 'error'}));
+        newToast({
+          title: 'Lägg till bilder',
+          message: `Det gick inte att lägga till bilden '${file.name}'`,
+          type: 'danger',
+        });
       }
+    }
+    if (acceptedFiles.length) {
       const promises: Promise<void>[] = [];
       for (let i = 0; i < acceptedFiles.length; i++) {
         const file = acceptedFiles[i];

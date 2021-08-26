@@ -19,6 +19,9 @@ async function migrateAlbums(path: string) {
 
     for (let index = 0; index < dir.length; index++) {
       const album = dir[index];
+      if (!album) {
+        continue;
+      }
       console.log(`Migrating '${album}'...`);
       const meta = JSON.parse(
           await fs.readFile(join(path, album, 'meta.json'), 'utf8'),
@@ -67,14 +70,13 @@ async function migrateAlbums(path: string) {
 
 if (require.main == module) {
   const args = process.argv.slice(2);
-  const path = normalize(args[0]);
 
-  if (!path) {
+  if (!args[0]) {
     console.error('Invalid arguments. Usage:');
     console.error('> migrateAlbums <path to albums dir>');
     process.exit(1);
   }
-
+  const path = normalize(args[0]);
   migrateAlbums(path);
 } else {
   console.error('This file can only be run directly');

@@ -16,7 +16,7 @@ import path from 'path';
 async function createDummyAlbums(numAlbums: number, numImages: number) {
   console.log('Creating dummy albums (this may take a moment)...');
 
-  const imagesDir = path.join(__dirname, 'images');
+  const imagesDir = path.join(__dirname, '..', '..', 'src', 'dev', 'images');
   const files = await fs.readdir(imagesDir);
   for (let i = 0; i < numAlbums; i++) {
     try {

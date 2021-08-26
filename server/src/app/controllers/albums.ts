@@ -223,7 +223,7 @@ export async function updateAlbumImages(
       const image = album.images[i];
       // We must explicity cast to string since we cannot
       // compare ObjectId to string
-      if (!data.images.includes(image.toString())) {
+      if (image && !data.images.includes(image.toString())) {
         const imageDoc = await Image.findById(image).exec();
         if (imageDoc) {
           await imageDoc.deleteOne();
