@@ -11,7 +11,7 @@ export const UpdateTitle: React.VFC = () => {
   useLayoutEffect(() => {
     setTimeout(() => {
       document.title = `${
-        document.getElementsByTagName('h1').item(0)?.innerHTML ?? 'Galleri'
+        document.getElementsByTagName('h1').item(0)?.innerText ?? 'Galleri'
       } | Foton`;
     }, 100);
   }, [pathname]);
