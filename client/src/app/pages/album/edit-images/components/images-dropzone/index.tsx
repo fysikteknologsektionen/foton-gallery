@@ -49,14 +49,16 @@ export const ImagesDropzone: React.VFC<Album> = ({_id}) => {
         });
       }
     }
-    if (acceptedFiles.length) {
-      const promises: Promise<void>[] = [];
-      for (let i = 0; i < acceptedFiles.length; i++) {
-        const file = acceptedFiles[i];
-        setFileStatus((prev) => ({...prev, [file.name]: 'pending'}));
-        promises.push(uploadFile(file));
-      }
-      Promise.all(promises).then(() => {
+
+    (async function() {
+      if (acceptedFiles.length) {
+        acceptedFiles.forEach((file) =>
+          setFileStatus((prev) => ({...prev, [file.name]: 'pending'})),
+        );
+        for (let i = 0; i < acceptedFiles.length; i++) {
+          const file = acceptedFiles[i];
+          await uploadFile(file);
+        }
         newToast({
           title: 'Lägg till bilder',
           message: 'Bilderna har lagts till i albumet.',
@@ -64,8 +66,8 @@ export const ImagesDropzone: React.VFC<Album> = ({_id}) => {
         });
         // Set location state to force route update
         history.push(history.location.pathname, {update: true});
-      });
-    }
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles]);
 
