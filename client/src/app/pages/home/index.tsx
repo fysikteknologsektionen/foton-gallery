@@ -19,7 +19,6 @@ const HomePage: React.VFC = () => {
   const albums = useFetch<Album[]>({
     url: '/api/albums',
     config: {params: {page: currentPage, count: 32}},
-    errorMessage: 'Det gick inte att hitta några album. Försök igen senare.',
   });
   const albumCount = useFetch<number>({
     url: '/api/albums/count',
