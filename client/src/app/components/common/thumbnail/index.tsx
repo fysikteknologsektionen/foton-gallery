@@ -20,11 +20,13 @@ export const Thumbnail: React.VFC<{
   return (
     <>
       {!loaded && (
+        // This intentionally does not have an alt attribute
+        // since it's just a visual placeholder
+        // eslint-disable-next-line jsx-a11y/alt-text
         <img
           className="w-100 rounded"
           style={{minHeight: '300px'}}
           src={placeholderImage}
-          alt="Tom bild"
         />
       )}
       <img
