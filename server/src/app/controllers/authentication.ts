@@ -3,7 +3,6 @@ import {NextFunction, Request, Response} from 'express';
 import {config} from '../../config';
 import {RefreshToken} from '../models'
 import jwt from 'jsonwebtoken';
-import cryptoRandomString from 'crypto-random-string';
 
 /**
  * Generates a JWT token, sets it as a cookie and redirects user
@@ -21,7 +20,7 @@ export async function generateToken(
       throw new Error('User is not deserialized.');
     }
     // Max session length in seconds
-    const sessionLength = 0.5 * 60 * 60;
+    const sessionLength = config.AUTH_DURATION;
     jwt.sign(
         req.user,
         config.APP_SECRET,
@@ -67,21 +66,29 @@ export async function generateRefreshToken(
       throw new Error('User is not deserialized.');
     }
     // Refresh token duration in seconds
-    const refreshDuration = 60 * 60 * 24 * 7;
-    const tokenString = cryptoRandomString({length: 20});
-    const refreshToken = new RefreshToken({
-      token: tokenString,
-      user: req.user,
-      expiryDate: Date.now() + refreshDuration,
-    });
-    refreshToken.save();
-    // Cookie used for refreshing authentication token
-    res.cookie('refreshToken', tokenString, {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: true,
-      maxAge: refreshDuration,
-    });
+    const refreshDuration = config.REFRESH_DURATION;
+    jwt.sign(
+        req.user,
+        config.APP_SECRET,
+        {expiresIn: refreshDuration},
+        (error, token) => {
+          if (error) {
+            throw error;
+          }
+          // Cookie used for refresh token
+          res.cookie('refreshToken', token, {
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: true,
+            maxAge: refreshDuration * 1000,
+          });
+          // Save refresh token to database
+          const refreshToken = new RefreshToken({
+            jwtToken: token,
+          });
+          refreshToken.save();
+        },
+    );
     next();
   } catch (error) {
     next(error);
@@ -105,20 +112,29 @@ export async function refreshTokens(
       res.status(403).send();
       return;
     }
-    const refreshToken = RefreshToken.findOne({token: req.cookies.refreshToken});
-    if (!refreshToken) {
+    if (!RefreshToken.findOne({jwtToken: req.cookies.refreshToken})) {
       res.status(403).send();
       return;
     }
-    if (!refreshToken.verifyToken()) {
-      RefreshToken.findByIdAndDelete(refreshToken._id);
-      res.status(403).send();
-      return;
-    }
-    req.user = refreshToken.user;
-    // Rotate refresh token in database
-    await RefreshToken.findByIdAndDelete(refreshToken._id);
-    next();
+    jwt.verify(
+        req.cookies.refreshToken,
+        config.APP_SECRET,
+        // here ts complains about implicit 'any'
+        // but not in callback of jwt.sign
+        (error: any, decoded: any) => {
+          if (error || !decoded) {
+            // more specific error handling?
+            RefreshToken.deleteOne({jwtToken: req.cookies.refreshToken});
+            res.status(403).send();
+            return;
+          }
+          // Extract user from jwt
+          req.user = decoded.user;
+          // Rotate refresh token
+          RefreshToken.deleteOne({jwtToken: req.cookies.refreshToken});
+          next();
+        }
+    );
   } catch(error) {
     next(error);
   }
