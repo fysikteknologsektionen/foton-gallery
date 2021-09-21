@@ -12,5 +12,5 @@ export {
   generateToken,
   generateRefreshToken,
   refreshTokens,
-  clearCookies
+  clearCookies,
 } from './authentication';

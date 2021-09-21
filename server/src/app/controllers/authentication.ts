@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 
+import {RefreshToken} from '../models';
 import {config} from '../../config';
-import {RefreshToken} from '../models'
 import jwt from 'jsonwebtoken';
 
 /**
@@ -57,9 +57,9 @@ export async function generateToken(
  * @param next Next function
  */
 export async function generateRefreshToken(
-  req: Request,
-  res: Response,
-  next: NextFunction,
+    req: Request,
+    res: Response,
+    next: NextFunction,
 ): Promise<void> {
   try {
     if (!req.user) {
@@ -96,16 +96,16 @@ export async function generateRefreshToken(
 }
 
 /**
- * Generates a JWT token and a refresh token in exchange for a 
+ * Generates a JWT token and a refresh token in exchange for a
  * valid refresh token
  * @param req Request object
  * @param res Response object
  * @param next Next function
  */
 export async function refreshTokens(
-  req: Request,
-  res: Response,
-  next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction,
 ): Promise<void> {
   try {
     if (!req.cookies.refreshToken) {
@@ -123,7 +123,7 @@ export async function refreshTokens(
         // but not in callback of jwt.sign
         (error: any, decoded: any) => {
           if (error || !decoded) {
-            // more specific error handling?
+          // more specific error handling?
             RefreshToken.deleteOne({jwtToken: req.cookies.refreshToken});
             res.status(403).send();
             return;
@@ -133,9 +133,9 @@ export async function refreshTokens(
           // Rotate refresh token
           RefreshToken.deleteOne({jwtToken: req.cookies.refreshToken});
           next();
-        }
+        },
     );
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
 }
