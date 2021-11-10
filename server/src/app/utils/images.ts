@@ -12,6 +12,7 @@ export async function processImage(image: Image): Promise<void> {
   try {
     // Create thumbnail
     await sharp(path.join(basePath, image.originalFilename))
+        .rotate()
         .resize(420, null, {
           fit: 'inside',
         })
@@ -19,6 +20,7 @@ export async function processImage(image: Image): Promise<void> {
         .toFile(path.join(basePath, 'thumbnail', image.filename));
     // Create scaled down version for web
     await sharp(path.join(basePath, image.originalFilename))
+        .rotate()
         .resize(1920, 1080, {
           fit: 'inside',
         })
