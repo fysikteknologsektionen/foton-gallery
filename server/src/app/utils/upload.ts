@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     // Generate a unique file name
     cb(
         null,
-        cryptoRandomString({length: 32}) + path.extname(file.originalname),
+        cryptoRandomString({length: 32}) + path.extname(file.originalname).toLowerCase(),
     );
   },
 });
