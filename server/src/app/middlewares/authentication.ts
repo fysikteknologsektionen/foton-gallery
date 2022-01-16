@@ -22,7 +22,7 @@ export function populateUserField(
         {},
         (error, decoded) => {
           if (error) {
-            res.status(403).send();
+            res.status(401).send();
             return;
           }
           req.user = decoded as Express.User;
@@ -33,7 +33,7 @@ export function populateUserField(
 }
 
 /**
- * Middleware that restricts a route to only authenicated users
+ * Middleware that restricts a route to only authenticated users
  * @param req Request object
  * @param res Response object
  * @param next Next function

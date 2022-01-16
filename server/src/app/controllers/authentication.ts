@@ -109,11 +109,11 @@ export async function refreshTokens(
 ): Promise<void> {
   try {
     if (!req.cookies.refreshToken) {
-      res.status(403).send();
+      res.status(401).send();
       return;
     }
     if (!RefreshToken.findOne({jwtToken: req.cookies.refreshToken})) {
-      res.status(403).send();
+      res.status(401).send();
       return;
     }
     jwt.verify(
@@ -125,7 +125,7 @@ export async function refreshTokens(
           if (error || !decoded) {
           // more specific error handling?
             RefreshToken.deleteOne({jwtToken: req.cookies.refreshToken});
-            res.status(403).send();
+            res.status(401).send();
             return;
           }
           // Extract user from jwt
