@@ -8,6 +8,8 @@ interface Config {
   APP_HOST: string;
   APP_PORT: number;
   APP_SECRET: string;
+  AUTH_DURATION: number;
+  REFRESH_DURATION: number;
   APP_MAX_FILE_SIZE: number;
   APP_MAX_FILE_UPLOADS: number;
   DB_HOST: string;
