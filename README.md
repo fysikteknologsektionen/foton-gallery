@@ -1,4 +1,4 @@
-# ftek-foton-gallery
+# foton-gallery
 A photo gallery web-application for Foton (Photon) at Fysikteknologsektionen (The Physics Division) at Chalmers University of Technology.
 
 ## Requirements
@@ -19,7 +19,7 @@ in the root directory.
 Before building or starting a dev server the project has to be configured. This is done by supplying a `.env` file in the root directory. There is an example configuration file, `.env.example`, which can be used as a template.
 
 ### Google OAuth 2.0
-The project uses Google OAuth 2.0 for authenticating users. For this to work you must first create a new project at the [Google Cloud Console](https://console.cloud.google.com), then configure the OAuth consent screen and finally create a new OAuth 2.0 client ID (All of this can be found under the `APIs & Services` tab). 
+The project uses Google OAuth 2.0 for authenticating users. For this to work you must first create a new project at the [Google Cloud Console](https://console.cloud.google.com), then configure the OAuth consent screen and finally create a new OAuth 2.0 client ID (All of this can be found under the `APIs & Services` tab).
 
 When configuring the OAuth consent screen the `profile` and `email` scopes must be included for the application to work. When creating the client ID  `Authorized JavaScript origins` should be set to the top level url, i.e. `https://foton.ftek.se` and `Authorized redirect URIs` should be set to the `/api/auth/google/callback` subdirectory, i.e. `https://foton.ftek.se/api/auth/google/callback`.
 
@@ -37,7 +37,7 @@ in the root directory. This will compile all typescript and build the react proj
 The project has a built in webpack dev-server (with create-react-app) and uses `ts-node-dev` to run a node dev-server which compiles typescript at run time. These can be started independently from the `client` and `server` directories respectively or simultaneously by running
 
     npm run dev
- 
+
  in the root directory. The webpack server runs on port `3000` by default and is set to proxy requests to port `3001` (see [the previous section on how to configure the project](#Configuration)).
 
 ### Generating dummy content
@@ -50,17 +50,3 @@ or:
     node ./dist/dev/createDummyAlbums.js
 
 respectively. Note that development packages need to be installed in order to generate dummy content.
-
-### Migrating from previous version
-The project includes a script that can be used to migrate content from the old Foton Webgallery-application. This can be run with
-
-    npx ts-node-dev ./src/dev/migrateAlbums.ts
-
-or:
-
-    node ./dist/dev/migrateAlbums.js
-
-respectively. The script expects an argument that points to a directory containing album directories (i.e. the `files` directory of the old application).
-
-## Acknowledgements
-This project is based on the original Foton Webgallery application, found [here](https://github.com/ECarlsson/foton).

@@ -1,7 +1,7 @@
 {
-  "name": "ftek-foton-gallery-client",
+  "name": "foton-gallery-client",
   "version": "1.0.0",
-  "description": "React client for ftek-foton-gallery",
+  "description": "React client for foton-gallery",
   "private": true,
   "author": "Eric Carlsson",
   "license": "GPL-3.0",

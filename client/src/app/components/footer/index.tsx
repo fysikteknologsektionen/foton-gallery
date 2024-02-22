@@ -58,7 +58,7 @@ export const Footer: React.VFC = () => {
           Utveckling:{' '}
           <a
             className="link-secondary text-decoration-none"
-            href="https://github.com/ECarlsson"
+            href="https://github.com/eric-carlsson"
             target="_blank"
             rel="noreferrer"
           >
