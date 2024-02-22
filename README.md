@@ -1,4 +1,4 @@
-# ftek-foton-gallery
+# foton-gallery
 A photo gallery web-application for Foton (Photon) at Fysikteknologsektionen (The Physics Division) at Chalmers University of Technology.
 
 ## Requirements

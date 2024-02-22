@@ -1,7 +1,7 @@
 {
-  "name": "ftek-foton-gallery-server",
+  "name": "foton-gallery-server",
   "version": "1.0.0",
-  "description": "Express server and backend application for ftek-foton-gallery",
+  "description": "Express server and backend application for foton-gallery",
   "private": true,
   "author": "Eric Carlsson",
   "license": "GPL-3.0",
