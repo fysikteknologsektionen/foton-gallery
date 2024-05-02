@@ -1,4 +1,9 @@
-import {clearCookies, generateToken} from '../controllers';
+import {
+  clearCookies,
+  generateRefreshToken,
+  generateToken,
+  refreshTokens,
+} from '../controllers';
 
 import {Router} from 'express';
 import passport from 'passport';
@@ -15,6 +20,14 @@ authenticationRouter.get(
 authenticationRouter.get(
     '/google/callback',
     passport.authenticate('google', {failureRedirect: '/unauthorized'}),
+    generateRefreshToken,
+    generateToken,
+);
+
+authenticationRouter.get(
+    '/refreshtoken',
+    refreshTokens,
+    generateRefreshToken,
     generateToken,
 );
 
