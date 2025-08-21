@@ -13,6 +13,7 @@ const albumSchema = new Schema<Album>({
   description: String,
   images: [{type: Schema.Types.ObjectId, ref: 'Image'}],
   thumbnail: {type: Schema.Types.ObjectId, ref: 'Image'},
+  tags: [String],
 });
 
 albumSchema.index({date: -1, slug: 1}, {unique: true});

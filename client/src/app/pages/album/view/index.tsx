@@ -32,6 +32,26 @@ const ViewAlbum: React.VFC = () => {
           {album.authors.length > 0 && ` | ${album.authors.join(', ')}`}
         </p>
         {album.description && <p className="text-break">{album.description}</p>}
+        {album.tags && (
+          <div className='mb-3'>
+            {album.tags.map((tag, index) => (
+              <div
+                key={index}
+                style={{
+                  display: 'inline-flex',
+                  background: 'rgba(0, 0, 0, 0.1)',
+                  padding: '0.2em 0.8em',
+                  marginRight: '0.4em',
+                  marginBottom: '0.4em',
+                  borderRadius: '100px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+        )}
         {session && (
           <Link
             className="btn btn-outline-secondary mb-3"

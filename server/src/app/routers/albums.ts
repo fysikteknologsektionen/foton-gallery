@@ -27,6 +27,8 @@ privateRouter.post(
       'authors',
       'authors.*',
       'description',
+      'tags',
+      'tags.*',
     ]),
     createAlbum,
 );
@@ -40,6 +42,8 @@ privateRouter.patch(
       'authors',
       'authors.*',
       'description',
+      'tags',
+      'tags.*',
     ]),
     updateAlbumMeta,
 );

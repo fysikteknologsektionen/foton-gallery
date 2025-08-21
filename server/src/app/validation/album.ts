@@ -50,6 +50,8 @@ export const albumValidators = {
   description: body('description').optional().isString().trim(),
   authors: body('authors').optional().isArray(),
   ['authors.*']: body('authors.*').notEmpty().isString().trim(),
+  tags: body('tags').optional().isArray(),
+  ['tags.*']: body('tags.*').notEmpty().isString().trim(),
   images: body('images').optional().isArray().bail().custom(noNewImages),
   ['images.*']: body('images.*').notEmpty().isString().trim(),
   thumbnail: body('thumbnail')
