@@ -52,6 +52,11 @@ export const EditImagesGrid: React.VFC<Album> = ({_id, images, thumbnail}) => {
     >
       {({values, setFieldValue}) => (
         <Form>
+          {values.images.length > 0 && (
+            <button className="btn btn-primary mb-3" type="submit">
+              Spara
+            </button>
+          )}
           <FieldArray name="images">
             {(arrayHelpers) => (
               <div
