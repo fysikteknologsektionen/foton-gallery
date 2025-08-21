@@ -22,6 +22,11 @@ const downloadFullsize = async (fileName: string) => {
   document.body.removeChild(a);
 };
 
+/**
+ * Wrapper for Lightbox to show fullscreen preview of album images
+ * @param param0 Component properties
+ * @returns React component
+ */
 const ImageFullscreenView: React.VFC<{
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
