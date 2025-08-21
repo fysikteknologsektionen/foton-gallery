@@ -97,7 +97,8 @@ export async function getAlbum(
 }
 
 /**
- * Gets a subset of all albums sorted by date
+ * Gets a subset of all albums sorted by date,
+ * skipping empty albums if not signed in
  * @param req Request object
  * @param res Response object
  * @param next Next function
@@ -107,9 +108,18 @@ export async function getAlbums(
     res: Response,
     next: NextFunction,
 ): Promise<void> {
+  const isSignedIn = !!req.user;
+
   const {count, page} = matchedData(req) as {count: number; page: number};
   try {
-    const albums = await Album.find()
+    const query = Album.find();
+    const albums = await (isSignedIn ?
+      query :
+      query.where({
+        'images.0': {
+          '$exists': true,
+        },
+      }))
         .sort('-date')
         .limit(count)
         .skip((page - 1) * count)

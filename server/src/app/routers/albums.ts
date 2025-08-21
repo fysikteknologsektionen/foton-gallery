@@ -14,20 +14,6 @@ import {Router} from 'express';
 import {restrictToAuthenticated} from '../middlewares/';
 import {upload} from '../utils';
 
-// Public endpoints
-// eslint-disable-next-line new-cap
-const publicRouter = Router();
-
-publicRouter.get(
-    '/:date/:slug',
-    validate(albumValidators, ['date', 'slug']),
-    getAlbum,
-);
-
-publicRouter.get('/', validate(albumValidators, ['page', 'count']), getAlbums);
-
-publicRouter.get('/count', getAlbumCount);
-
 // Private endpoints
 // eslint-disable-next-line new-cap
 const privateRouter = Router();
@@ -73,5 +59,20 @@ privateRouter.patch(
     updateAlbumImages,
 );
 
+// Public endpoints
+// eslint-disable-next-line new-cap
+const publicRouter = Router();
+
+publicRouter.get(
+    '/:date/:slug',
+    validate(albumValidators, ['date', 'slug']),
+    getAlbum,
+);
+
+publicRouter.get('/', validate(albumValidators, ['page', 'count']), getAlbums);
+
+publicRouter.get('/count', getAlbumCount);
+
 publicRouter.use('/', privateRouter);
+
 export {publicRouter as albumsRouter};
