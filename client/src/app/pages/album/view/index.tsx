@@ -12,6 +12,24 @@ import {sessionContext} from '../../../contexts/session';
 import {useGetAlbum} from '../../../hooks';
 
 /**
+ * Download the original version of an image
+ * @param fileName File name and extension without full path
+ */
+const downloadFullsize = async (fileName: string) => {
+  const url = `/images/fullsize/${fileName}`;
+
+  const blob = await fetch(url).then((res) => res.blob());
+  const dataUrl = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+/**
  * Component for displaying album details
  * @return React component
  */
@@ -106,6 +124,14 @@ const ViewAlbum: React.VFC = () => {
             zoomInLabel="Förstora"
             zoomOutLabel="Förminska"
             closeLabel="Stäng fönster"
+            toolbarButtons={[
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  downloadFullsize(album.images[activeImage].filename);
+                }}
+              >Ladda ner original</button>,
+            ]}
           />
         )}
       </>
