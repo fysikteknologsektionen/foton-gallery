@@ -3,6 +3,7 @@ import {ConflictError, NotFoundError} from '../errors';
 import {NextFunction, Request, Response} from 'express';
 
 import {Album as IAlbum} from '../../interfaces';
+import {RootFilterQuery} from 'mongoose';
 import {matchedData} from 'express-validator';
 
 /**
@@ -110,21 +111,37 @@ export async function getAlbums(
 ): Promise<void> {
   const isSignedIn = !!req.user;
 
-  const {count, page} = matchedData(req) as {count: number; page: number};
+  const {count, page, q, order} = matchedData(req) as {
+    count: number;
+    page: number;
+    q: string | undefined;
+    order: '+date' | '-date' | undefined;
+  };
+
   try {
-    const query = Album.find();
-    const albums = await (isSignedIn ?
-      query :
-      query.where({
+    let query = Album.find();
+    if (!isSignedIn) {
+      query = query.where({
         'images.0': {
           '$exists': true,
         },
-      }))
-        .sort('-date')
+      });
+    }
+    if (q != undefined && q != '') {
+      query = query.find({
+        $text: {
+          $search: q,
+        },
+      });
+    }
+
+    const albums = await query
+        .sort(order ?? '-date')
         .limit(count)
         .skip((page - 1) * count)
         .populate('images thumbnail')
         .exec();
+
     res.json(albums);
   } catch (error) {
     next(error);
@@ -142,8 +159,28 @@ export async function getAlbumCount(
     res: Response,
     next: NextFunction,
 ): Promise<void> {
+  const isSignedIn = !!req.user;
+
+  const {q} = matchedData(req) as {
+    q: string | undefined;
+  };
+
   try {
-    const count = await Album.estimatedDocumentCount().exec();
+    const filter: RootFilterQuery<IAlbum> | undefined = {};
+    if (!isSignedIn) {
+      filter['images.0'] = {
+        '$exists': true,
+      };
+    }
+    if (q != undefined && q != '') {
+      filter['$text'] = {
+        $search: q,
+      };
+    }
+
+    const count = await Album
+        .countDocuments(filter)
+        .exec();
     res.json(count);
   } catch (error) {
     next(error);

@@ -19,6 +19,18 @@ const albumSchema = new Schema<Album>({
 albumSchema.index({date: -1, slug: 1}, {unique: true});
 
 /**
+ * Enable text search
+ */
+albumSchema.index({
+  name: 'text',
+  date: 'text',
+  slug: 'text',
+  authors: 'text',
+  description: 'text',
+  tags: 'text',
+});
+
+/**
  * Generates a slug from the name and stores it
  */
 albumSchema.pre<Album>('save', function(next) {

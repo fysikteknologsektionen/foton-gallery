@@ -73,9 +73,17 @@ publicRouter.get(
     getAlbum,
 );
 
-publicRouter.get('/', validate(albumValidators, ['page', 'count']), getAlbums);
+publicRouter.get(
+    '/',
+    validate(albumValidators, ['page', 'count', 'q', 'order']),
+    getAlbums,
+);
 
-publicRouter.get('/count', getAlbumCount);
+publicRouter.get(
+    '/count',
+    validate(albumValidators, ['q']),
+    getAlbumCount,
+);
 
 publicRouter.use('/', privateRouter);
 
