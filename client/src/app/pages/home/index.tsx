@@ -13,17 +13,27 @@ const ORDER_NAMES = {
   '+date': 'Datum: Äldst först',
 };
 
+const getDefaultOrderBy = (params: URLSearchParams): '+date' | '-date' => {
+  const query = params.get('order');
+  if (query !== '+date' && query !== '-date') {
+    return '-date';
+  }
+
+  return query;
+};
+
 /**
  * Component for rendering the home (gallery) view
  * @returns Home view-component
  */
 const HomePage: React.VFC = () => {
-  const [orderBy, setOrderBy] = useState<'+date' | '-date'>('-date');
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const q = searchParams.get('q') ?? undefined;
+
+  const q = searchParams.get('q') ?? '';
+
   const [previewQ, setPreviewQ] = useState(q);
+  const [orderBy, setOrderBy] = useState(getDefaultOrderBy(searchParams));
 
   const {page} = useParams<{page: string}>();
   const currentPage = page ? Number(page) : 1;
@@ -51,20 +61,29 @@ const HomePage: React.VFC = () => {
     return () => clearTimeout(timeout);
   }, [page]);
 
+  const submit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (previewQ) {
+      urlParams.set('q', previewQ);
+    } else {
+      urlParams.delete('q');
+    }
+
+    if (orderBy !== '-date') {
+      urlParams.set('order', orderBy);
+    } else {
+      urlParams.delete('order');
+    }
+
+    window.location.search = urlParams.toString();
+    e.preventDefault();
+  };
+
   if (albums && albumCount !== undefined) {
     return (
       <>
         <h1 className="visually-hidden">Galleri</h1>
-        <form onSubmit={(e) => {
-          const urlParams = new URLSearchParams(window.location.search);
-          if (previewQ) {
-            urlParams.set('q', previewQ);
-          } else {
-            urlParams.delete('q');
-          }
-          window.location.search = urlParams.toString();
-          e.preventDefault();
-        }}>
+        <form onSubmit={submit}>
           <div className='d-flex flex-column flex-md-row gap-3 mb-3'>
             <div className='d-flex flex-grow-1 gap-3'>
               <input
