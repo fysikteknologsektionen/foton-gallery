@@ -2,6 +2,7 @@ import {Link, NavLink} from 'react-router-dom';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import {Collapse} from 'bootstrap';
+import {SocialAd} from '../common/socials-ad';
 import fotonLogo from './assets/foton.svg';
 import ftekLogo from './assets/ftek.svg';
 import {sessionContext} from '../../contexts/session';
@@ -38,7 +39,7 @@ export const Header: React.VFC = () => {
         aria-label="Huvudnavigering"
       >
         <div className="container">
-          <div className="me-auto me-md-0">
+          <div className="flex-shrink-0 me-auto me-md-0">
             <a
               className="navbar-brand"
               href="https://ftek.se"
@@ -52,37 +53,14 @@ export const Header: React.VFC = () => {
             </Link>
           </div>
           <div
-            className="order-last d-flex gap-2 align-items-center me-3"
+            className="flex-shrink-1 order-last
+            d-none d-md-flex gap-2 align-items-center me-3 pl-3"
+            style={{color: 'gray'}}
           >
-            <span className="d-none d-lg-block">
-              Mer från oss:
-            </span>
-            <a
-              href="https://www.instagram.com/fotonchalmers/"
-              target="_blank"
-              rel="noreferrer"
-              type="button"
-              className="btn btn-light p-1"
-            >
-              <i className="bi bi-instagram " style={{
-                'background': `linear-gradient(45deg,rgba(115, 42, 155, 1) 0%, 
-                rgba(173, 76, 76, 1) 50%, rgba(255, 179, 0, 1) 100%)`,
-                'WebkitBackgroundClip': 'text',
-                'WebkitTextFillColor': 'transparent',
-              }}></i>
-            </a>
-            <a
-              href="https://www.facebook.com/FotonChalmers"
-              target="_blank"
-              rel="noreferrer"
-              type="button"
-              className="btn btn-light p-1"
-            >
-              <i className="bi bi-facebook" style={{color: '#0d6efd'}}></i>
-            </a>
+            <SocialAd />
           </div>
           {session && (
-            <div className="d-flex me-3 me-md-0 order-md-last">
+            <div className="flex-shrink-0 d-flex me-3 me-md-0 order-md-last">
               <span className="d-none d-sm-block navbar-text me-2">
                 {session.name}
               </span>
@@ -95,7 +73,7 @@ export const Header: React.VFC = () => {
             </div>
           )}
           <button
-            className="navbar-toggler order-last"
+            className="flex-shrink-0 navbar-toggler order-last"
             type="button"
             aria-controls="navbar-nav-content"
             aria-expanded={navCollapsed ? 'false' : 'true'}
@@ -105,7 +83,7 @@ export const Header: React.VFC = () => {
             <span className="navbar-toggler-icon" />
           </button>
           <div
-            className="collapse navbar-collapse"
+            className="flex-shrink-0 collapse navbar-collapse"
             id="navbar-nav-content"
             ref={navCollapseRef}
           >
@@ -131,6 +109,12 @@ export const Header: React.VFC = () => {
                   </NavLink>
                 </li>
               )}
+              <li
+                className="nav-item d-flex d-md-none
+                gap-2 align-items-center me-3"
+              >
+                <SocialAd />
+              </li>
             </ul>
           </div>
         </div>
