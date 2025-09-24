@@ -19,7 +19,8 @@
         "requireReturn": false
       }
     ],
-    "sort-imports": "warn"
+    "sort-imports": "warn",
+    "linebreak-style": 0
   },
   "root": true
 }
