@@ -3,7 +3,7 @@ import {ConflictError, NotFoundError} from '../errors';
 import {NextFunction, Request, Response} from 'express';
 
 import {Album as IAlbum} from '../../interfaces';
-import {RootFilterQuery} from 'mongoose';
+// import {RootFilterQuery} from 'mongoose';
 import {matchedData} from 'express-validator';
 
 /**
@@ -123,7 +123,7 @@ export async function getAlbums(
     if (!isSignedIn) {
       query = query.where({
         'images.0': {
-          '$exists': true,
+          $exists: true,
         },
       });
     }
@@ -166,10 +166,10 @@ export async function getAlbumCount(
   };
 
   try {
-    const filter: RootFilterQuery<IAlbum> | undefined = {};
+    const filter: any = {}; // RootFilterQuery<IAlbum> | undefined = {};
     if (!isSignedIn) {
       filter['images.0'] = {
-        '$exists': true,
+        $exists: true,
       };
     }
     if (q != undefined && q != '') {
@@ -178,9 +178,7 @@ export async function getAlbumCount(
       };
     }
 
-    const count = await Album
-        .countDocuments(filter)
-        .exec();
+    const count = await Album.countDocuments(filter).exec();
     res.json(count);
   } catch (error) {
     next(error);
