@@ -115,7 +115,7 @@ export async function getAlbums(
     count: number;
     page: number;
     q: string | undefined;
-    order: '+date' | '-date' | undefined;
+    order: 'date' | '-date' | undefined;
   };
 
   try {

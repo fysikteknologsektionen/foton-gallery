@@ -62,5 +62,5 @@ export const albumValidators = {
   count: query('count').notEmpty().isInt({min: 1, max: 32}).toInt(),
   page: query('page').notEmpty().isInt({min: 1}).toInt(),
   q: query('q').optional().isString().trim(),
-  order: query('order').optional().isString().trim().isIn(['+date', '-date']),
+  order: query('order').optional().isString().trim().isIn(['date', '-date']),
 };

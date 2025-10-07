@@ -10,12 +10,12 @@ import {useFetch} from '../../hooks';
 
 const ORDER_NAMES = {
   '-date': 'Datum: Nyast först',
-  '+date': 'Datum: Äldst först',
+  'date': 'Datum: Äldst först',
 };
 
-const getDefaultOrderBy = (params: URLSearchParams): '+date' | '-date' => {
+const getDefaultOrderBy = (params: URLSearchParams): 'date' | '-date' => {
   const query = params.get('order');
-  if (query !== '+date' && query !== '-date') {
+  if (query !== 'date' && query !== '-date') {
     return '-date';
   }
 
@@ -123,7 +123,7 @@ const HomePage: React.VFC = () => {
                     className={
                       `dropdown-item ${order === orderBy ? 'active' : ''}`
                     }
-                    onClick={() => setOrderBy(order as ('-date' | '+date'))}
+                    onClick={() => setOrderBy(order as ('-date' | 'date'))}
                   >{label}</button>
                 ))}
               </div>
