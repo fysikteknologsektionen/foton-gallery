@@ -2,7 +2,7 @@
 A photo gallery web-application for Foton (Photon) at Fysikteknologsektionen (The Physics Division) at Chalmers University of Technology.
 
 ## Requirements
-* Node.js (14.x.x or later)
+* Node.js (14.x.x - 16.x.x)
 * MongoDB (4.4.x or later)
 * Google OAuth 2.0 client ([Read about](https://developers.google.com/identity/protocols/oauth2))
 
@@ -21,7 +21,7 @@ Before building or starting a dev server the project has to be configured. This 
 ### Google OAuth 2.0
 The project uses Google OAuth 2.0 for authenticating users. For this to work you must first create a new project at the [Google Cloud Console](https://console.cloud.google.com), then configure the OAuth consent screen and finally create a new OAuth 2.0 client ID (All of this can be found under the `APIs & Services` tab).
 
-When configuring the OAuth consent screen the `profile` and `email` scopes must be included for the application to work. When creating the client ID  `Authorized JavaScript origins` should be set to the top level url, i.e. `https://foton.ftek.se` and `Authorized redirect URIs` should be set to the `/api/auth/google/callback` subdirectory, i.e. `https://foton.ftek.se/api/auth/google/callback`.
+When configuring the OAuth consent screen the `profile` and `email` scopes must be included for the application to work. When creating the client ID  `Authorized JavaScript origins` should be set to the top level url, i.e. `https://foton.ftek.se` and `Authorized redirect URIs` should be set to the `/api/auth/google/callback` subdirectory, i.e. `https://foton.ftek.se/api/auth/google/callback` (Make sure there's no trailing slash after, i.e. `https://foton.ftek.se/api/auth/google/callback/` will not work).
 
 In addition to any domain-restrictions imposed by the OAuth 2.0 client (i.e. if setting it to internal users only), the application uses a regular expression match to check for allowed emails. The regular expression should be set in the `.env` file.
 

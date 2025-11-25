@@ -19,11 +19,13 @@ const NewAlbum: React.VFC = () => {
     date: string;
     authors: string[];
     description: string;
+    tags: string[];
   } = {
     name: '',
     date: '',
     authors: [],
     description: '',
+    tags: [],
   };
 
   return (
@@ -133,6 +135,49 @@ const NewAlbum: React.VFC = () => {
               as="textarea"
               style={{height: '100px'}}
             />
+            <label className="form-label" htmlFor="tags">
+              Taggar
+            </label>
+            <FieldArray name="tags">
+              {(arrayHelpers) => (
+                <div className="mb-3">
+                  {values.tags && values.tags.length > 0 ? (
+                    values.tags.map((tag, index) => (
+                      <div className="input-group mb-3" key={index}>
+                        <Field
+                          className="form-control"
+                          name={`tags.${index}`}
+                          type="text"
+                          required
+                        />
+                        <button
+                          className="btn btn-outline-danger"
+                          type="button"
+                          onClick={() => arrayHelpers.remove(index)}
+                        >
+                          <i className="bi-dash" aria-label="Ta bort" />
+                        </button>
+                        <button
+                          className="btn btn-outline-success"
+                          type="button"
+                          onClick={() => arrayHelpers.insert(index + 1, '')}
+                        >
+                          <i className="bi-plus" aria-label="Lägg till" />
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => arrayHelpers.push('')}
+                    >
+                      Lägg till en tagg
+                    </button>
+                  )}
+                </div>
+              )}
+            </FieldArray>
             <button className="btn btn-primary" type="submit">
               Skapa
             </button>

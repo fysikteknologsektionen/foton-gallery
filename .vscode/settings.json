@@ -2,4 +2,5 @@
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "editor.formatOnSave": true,
   "files.eol": "\n",
+  "typescript.tsdk": "server\\node_modules\\typescript\\lib"
 }

@@ -32,4 +32,5 @@ export interface Album {
   description?: string;
   images: PopulatedDoc<Image, Types.ObjectId>[];
   thumbnail?: PopulatedDoc<Image, Types.ObjectId>;
+  tags?: string[];
 }

@@ -19,4 +19,5 @@ export interface Album {
   description?: string;
   images: Image[];
   thumbnail?: Image;
+  tags?: string[];
 }

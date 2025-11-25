@@ -50,6 +50,8 @@ export const albumValidators = {
   description: body('description').optional().isString().trim(),
   authors: body('authors').optional().isArray(),
   ['authors.*']: body('authors.*').notEmpty().isString().trim(),
+  tags: body('tags').optional().isArray(),
+  ['tags.*']: body('tags.*').notEmpty().isString().trim(),
   images: body('images').optional().isArray().bail().custom(noNewImages),
   ['images.*']: body('images.*').notEmpty().isString().trim(),
   thumbnail: body('thumbnail')
@@ -59,4 +61,6 @@ export const albumValidators = {
       .custom(validThumbnail),
   count: query('count').notEmpty().isInt({min: 1, max: 32}).toInt(),
   page: query('page').notEmpty().isInt({min: 1}).toInt(),
+  q: query('q').optional().isString().trim(),
+  order: query('order').optional().isString().trim().isIn(['date', '-date']),
 };

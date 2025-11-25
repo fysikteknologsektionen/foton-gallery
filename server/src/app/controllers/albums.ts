@@ -3,6 +3,7 @@ import {ConflictError, NotFoundError} from '../errors';
 import {NextFunction, Request, Response} from 'express';
 
 import {Album as IAlbum} from '../../interfaces';
+// import {RootFilterQuery} from 'mongoose';
 import {matchedData} from 'express-validator';
 
 /**
@@ -97,7 +98,8 @@ export async function getAlbum(
 }
 
 /**
- * Gets a subset of all albums sorted by date
+ * Gets a subset of all albums sorted by date,
+ * skipping empty albums if not signed in
  * @param req Request object
  * @param res Response object
  * @param next Next function
@@ -107,14 +109,39 @@ export async function getAlbums(
     res: Response,
     next: NextFunction,
 ): Promise<void> {
-  const {count, page} = matchedData(req) as {count: number; page: number};
+  const isSignedIn = !!req.user;
+
+  const {count, page, q, order} = matchedData(req) as {
+    count: number;
+    page: number;
+    q: string | undefined;
+    order: 'date' | '-date' | undefined;
+  };
+
   try {
-    const albums = await Album.find()
-        .sort('-date')
+    let query = Album.find();
+    if (!isSignedIn) {
+      query = query.where({
+        'images.0': {
+          $exists: true,
+        },
+      });
+    }
+    if (q != undefined && q != '') {
+      query = query.find({
+        $text: {
+          $search: q,
+        },
+      });
+    }
+
+    const albums = await query
+        .sort(order ?? '-date')
         .limit(count)
         .skip((page - 1) * count)
         .populate('images thumbnail')
         .exec();
+
     res.json(albums);
   } catch (error) {
     next(error);
@@ -132,8 +159,26 @@ export async function getAlbumCount(
     res: Response,
     next: NextFunction,
 ): Promise<void> {
+  const isSignedIn = !!req.user;
+
+  const {q} = matchedData(req) as {
+    q: string | undefined;
+  };
+
   try {
-    const count = await Album.estimatedDocumentCount().exec();
+    const filter: any = {}; // RootFilterQuery<IAlbum> | undefined = {};
+    if (!isSignedIn) {
+      filter['images.0'] = {
+        $exists: true,
+      };
+    }
+    if (q != undefined && q != '') {
+      filter['$text'] = {
+        $search: q,
+      };
+    }
+
+    const count = await Album.countDocuments(filter).exec();
     res.json(count);
   } catch (error) {
     next(error);

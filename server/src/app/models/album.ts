@@ -13,9 +13,22 @@ const albumSchema = new Schema<Album>({
   description: String,
   images: [{type: Schema.Types.ObjectId, ref: 'Image'}],
   thumbnail: {type: Schema.Types.ObjectId, ref: 'Image'},
+  tags: [String],
 });
 
 albumSchema.index({date: -1, slug: 1}, {unique: true});
+
+/**
+ * Enable text search
+ */
+albumSchema.index({
+  name: 'text',
+  date: 'text',
+  slug: 'text',
+  authors: 'text',
+  description: 'text',
+  tags: 'text',
+});
 
 /**
  * Generates a slug from the name and stores it

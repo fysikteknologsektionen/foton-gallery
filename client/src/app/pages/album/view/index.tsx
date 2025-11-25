@@ -1,9 +1,10 @@
 import 'react-image-lightbox/style.css';
+import '../../../styles/lightbox-override.scss';
 
 import {Link, useRouteMatch} from 'react-router-dom';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 
-import Lightbox from 'react-image-lightbox';
+import ImageFullscreenView from '../components/image-fullscreen-view';
 import {MasonryGrid} from '../../../components/common/masonry-grid';
 import {Spinner} from '../../../components/common/spinner';
 import {Thumbnail} from '../../../components/common/thumbnail';
@@ -22,15 +23,6 @@ const ViewAlbum: React.VFC = () => {
   const [showLightbox, setShowLightbox] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
 
-  // Hide scrollbar when opening lightbox
-  useEffect(() => {
-    if (showLightbox) {
-      document.body.style.overflowY = 'hidden';
-    } else {
-      document.body.style.overflowY = 'auto';
-    }
-  }, [showLightbox]);
-
   if (album) {
     return (
       <>
@@ -40,6 +32,26 @@ const ViewAlbum: React.VFC = () => {
           {album.authors.length > 0 && ` | ${album.authors.join(', ')}`}
         </p>
         {album.description && <p className="text-break">{album.description}</p>}
+        {album.tags && (
+          <div className='mb-3'>
+            {album.tags.map((tag, index) => (
+              <div
+                key={index}
+                style={{
+                  display: 'inline-flex',
+                  background: 'rgba(0, 0, 0, 0.1)',
+                  padding: '0.2em 0.8em',
+                  marginRight: '0.4em',
+                  marginBottom: '0.4em',
+                  borderRadius: '100px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+        )}
         {session && (
           <Link
             className="btn btn-outline-secondary mb-3"
@@ -66,48 +78,13 @@ const ViewAlbum: React.VFC = () => {
         ) : (
           <p className="text-muted">Det här albumet innehåller inga bilder.</p>
         )}
-        {showLightbox && (
-          <Lightbox
-            mainSrc={`/images/scaled/${album.images[activeImage].filename}`}
-            nextSrc={`/images/scaled/${
-              album.images[(activeImage + 1) % album.images.length].filename
-            }`}
-            prevSrc={`/images/scaled/${
-              album.images[
-                  (activeImage + album.images.length - 1) % album.images.length
-              ].filename
-            }`}
-            mainSrcThumbnail={`/images/thumbnail/${
-              album.images[activeImage].filename
-            }`}
-            nextSrcThumbnail={`/images/thumbnail/${
-              album.images[(activeImage + 1) % album.images.length].filename
-            }`}
-            prevSrcThumbnail={`/images/thumbnail/${
-              album.images[
-                  (activeImage + album.images.length - 1) % album.images.length
-              ].filename
-            }`}
-            onCloseRequest={() => setShowLightbox(false)}
-            onMoveNextRequest={() =>
-              setActiveImage((prev) => (prev + 1) % album.images.length)
-            }
-            onMovePrevRequest={() =>
-              setActiveImage(
-                  (prev) => (
-                    (prev + album.images.length - 1) % album.images.length
-                  ),
-              )
-            }
-            imageLoadErrorMessage="Det gick inte att ladda bilden."
-            imageTitle={`Bild ${activeImage + 1}/${album.images.length}`}
-            nextLabel="Nästa bild"
-            prevLabel="Föregående bild"
-            zoomInLabel="Förstora"
-            zoomOutLabel="Förminska"
-            closeLabel="Stäng fönster"
-          />
-        )}
+        <ImageFullscreenView
+          show={showLightbox}
+          setShow={setShowLightbox}
+          activeImage={activeImage}
+          setActiveImage={setActiveImage}
+          album={album}
+        />
       </>
     );
   } else {
